@@ -1,0 +1,238 @@
+﻿<Page x:Class="ArmyClient.View.Users.AddUserPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ArmyClient.View.Users"
+      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AddUserPage">
+    <Page.Resources>
+        <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="ComboBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10 0 0 5"/>
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignLabel}"
+           TargetType="{x:Type Label}">
+            <Setter Property="Grid.Column" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignTextBox}"
+           TargetType="{x:Type TextBox}">
+            <Setter Property="MaxLength" Value="30"/>
+            <Setter Property="Padding" Value="5 0 0 0"/>
+            <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="50 0"/>
+        </Style>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="0 10 0 0"/>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="8*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="6*"/>
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="7*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Command="{Binding GoBack}" Margin="10 10 0 0" Content="Back" VerticalAlignment="Top"/>
+                </Grid>
+                <Button Margin="0 10 0 0" Background="White" Grid.Column="1" Command="{Binding AddImage}" Height="Auto" >
+                    <Image MouseRightButtonDown="img_MouseRightButtonDown" Source="{Binding ImageBytes}" Stretch="Fill"/>
+                </Button>
+                <DockPanel Margin="5 10 5 5" Grid.Column="2">
+                    <Label FontSize="18" Content="Социальные сети" DockPanel.Dock="Top"/>
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" ItemsSource="{Binding SocialNetworkTypesList}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedType}"/>
+                        <TextBox MaxLength="100" Margin="10 0 10 2" Grid.Column="1" Text="{Binding WebAddress, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Grid.Column="2" Content="+" Command="{Binding AddSocNetType}"/>
+                    </Grid>
+
+                    <ListView x:Name="lv" ItemsSource="{Binding MySocNetTypes}" DisplayMemberPath="WebAddress" />
+                </DockPanel>
+            </Grid>
+
+            <ScrollViewer Margin="0 5 0 0" Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                <StackPanel  Margin="0">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Имя"/>
+                            <TextBox Text="{Binding user.Name}" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Content="Фамилия"/>
+                            <TextBox Text="{Binding user.Family}" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Content="Отчество"/>
+                            <TextBox Text="{Binding user.Surname}" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Content="Дата рождения"/>
+                            <DatePicker SelectedDate="{Binding user.DateBirth}" Padding="5 0 0 0" FontSize="16" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Grid.Column="1" Margin="50 0"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Content="Родная страна"/>
+                            <ComboBox Margin="50 0" Grid.Column="1" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountryBirth}" DisplayMemberPath="Name" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Родной город"/>
+                            <TextBox Text="{Binding user.CityBirth}" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Content="Страна проживания"/>
+                            <ComboBox SelectedItem="{Binding SelectedCountryUS}" Margin="50 0" Grid.Column="1" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Content="Город проживания"/>
+                            <TextBox Text="{Binding user.CurrentCityResience}" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Content="Адрес проживания"/>
+                            <TextBox Text="{Binding user.AddressResidence}" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Социальный статус"/>
+                            <ComboBox ItemsSource="{Binding SocStatuses}" Grid.Column="1" Margin="50 0" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSocStatus}"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Воинская часть"/>
+                            <ComboBox Grid.Column="1" Margin="50 0" ItemsSource="{Binding SoldierUnits}" DisplayMemberPath="GetSU"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Content="Email"/>
+                            <TextBox Text="{Binding user.email}" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Content="Телефон"/>
+                            <TextBox Text="{Binding user.phone}" />
+                        </Grid>
+                    </StackPanel>
+                    <DockPanel>
+                        <Label/>
+                        <TextBox 
+                            Text="{Binding user.Characteristic}"
+                        Height="200"
+                            DockPanel.Dock="Top"
+                            Margin="50 10"
+                    MaxLength="1000"
+                        VerticalAlignment="Stretch"
+                    x:Name="AboutFilm"
+                    Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"                    
+                    FontSize="16"
+                    AcceptsReturn="True"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto"
+                    Padding="0, 0, 20, 0"
+                    materialDesign:HintAssist.Hint="Характеристика"
+                    />
+                    </DockPanel>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="6*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Margin="0 0 0 10" Grid.Column="1" Content="Добавить пользователя" Command="{Binding AddUser}"/>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Page>

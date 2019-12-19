@@ -1,0 +1,179 @@
+﻿<Page x:Class="ArmyClient.View.Main.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ArmyClient.View.Main"
+      mc:Ignorable="d" 
+      d:DesignHeight="850" d:DesignWidth="800"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Title="MainPage">
+    <Page.Resources>
+        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="DGC_NumericColumnStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="ComboBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10 0 0 5"/>
+            <Setter Property="Margin" Value="50 0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignLabel}"
+           TargetType="{x:Type Label}">
+            <Setter Property="Grid.Column" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignTextBox}"
+           TargetType="{x:Type TextBox}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="MaxLength" Value="30"/>
+            <Setter Property="Padding" Value="5 0 0 0"/>
+            <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="50 0"/>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Label Content="Поиск" FontSize="22"/>
+                <TextBox md:HintAssist.Hint="Имя"/>
+                <TextBox md:HintAssist.Hint="Фамилия"/>
+                <TextBox md:HintAssist.Hint="Отчество"/>
+                <DatePicker Margin="50 0" md:HintAssist.Hint="Дата рождения" FontSize="16"/>
+                <ComboBox DisplayMemberPath="Name" x:Name="cb" md:HintAssist.Hint="Родная страна" />
+                <TextBox md:HintAssist.Hint="Родной город"/>
+                <ComboBox md:HintAssist.Hint="Страна проживания" />
+                <TextBox md:HintAssist.Hint="Город проживания"/>
+                <TextBox md:HintAssist.Hint="Адрес"/>
+                <ComboBox md:HintAssist.Hint="Социальный статус" />
+                <ComboBox md:HintAssist.Hint="Воинская часть" />
+                <TextBox md:HintAssist.Hint="Email"/>
+                <TextBox md:HintAssist.Hint="Телефон"/>
+                <StackPanel Margin="50 0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Наблюдение" />
+                        <CheckBox Grid.Column="1" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы выбрать тех, за кем ведется наблюдение">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </Grid>
+                </StackPanel>
+                <Label Content="Социальные сети"/>
+                <StackPanel Height="35" Margin="50 0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Width="35" HorizontalAlignment="Left"  Source="C:\Users\Andrew\source\repos\ArmyProjec\ArmyClient\Images\Logo_SocialNetworks\vk_ico.png"/>
+                        <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="ВКонтакте"/>
+                        <CheckBox Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию ВКонтакте">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Height="35" Margin="50 0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Width="35" HorizontalAlignment="Left" Source="C:\Users\Andrew\source\repos\ArmyProjec\ArmyClient\Images\Logo_SocialNetworks\is_ico.png"/>
+                        <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="Instagram"/>
+                        <CheckBox Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию Instagram">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Height="35" Margin="50 0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Width="35" HorizontalAlignment="Left" Source="C:\Users\Andrew\source\repos\ArmyProjec\ArmyClient\Images\Logo_SocialNetworks\fb_logo.png"/>
+                        <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="FaceBook"/>
+                        <CheckBox Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию FaceBook">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Height="35" Margin="50 0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Width="35" HorizontalAlignment="Left" Source="C:\Users\Andrew\source\repos\ArmyProjec\ArmyClient\Images\Logo_SocialNetworks\odnoklassniki_logo.jpg"/>
+                        <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="Одноклассники"/>
+                        <CheckBox Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию Одноклассников">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Height="35" Margin="50 0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Width="35" HorizontalAlignment="Left" Source="C:\Users\Andrew\source\repos\ArmyProjec\ArmyClient\Images\Logo_SocialNetworks\MyWorld_logo.png"/>
+                        <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="Мой Мир"/>
+                        <CheckBox Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию Мой Мир">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </Grid>
+                </StackPanel>
+                <Button ToolTip="Заполните данные в полях и нажмите на кнопку" Content="Найти" Margin="50 10" FontSize="18"/>
+            </StackPanel>
+        </ScrollViewer>
+        <Grid Grid.Column="1">
+            <DockPanel>
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="1" FontSize="22" Content="Список пользователей"/>
+                    <Button Grid.Column="2" Content="+" FontSize="18" VerticalContentAlignment="Top"/>
+                </Grid>
+                <DataGrid Background="White" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="*" Header="ФИО" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
+                        <DataGridTextColumn Width="*" Header="Имя" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Page>
