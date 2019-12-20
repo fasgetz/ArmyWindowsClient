@@ -8,6 +8,17 @@ namespace ArmyClient.Model
 
     public partial class Users
     {
+
+        #region
+
+        // Получить ФИО
+        public string GetFIO
+        {
+            get => $"{Family} {Name} {Surname}";
+        }
+
+        #endregion
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Users()
         {

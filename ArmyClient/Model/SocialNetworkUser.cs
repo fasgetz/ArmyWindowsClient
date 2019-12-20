@@ -9,6 +9,17 @@ namespace ArmyClient.Model
     [Table("SocialNetworkUser")]
     public partial class SocialNetworkUser
     {
+
+        #region Дополнительные свойства
+
+        public string GetSocialName
+        {
+            get => $"{SocialNetworkType.Name} - {WebAddress}";
+        }
+
+        #endregion
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SocialNetworkUser()
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ArmyClient.LogicApp.Realisation
 {
-    internal class SocialNetworksLogic : ISocialNetworksLogic
+    class SocialNetworksLogic : ISocialNetworksLogic
     {
         public async Task<List<SocialNetworkType>> LoadSocialNetworkTypesAsync()
         {

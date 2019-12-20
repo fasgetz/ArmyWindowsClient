@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArmyClient.ViewModel.Main;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,20 +21,14 @@ namespace ArmyClient.View.Main
     /// </summary>
     public partial class MainPage : Page
     {
-        LogicApp.Realisation.LogicApp logic;
+
+
         public MainPage()
         {
             InitializeComponent();
 
-            logic = new LogicApp.Realisation.LogicApp();
-
-            load(); 
+            this.DataContext = new MainPageVM();
         }
 
-        async void load()
-        {
-
-            cb.ItemsSource = await logic.CountriesLogic.GetCountries();
-        }
     }
 }

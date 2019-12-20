@@ -12,9 +12,14 @@ namespace ArmyClient.ViewModel.Helpers
     {
         public static NavigationService navigation { get; set; }
 
-        public static void GoToTest()
+        public static void GoBack()
         {
-            
+            navigation.GoBack();
+        }
+
+        public static void GoAddUserPage()
+        {
+            navigation.Navigate(new AddUserPage());
         }
     }
 }

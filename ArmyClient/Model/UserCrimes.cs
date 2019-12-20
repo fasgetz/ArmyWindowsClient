@@ -27,6 +27,9 @@ namespace ArmyClient.Model
 
         [Column(TypeName = "text")]
         public string Description { get; set; }
+        public DateTime DateEnty { get; set; }
+        
+        public bool IsCrime { get; set; }
 
         public virtual SocialNetworkUser SocialNetworkUser { get; set; }
 

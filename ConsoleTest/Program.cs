@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ApiVK;
 using VkNet;
@@ -23,47 +24,56 @@ namespace ConsoleTest
             {
                 try
                 {
-                    var friends = token.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams()
+                    friends = token.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams()
                     {
                         UserId = UserID,
                         Count = 10000,
                         Fields = ProfileFields.Military
-                    });
+                    }).ToArray();
 
 
-                    // Выбрать всех военнослужащих
-                    foreach (var item in friends)
+                    for (int i = 0; i <= (friends.Length / 10) - 1; i++)
                     {
-                        // Инфа о юзере
-                        var user = token.Users.Get(new long[]
-                        {
-                            item.Id
-                        }, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
+                        // создаем новый поток
+                        Thread myThread = new Thread(new ParameterizedThreadStart(Count));
 
-                        // Если такого юзера нашли, то выведи в консоль и запиши его в файлик
-                        if (user.Military != null)
-                        {
-                            //using (StreamWriter w = new StreamWriter($"Друзья у которых ВЧ пользователя {UserID} ({DateTime.Now}).txt", false, Encoding.GetEncoding(1251)))
-                            //{
-                            //    w.Write("Строка1");
-                            //}
+                        myThread.Start(i);
+                    }
 
 
+                    //// Выбрать всех военнослужащих
+                    //foreach (var item in friends)
+                    //{
+                    //    // Инфа о юзере
+                    //    var user = token.Users.Get(new long[]
+                    //    {
+                    //        item.Id
+                    //    }, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
 
-                            // запись в файл
-                            using (FileStream fstream = new FileStream($"Друзья у которых ВЧ пользователя {UserID}.txt", FileMode.Append))
-                            {
-                                // преобразуем строку в байты
-                                byte[] array = System.Text.Encoding.Default.GetBytes($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
-                                // запись массива байтов в файл
-                                fstream.Write(array, 0, array.Length);
-                            }
+                    //    // Если такого юзера нашли, то выведи в консоль и запиши его в файлик
+                    //    if (user.Military != null)
+                    //    {
+                    //        //using (StreamWriter w = new StreamWriter($"Друзья у которых ВЧ пользователя {UserID} ({DateTime.Now}).txt", false, Encoding.GetEncoding(1251)))
+                    //        //{
+                    //        //    w.Write("Строка1");
+                    //        //}
 
-                            Console.WriteLine($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
-                        }
-                            
 
-                    };
+
+                    //        // запись в файл
+                    //        using (FileStream fstream = new FileStream($"Друзья у которых ВЧ пользователя {UserID}.txt", FileMode.Append))
+                    //        {
+                    //            // преобразуем строку в байты
+                    //            byte[] array = System.Text.Encoding.Default.GetBytes($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
+                    //            // запись массива байтов в файл
+                    //            fstream.Write(array, 0, array.Length);
+                    //        }
+
+                    //        Console.WriteLine($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
+                    //    }
+
+
+                    //};
                 }
                 catch (Exception ex)
                 {
@@ -74,6 +84,63 @@ namespace ConsoleTest
             });
         }
 
+        static object locker = new object();
+        static VkNet.Model.User[] friends;
+        static VkNet.VkApi token;
+
+        // Для проверки
+        static void Count(object i)
+        {
+            for (int s = (int)i; s < ((int)i + 1) * 10; s++)
+            {
+
+                try
+                {
+                    // Инфа о юзере
+                    var user = token.Users.Get(new long[]
+                    {
+                        friends[s].Id
+                    }, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
+
+                    Console.WriteLine($"{s}) {friends[s].Id} {friends[s].FirstName} {friends[s].LastName} {friends[s].Country?.Title} {friends[s].City?.Title} {friends[s].Military?.Unit}");
+                    Thread.Sleep(500);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"{s} is bad Request!!!");
+                }
+                // Инфа о юзере
+                //var user = token.Users.Get(new long[]
+                //{
+                //    friends[s].Id
+                //}, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
+
+                //Console.WriteLine($"{friends[s].Id} {friends[s].FirstName} {friends[s].LastName} {friends[s].Country?.Title} {friends[s].City?.Title} {friends[s].Military?.Unit}");
+                //Thread.Sleep(500);
+                //    // Если такого юзера нашли, то выведи в консоль и запиши его в файлик
+                //    if (user.Military != null)
+                //    {
+                //        //using (StreamWriter w = new StreamWriter($"Друзья у которых ВЧ пользователя {UserID} ({DateTime.Now}).txt", false, Encoding.GetEncoding(1251)))
+                //        //{
+                //        //    w.Write("Строка1");
+                //        //}
+
+
+
+                //        // запись в файл
+                //        using (FileStream fstream = new FileStream($"Друзья у которых ВЧ пользователя {UserID}.txt", FileMode.Append))
+                //        {
+                //            // преобразуем строку в байты
+                //            byte[] array = System.Text.Encoding.Default.GetBytes($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
+                //            // запись массива байтов в файл
+                //            fstream.Write(array, 0, array.Length);
+                //        }
+
+                //        Console.WriteLine($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
+                //    }
+            }
+
+        }
 
         /// <summary>
         /// Искать иностранных друзей у пользователя
@@ -83,27 +150,81 @@ namespace ConsoleTest
         {
             await Task.Run(() =>
             {
-                var friends = token.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams()
+
+                friends = token.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams()
                 {
                     UserId = UserID,
                     Count = 10000,
                     Fields = ProfileFields.All
-                });
+                }).ToArray();
+
+
+                for (int i = 0; i <= (friends.Length / 10) - 1; i++)
+                {
+
+                    // создаем новый поток
+                    Task task = new Task(() => 
+                    {
+                        for (int s = i; s < (s + 1) * 10; s++)
+                        {
+                            try
+                            {
+                                // Инфа о юзере
+                                var user = token.Users.Get(new long[]
+                                {
+                                friends[s].Id
+                                }, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
+
+                                Console.WriteLine($"{s}) {friends[s].Id} {friends[s].FirstName} {friends[s].LastName} {friends[s].Country?.Title} {friends[s].City?.Title} {friends[s].Military?.Unit}");
+                                Thread.Sleep(500);
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine($"{s} is bad Request!!!");
+                            }
+                        }
+                    });
+
+                    task.Start();
+                }
+
+
+                //// Выбрать всех не из России
+                //foreach (var item in friends.Where(i => i.Country != null && i.Country?.Id != 1))
+                //{
+                //    Console.WriteLine($"{item.Id} {item.FirstName} {item.LastName} {item.Country?.Title}");
+                //};
+
+                Console.WriteLine("end");
+            });
+        }
+
+        /// <summary>
+        /// Искать иностранных друзей у пользователя
+        /// </summary>
+        /// <param name="UserID">айди пользователя</param>
+        static async void SearchForeignFriendsOLD(VkApi token, int UserID)
+        {
+            await Task.Run(() =>
+            {
+
+                friends = token.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams()
+                {
+                    UserId = UserID,
+                    Count = 10000,
+                    Fields = ProfileFields.All
+                }).ToArray();
 
 
                 // Выбрать всех не из России
                 foreach (var item in friends.Where(i => i.Country != null && i.Country?.Id != 1))
                 {
-
-
                     Console.WriteLine($"{item.Id} {item.FirstName} {item.LastName} {item.Country?.Title}");
                 };
 
                 Console.WriteLine("end");
             });
         }
-
-
 
         /// <summary>
         /// Искать по своей выборке
@@ -133,18 +254,28 @@ namespace ConsoleTest
             });
         }
 
+
+
+
+
         static void Main()
         {
             Console.WriteLine("Старт");
 
             // Токен
             MyApiVK api = new MyApiVK();
-            var token = api.GetToken("89114876557", "Simplepass19");
+            token = api.GetToken("89114876557", "Simplepass19");
 
-            SearchForeignFriends(token, 192123242);
+            SearchForeignFriendsOLD(token, 298394722);
 
+
+
+            Console.WriteLine("end!");
             Console.ReadKey();
 
         }
+
+
+
     }
 }

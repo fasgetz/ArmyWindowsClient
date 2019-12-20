@@ -9,6 +9,13 @@ namespace ArmyClient.Model
     [Table("SocialNetworkType")]
     public partial class SocialNetworkType
     {
+        #region Дополнительные свойства для вывода
+
+
+
+        #endregion
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SocialNetworkType()
         {

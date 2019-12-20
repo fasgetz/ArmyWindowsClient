@@ -3,6 +3,7 @@ using ArmyClient.LogicApp.Helps;
 using ArmyClient.LogicApp.Realisation;
 using ArmyClient.Model;
 using ArmyClient.ViewModel.Helpers;
+using ArmyClient.ViewModel.Main;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -15,161 +16,8 @@ using System.Windows.Navigation;
 
 namespace ArmyClient.ViewModel.Users
 {
-    class AddUserPageVM : MainVM
+    class AddUserPageVM : MainPageVM
     {
-
-
-        #region Свойства        
-
-        // Выбранный социальный статус
-        private SocialStatuses _SelectedSocStatus;
-        public SocialStatuses SelectedSocStatus
-        {
-            get => _SelectedSocStatus;
-            set
-            {
-                _SelectedSocStatus = value;
-                user.SocialStatusID = value.IdStatus;
-                OnPropertyChanged("SelectedSocStatus");
-            }
-        }
-
-        // Страны
-        private ObservableCollection<SocialStatuses> _SocStatuses;
-        public ObservableCollection<SocialStatuses> SocStatuses
-        {
-            get => _SocStatuses;
-            set
-            {
-                _SocStatuses = value;
-                OnPropertyChanged("SocStatuses");
-            }
-        }
-
-        // Страны
-        private ObservableCollection<Countries> _Countries;
-        public ObservableCollection<Countries> Countries
-        {
-            get => _Countries;
-            set
-            {
-                _Countries = value;
-                OnPropertyChanged("Countries");
-            }
-        }
-
-        // Выбранная страна проживания
-        private Countries _SelectedCountryUS;
-        public Countries SelectedCountryUS
-        {
-            get => _SelectedCountryUS;
-            set
-            {
-                _SelectedCountryUS = value;
-                user.IdCurrentCountryResidence = value.Id;
-                loadunits(value.Id);
-                OnPropertyChanged("SelectedCountryUS");
-            }
-        }
-
-        // Выбранная страна рождения
-        private Countries _SelectedCountryBirth;
-        public Countries SelectedCountryBirth
-        {
-            get => _SelectedCountryBirth;
-            set
-            {
-                _SelectedCountryBirth = value;
-                user.IdCountryBirth = value.Id;
-                OnPropertyChanged("SelectedCountryBirth");
-            }
-        }
-
-        // Изображение в байтах
-        byte[] _ImageBytes;                         
-        public byte[] ImageBytes
-        {
-            get => _ImageBytes;
-            set
-            {
-                _ImageBytes = value;
-                OnPropertyChanged("ImageBytes");
-            }
-        }
-
-        // Данные пользователя
-        private Model.Users _user;
-        public Model.Users user
-        {
-            get => _user;
-            set
-            {
-                _user = value;
-                OnPropertyChanged("user");
-            }
-        }
-
-        // Веб адрес соц сети
-        private string _WebAddress;
-        public string WebAddress
-        {
-            get => _WebAddress;
-            set
-            {
-                _WebAddress = value;
-                OnPropertyChanged("WebAddress");
-            }
-        }
-
-        // Тип соц сети пользователя
-        private SocialNetworkType _selectedType;
-        public SocialNetworkType SelectedType
-        {
-            get => _selectedType;
-            set
-            {
-                _selectedType = value;
-                OnPropertyChanged("SelectedType");
-            }
-        }
-
-        // Список соц сетей пользователя
-        private ObservableCollection<SocialNetworkUser> _MySocNetTypes;
-        public ObservableCollection<SocialNetworkUser> MySocNetTypes
-        {
-            get => _MySocNetTypes;
-            set
-            {
-                _MySocNetTypes = value;
-                OnPropertyChanged("_MySocNetTypes");
-            }
-        }
-
-        // Список соц сетей из БД
-        private ObservableCollection<SocialNetworkType> _SocialNetworkTypesList;
-        public ObservableCollection<SocialNetworkType> SocialNetworkTypesList
-        {
-            get => _SocialNetworkTypesList;
-            set
-            {
-                _SocialNetworkTypesList = value;
-                OnPropertyChanged("SocialNetworkTypesList");
-            }
-        }
-
-        // Список В/Ч из БД
-        private ObservableCollection<SoldierUnit> _SoldierUnits;
-        public ObservableCollection<SoldierUnit> SoldierUnits
-        {
-            get => _SoldierUnits;
-            set
-            {
-                _SoldierUnits = value;
-                OnPropertyChanged("SoldierUnits");
-            }
-        }
-
-        #endregion
 
         #region Секция команд
 
@@ -180,9 +28,13 @@ namespace ArmyClient.ViewModel.Users
             {
                 return new DelegateCommand(obj =>
                 {
-
-                    MySocNetTypes.Add(new SocialNetworkUser() { WebAddress = WebAddress, SocialNetworkId = SelectedType.Id});
-                    user.SocialNetworkUser.Add(new SocialNetworkUser() { SocialNetworkId = SelectedType.Id, WebAddress = WebAddress });
+                    if (!string.IsNullOrWhiteSpace(WebAddress) && SelectedType != null)
+                    {
+                        MySocNetTypes.Add(new SocialNetworkUser() { WebAddress = WebAddress, SocialNetworkId = SelectedType.Id, SocialNetworkType = SocialNetworkTypesList.FirstOrDefault(i => i.Id == SelectedType.Id) });
+                        user.SocialNetworkUser.Add(new SocialNetworkUser() { SocialNetworkId = SelectedType.Id, SocialNetworkType = SocialNetworkTypesList.FirstOrDefault(i => i.Id == SelectedType.Id), WebAddress = WebAddress });
+                        WebAddress = null;
+                        SelectedType = null;
+                    }
                 });
             }
         }
@@ -194,11 +46,12 @@ namespace ArmyClient.ViewModel.Users
             {
                 return new DelegateCommand(obj =>
                 {
-                    MyNavigation.GoToTest();
-
+                    // Добавляем юзера
+                    AddUserDB();                    
                 });
             }
         }
+
 
         // Команда вернуться назад
         public DelegateCommand GoBack
@@ -207,8 +60,7 @@ namespace ArmyClient.ViewModel.Users
             {
                 return new DelegateCommand(obj =>
                 {
-                    MyNavigation.navigation.GoBack();
-
+                    MyNavigation.GoBack();
                 });
             }
         }
@@ -237,31 +89,24 @@ namespace ArmyClient.ViewModel.Users
 
         #endregion
 
-        public AddUserPageVM()
+        #region Вспомогательные методы
+
+        /// <summary>
+        /// Метод добавления юзера в БД
+        /// </summary>
+        private async void AddUserDB()
         {
-            // Выделяем память
-            logic = new LogicApp.Realisation.LogicApp();
-            SelectedType = new SocialNetworkType();
-            MySocNetTypes = new ObservableCollection<SocialNetworkUser>();
-            user = new Model.Users();
-            
+            user.DateOfEntry = DateTime.Now;
+            bool added = await logic.userLogic.AddUserAsync(user);
 
-            // Загружаем данные с БД
-            LoadData();
+            if (added == true)
+            {
+                MyNavigation.navigation.GoBack();
+            }
         }
 
-        // Вспомогательный метод для загрузки данных
-        private async void LoadData()
-        {            
-            SocialNetworkTypesList =  new ObservableCollection<SocialNetworkType>(await logic.socialNetworksLogic.LoadSocialNetworkTypesAsync());
-            Countries = new ObservableCollection<Countries>(await logic.CountriesLogic.GetCountries());
-            SocStatuses = new ObservableCollection<SocialStatuses>(await logic.SocStatusesLogic.GetSocialStatuses());
-        }
+        #endregion
 
-        // Метод для загрузки В/Ч
-        private async void loadunits(byte id)
-        {
-            SoldierUnits = new ObservableCollection<SoldierUnit>(await logic.SoldierUnitLogic.GetSoldierUnitsAsync(id));
-        }
+
     }
 }

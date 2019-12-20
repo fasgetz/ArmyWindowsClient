@@ -66,7 +66,7 @@
                         <Button Grid.Column="2" Content="+" Command="{Binding AddSocNetType}"/>
                     </Grid>
 
-                    <ListView x:Name="lv" ItemsSource="{Binding MySocNetTypes}" DisplayMemberPath="WebAddress" />
+                    <ListView x:Name="lv" ItemsSource="{Binding MySocNetTypes}" DisplayMemberPath="GetSocialName" />
                 </DockPanel>
             </Grid>
 
@@ -200,6 +200,20 @@
                             </Grid.ColumnDefinitions>
                             <Label  Content="Телефон"/>
                             <TextBox Text="{Binding user.phone}" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Margin="0 0 50 0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Установить наблюдение" />
+                            <CheckBox IsChecked="{Binding user.IsMonitoring}" Grid.Column="1" HorizontalAlignment="Right" ToolTip="Нажмите, чтобы установить необходимость наблюдения">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
                         </Grid>
                     </StackPanel>
                     <DockPanel>

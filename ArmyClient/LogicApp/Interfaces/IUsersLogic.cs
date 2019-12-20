@@ -32,6 +32,14 @@ namespace ArmyClient.LogicApp.Interfaces
         /// <returns>Возвращает результат добавления</returns>
         Task<bool> AddUserAsync(Users user);
 
+
+        /// <summary>
+        /// Метод получения пользователей
+        /// </summary>
+        /// <param name="user">Параметр, по модели которой делается выборка</param>
+        /// <returns>Возвращает пользователей</returns>
+        Task<List<Users>> GetUsersAsync(Users user);
+
         #region Асинхронные версии методов
 
 
