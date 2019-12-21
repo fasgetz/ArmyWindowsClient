@@ -10,6 +10,11 @@ namespace ArmyClient.LogicApp.Realisation
 {
     class CountriesLogic : ICountriesLogic
     {
+        private ArmyDBContext db;
+        public CountriesLogic(ArmyDBContext db)
+        {
+            this.db = db;
+        }
 
         /// <summary>
         /// Получить список стран
@@ -21,8 +26,7 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 try
                 {
-                    using (ArmyDB db = new ArmyDB())
-                        return db.Countries.ToList();
+                    return db.Countries.ToList();
                 }
                 catch (Exception)
                 {

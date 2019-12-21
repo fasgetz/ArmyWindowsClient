@@ -20,7 +20,7 @@ namespace ArmyClient.Model
 
         public int? IdSocialNetworkUser { get; set; }
 
-        [Column(TypeName = "image")]
+        //[Column(TypeName = "Bytea")]
         public byte[] Photo { get; set; }
 
         public DateTime? DateLoad { get; set; }

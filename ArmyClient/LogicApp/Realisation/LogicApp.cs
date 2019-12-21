@@ -18,11 +18,14 @@ namespace ArmyClient.LogicApp.Realisation
 
         internal LogicApp()
         {
-            socialNetworksLogic = new SocialNetworksLogic();
-            userLogic = new UserLogic();
-            CountriesLogic = new CountriesLogic();
-            SoldierUnitLogic = new SoldierUnitsLogic();
-            SocStatusesLogic = new SocStatusesLogic();
+            ArmyDBContext db = new ArmyDB();
+
+
+            socialNetworksLogic = new SocialNetworksLogic(db);
+            userLogic = new UserLogic(db);
+            CountriesLogic = new CountriesLogic(db);
+            SoldierUnitLogic = new SoldierUnitsLogic(db);
+            SocStatusesLogic = new SocStatusesLogic(db);
         }
     }
 }

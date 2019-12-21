@@ -10,14 +10,21 @@ namespace ArmyClient.LogicApp.Realisation
 {
     class SocialNetworksLogic : ISocialNetworksLogic
     {
+        private ArmyDBContext db;
+
+        public SocialNetworksLogic(ArmyDBContext db)
+        {
+            this.db = db;
+        }
+
+
         public async Task<List<SocialNetworkType>> LoadSocialNetworkTypesAsync()
         {
             return await Task.Run(() =>
             {
                 try
                 {
-                    using (ArmyDB db = new ArmyDB())
-                        return db.SocialNetworkType.ToList();
+                    return db.SocialNetworkType.ToList();
                 }
                 catch (Exception)
                 {
@@ -27,10 +34,6 @@ namespace ArmyClient.LogicApp.Realisation
 
         }
 
-        public SocialNetworksLogic()
-        {
-
-        }
 
     }
 }

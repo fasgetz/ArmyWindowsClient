@@ -41,7 +41,7 @@ namespace ArmyClient.Model
         [StringLength(150)]
         public string AddressResidence { get; set; }
 
-        [Column(TypeName = "text")]
+        //[Column(TypeName = "text")]
         public string AbountInform { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

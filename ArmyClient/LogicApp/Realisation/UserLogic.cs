@@ -15,6 +15,13 @@ namespace ArmyClient.LogicApp.Realisation
     internal class UserLogic : IUsersLogic
     {
 
+        private ArmyDBContext db;
+
+        public UserLogic(ArmyDBContext db)
+        {
+            this.db = db;
+        }
+
         #region Синхронные версии методов
 
         /// <summary>
@@ -26,11 +33,8 @@ namespace ArmyClient.LogicApp.Realisation
         {
             try
             {
-                using (ArmyDB db = new ArmyDB())
-                {
-                    db.Users.Add(user);
-                    db.SaveChanges();
-                }
+                db.Users.Add(user);
+                db.SaveChanges();
 
                 return true;
             }
@@ -44,7 +48,7 @@ namespace ArmyClient.LogicApp.Realisation
         #endregion
 
 
-        #region Асинхронные версии методов
+             #region Асинхронные версии методов
 
         /// <summary>
         /// Асинхронная версия метод по добавлению пользователя в бд
@@ -57,11 +61,8 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 try
                 {
-                    using (ArmyDB db = new ArmyDB())
-                    {
-                        db.Users.Add(user);
-                        db.SaveChanges();
-                    }
+                    db.Users.Add(user);
+                    db.SaveChanges();
 
                     return true;
                 }
@@ -78,31 +79,30 @@ namespace ArmyClient.LogicApp.Realisation
         /// </summary>
         /// <param name="user">Параметр, по модели которой делается выборка</param>
         /// <returns>Возвращает пользователей</returns>
-        public async Task<List<Users>> GetUsersAsync(Users user)
+        public async Task<List<Users>> GetUsersAsync(Users user, bool vk = false, bool instagram = false, bool facebook = false)
         {
+
+             
             return await Task.Run(() =>
             {
-                try
-                {
-                    using (ArmyDB db = new ArmyDB())
-                    {
+                var users = from vm in db.Users
+                            where
+                              (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
+                              (!(string.IsNullOrEmpty(user.Family)) ? vm.Family.Contains(user.Family) : (string.IsNullOrEmpty(vm.Family) || !string.IsNullOrEmpty(vm.Family))) &&
+                              (!(string.IsNullOrEmpty(user.Surname)) ? vm.Surname.Contains(user.Surname) : (string.IsNullOrEmpty(vm.Surname) || !string.IsNullOrEmpty(vm.Surname))) &&
+                              ((user.DateBirth != null) ? vm.DateBirth == user.DateBirth : (vm.DateBirth >= new DateTime() || vm.DateBirth == null)) &&
+                              ((user.IdCountryBirth != null) ? vm.IdCountryBirth == user.IdCountryBirth : vm.IdCountryBirth != 0) &&
+                              (!(string.IsNullOrEmpty(user.CityBirth)) ? vm.CityBirth.Contains(user.CityBirth) : (string.IsNullOrEmpty(vm.CityBirth) || !string.IsNullOrEmpty(vm.CityBirth))) &&
 
-                        var users = from vm in db.Users
-                                    where
-                                      (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
-                                      (!(string.IsNullOrEmpty(user.Family)) ? vm.Family.Contains(user.Family) : !string.IsNullOrEmpty(vm.Family)) &&
-                                      (!(string.IsNullOrEmpty(user.Surname)) ? vm.Surname.Contains(user.Surname) : !string.IsNullOrEmpty(vm.Surname))
-                                    select vm;
+                              // Тут самое сложное. По социальным сетям вывести если стоят галочки
+                              (((vk == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 1).SocialNetworkId == 1 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
+                              ((instagram == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 3).SocialNetworkId == 3 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
+                              ((facebook == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 2).SocialNetworkId == 2 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0))
+                              
+                            select vm;
 
-                        var r = users.ToList();
+                return users.ToList();
 
-                        return users.ToList();
-                    }
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
             });
         }
 

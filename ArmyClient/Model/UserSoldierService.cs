@@ -15,10 +15,10 @@ namespace ArmyClient.Model
 
         public short? IdSoldierUnit { get; set; }
 
-        [Column(TypeName = "date")]
+        //[Column(TypeName = "date")]
         public DateTime? DateStart { get; set; }
 
-        [Column(TypeName = "date")]
+        //[Column(TypeName = "date")]
         public DateTime? DateEnd { get; set; }
 
         [StringLength(50)]
@@ -27,7 +27,7 @@ namespace ArmyClient.Model
         [StringLength(50)]
         public string Position { get; set; }
 
-        [Column(TypeName = "text")]
+        //[Column(TypeName = "text")]
         public string Data { get; set; }
 
         public virtual SoldierUnit SoldierUnit { get; set; }

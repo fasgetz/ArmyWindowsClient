@@ -10,6 +10,12 @@ namespace ArmyClient.LogicApp.Realisation
 {
     internal class SoldierUnitsLogic : ISoldierUnitsLogic
     {
+        private ArmyDBContext db;
+
+        public SoldierUnitsLogic(ArmyDBContext db)
+        {
+            this.db = db;
+        }
 
         /// <summary>
         /// Получить список В/Ч по стране
@@ -22,13 +28,10 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 try
                 {
-                    using (ArmyDB db = new ArmyDB())
-                    {
-                        if (IdCountry == 0)
-                            return db.SoldierUnit.ToList();
+                    if (IdCountry == 0)
+                        return db.SoldierUnit.ToList();
 
-                        return db.SoldierUnit.Where(i => i.IdCountry == IdCountry).ToList(); // Возвращаем по айди страны
-                    }
+                    return db.SoldierUnit.Where(i => i.IdCountry == IdCountry).ToList(); // Возвращаем по айди страны
                 }
                 catch (Exception)
                 {

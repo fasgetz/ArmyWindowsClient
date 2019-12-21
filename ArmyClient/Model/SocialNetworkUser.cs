@@ -39,7 +39,7 @@ namespace ArmyClient.Model
 
         public bool Opened { get; set; }
 
-        [Column(TypeName = "text")]
+        //[Column(TypeName = "text")]
         public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

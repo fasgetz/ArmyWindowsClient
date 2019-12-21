@@ -49,16 +49,16 @@
                 <TextBox Text="{Binding user.Name}" md:HintAssist.Hint="Имя"/>
                 <TextBox Text="{Binding user.Family}" md:HintAssist.Hint="Фамилия"/>
                 <TextBox Text="{Binding user.Surname}" md:HintAssist.Hint="Отчество"/>
-                <DatePicker Margin="25 0" md:HintAssist.Hint="Дата рождения" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" FontSize="16"/>
-                <ComboBox DisplayMemberPath="Name" x:Name="cb" md:HintAssist.Hint="Родная страна" />
-                <TextBox md:HintAssist.Hint="Родной город"/>
-                <ComboBox md:HintAssist.Hint="Страна проживания" />
-                <TextBox md:HintAssist.Hint="Город проживания"/>
-                <TextBox md:HintAssist.Hint="Адрес"/>
-                <ComboBox md:HintAssist.Hint="Социальный статус" />
-                <ComboBox md:HintAssist.Hint="Воинская часть" />
-                <TextBox md:HintAssist.Hint="Email"/>
-                <TextBox md:HintAssist.Hint="Телефон"/>
+                <DatePicker SelectedDate="{Binding user.DateBirth}" Margin="25 0" md:HintAssist.Hint="Дата рождения" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" FontSize="16"/>
+                <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountryBirth}" DisplayMemberPath="Name" md:HintAssist.Hint="Родная страна" />
+                <TextBox Text="{Binding user.CityBirth}" md:HintAssist.Hint="Родной город"/>
+                <ComboBox SelectedItem="{Binding SelectedCountryUS}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" md:HintAssist.Hint="Страна проживания" />
+                <TextBox Text="{Binding user.CurrentCityResience}" md:HintAssist.Hint="Город проживания"/>
+                <TextBox Text="{Binding user.AddressResidence}" md:HintAssist.Hint="Адрес"/>
+                <ComboBox md:HintAssist.Hint="Социальный статус" ItemsSource="{Binding SocStatuses}" DisplayMemberPath="Name" />
+                <ComboBox ItemsSource="{Binding SoldierUnits}" DisplayMemberPath="GetSU" md:HintAssist.Hint="Воинская часть" />
+                <TextBox Text="{Binding user.email}" md:HintAssist.Hint="Email"/>
+                <TextBox Text="{Binding user.phone}" md:HintAssist.Hint="Телефон"/>
                 <StackPanel Height="40" Margin="25 0">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -66,7 +66,7 @@
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
                         <Label VerticalAlignment="Center" HorizontalAlignment="Left" Content="Установлено наблюдение" />
-                        <CheckBox Grid.Column="1" ToolTip="Нажмите, чтобы выбрать тех, за кем ведется наблюдение">
+                        <CheckBox IsChecked="{Binding user.IsMonitoring}" Grid.Column="1" ToolTip="Нажмите, чтобы выбрать тех, за кем ведется наблюдение">
                             <CheckBox.LayoutTransform>
                                 <ScaleTransform ScaleX="2" ScaleY="2" />
                             </CheckBox.LayoutTransform>
@@ -83,7 +83,7 @@
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="0" Width="35" HorizontalAlignment="Left"  Source="C:\Users\Andrew\Source\Repos\From-ArmyProject\ArmyClient\Images\Logo_SocialNetworks\vk_ico.png"/>
                         <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="ВКонтакте"/>
-                        <CheckBox Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию ВКонтакте">
+                        <CheckBox IsChecked="{Binding vk}" Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию ВКонтакте">
                             <CheckBox.LayoutTransform>
                                 <ScaleTransform ScaleX="2" ScaleY="2" />
                             </CheckBox.LayoutTransform>
@@ -99,7 +99,7 @@
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="0" Width="35" HorizontalAlignment="Left" Source="C:\Users\Andrew\Source\Repos\From-ArmyProject\ArmyClient\Images\Logo_SocialNetworks\is_ico.png"/>
                         <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="Instagram"/>
-                        <CheckBox Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию Instagram">
+                        <CheckBox IsChecked="{Binding instagram}" Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию Instagram">
                             <CheckBox.LayoutTransform>
                                 <ScaleTransform ScaleX="2" ScaleY="2" />
                             </CheckBox.LayoutTransform>
@@ -115,7 +115,7 @@
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="0" Width="35" HorizontalAlignment="Left" Source="C:\Users\Andrew\Source\Repos\From-ArmyProject\ArmyClient\Images\Logo_SocialNetworks\fb_logo.png"/>
                         <Label Grid.Column="1" HorizontalContentAlignment="Center" Content="FaceBook"/>
-                        <CheckBox Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию FaceBook">
+                        <CheckBox IsChecked="{Binding facebook}" Grid.Column="2" HorizontalContentAlignment="Right" ToolTip="Нажмите, чтобы искать по наличию FaceBook">
                             <CheckBox.LayoutTransform>
                                 <ScaleTransform ScaleX="2" ScaleY="2" />
                             </CheckBox.LayoutTransform>

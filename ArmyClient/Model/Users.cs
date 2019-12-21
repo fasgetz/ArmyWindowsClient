@@ -38,10 +38,10 @@ namespace ArmyClient.Model
         [StringLength(25)]
         public string Surname { get; set; }
 
-        [Column(TypeName = "image")]
+        //[Column(TypeName = "Bytea")]
         public byte[] Photo { get; set; }
 
-        [Column(TypeName = "date")]
+        //[Column(TypeName = "date")]
         public DateTime? DateBirth { get; set; }
 
         public byte? IdCountryBirth { get; set; }
@@ -57,7 +57,7 @@ namespace ArmyClient.Model
         [StringLength(150)]
         public string AddressResidence { get; set; }
 
-        [Column(TypeName = "text")]
+        //[Column(TypeName = "text")]
         public string Characteristic { get; set; }
 
         public bool? IsMonitoring { get; set; }

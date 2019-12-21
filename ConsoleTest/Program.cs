@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,48 +34,49 @@ namespace ConsoleTest
                     }).ToArray();
 
 
-                    for (int i = 0; i <= (friends.Length / 10) - 1; i++)
-                    {
-                        // создаем новый поток
-                        Thread myThread = new Thread(new ParameterizedThreadStart(Count));
-
-                        myThread.Start(i);
-                    }
-
-
-                    //// Выбрать всех военнослужащих
-                    //foreach (var item in friends)
+                    //for (int i = 0; i <= (friends.Length / 10) - 1; i++)
                     //{
-                    //    // Инфа о юзере
-                    //    var user = token.Users.Get(new long[]
-                    //    {
-                    //        item.Id
-                    //    }, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
+                    //    // создаем новый поток
+                    //    Thread myThread = new Thread(new ParameterizedThreadStart(Count));
 
-                    //    // Если такого юзера нашли, то выведи в консоль и запиши его в файлик
-                    //    if (user.Military != null)
-                    //    {
-                    //        //using (StreamWriter w = new StreamWriter($"Друзья у которых ВЧ пользователя {UserID} ({DateTime.Now}).txt", false, Encoding.GetEncoding(1251)))
-                    //        //{
-                    //        //    w.Write("Строка1");
-                    //        //}
+                    //    myThread.Start(i);
+                    //}
 
 
+                    // Выбрать всех военнослужащих
+                    foreach (var item in friends)
+                    {
+                        // Инфа о юзере
+                        var user = token.Users.Get(new long[]
+                        {
+                            item.Id
+                        }, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
 
-                    //        // запись в файл
-                    //        using (FileStream fstream = new FileStream($"Друзья у которых ВЧ пользователя {UserID}.txt", FileMode.Append))
-                    //        {
-                    //            // преобразуем строку в байты
-                    //            byte[] array = System.Text.Encoding.Default.GetBytes($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
-                    //            // запись массива байтов в файл
-                    //            fstream.Write(array, 0, array.Length);
-                    //        }
-
-                    //        Console.WriteLine($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
-                    //    }
+                        // Если такого юзера нашли, то выведи в консоль и запиши его в файлик
+                        if (user.Military != null)
+                        {
+                            //using (StreamWriter w = new StreamWriter($"Друзья у которых ВЧ пользователя {UserID} ({DateTime.Now}).txt", false, Encoding.GetEncoding(1251)))
+                            //{
+                            //    w.Write("Строка1");
+                            //}
 
 
-                    //};
+
+                            // запись в файл
+                            using (FileStream fstream = new FileStream($"Друзья у которых ВЧ пользователя {UserID}.txt", FileMode.Append))
+                            {
+                                // преобразуем строку в байты
+                                byte[] array = System.Text.Encoding.Default.GetBytes($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
+                                // запись массива байтов в файл
+                                fstream.Write(array, 0, array.Length);
+                            }
+
+                            Console.WriteLine($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
+                        }
+
+
+                        //};
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -142,6 +145,9 @@ namespace ConsoleTest
 
         }
 
+
+
+        List<Thread> threads;
         /// <summary>
         /// Искать иностранных друзей у пользователя
         /// </summary>
@@ -254,25 +260,115 @@ namespace ConsoleTest
             });
         }
 
+        // Тест с многопоточностью
+        private static void testing()
+        {
+            // Токен
+            MyApiVK api = new MyApiVK();
+            token = api.GetToken("89114876557", "Simplepass19");
+
+            // Получаем список друзей
+            friends = token.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams()
+            {
+                UserId = 252766755,
+                Count = 10000,
+                Fields = ProfileFields.Military
+            }).ToArray();
 
 
+            // Ищем иностранцев
+            Parallel.For(0, friends.Length - 1, i =>
+            {
+                Console.WriteLine($"Выполняется задача {Task.CurrentId}");
 
+
+                // Ищем сперва юзера
+                var user = token.Users.Get(new long[]
+                {
+                    friends[i].Id
+                }, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
+
+                Console.WriteLine($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Задача {Task.CurrentId} завершена");
+                Console.BackgroundColor = ConsoleColor.Black;
+            });
+        }
+
+        static void Factorial(int x)
+        {
+
+            int result = 1;
+
+            for (int i = 1; i <= x; i++)
+            {
+                result *= i;
+            }
+            Console.WriteLine($"Выполняется задача {Task.CurrentId}");
+            Console.WriteLine($"Факториал числа {x} равен {result}");
+            Thread.Sleep(3000);
+        }
 
         static void Main()
         {
             Console.WriteLine("Старт");
 
-            // Токен
-            MyApiVK api = new MyApiVK();
-            token = api.GetToken("89114876557", "Simplepass19");
+            CarContext db = new CarContext();
+            foreach (var item in db.Cars)
+            {
+                Console.WriteLine(item.Year);
+            }
 
-            SearchForeignFriendsOLD(token, 298394722);
+
 
 
 
             Console.WriteLine("end!");
             Console.ReadKey();
 
+
+
+
+
+            //// Токен
+            //MyApiVK api = new MyApiVK();
+            //token = api.GetToken("89114876557", "Simplepass19");
+
+            //SearchUnitSoldier(token, 252766755);
+
+            //Thread[] threads = new Thread[Environment.ProcessorCount];
+
+            //for (int i = 0; i < threads.Length; i++)
+            //{
+            //    threads[i] = new Thread(new ThreadStart(startThread));
+            //    threads[i].Start();
+            //}
+
+
+
+        }
+
+        private static string[] bla = new string[] { "", "", "", "", "", "", "", "", "", "", "", "" };
+        private static IEnumerator tmp = bla.GetEnumerator();
+
+        private static void startThread()
+        {
+            bool exit = false;
+            do
+            {
+                string workstr;
+                lock (tmp)
+                {
+                    if (tmp.MoveNext())
+                    {
+                        workstr = tmp.Current as string;
+                        Console.WriteLine(workstr);
+                    }
+                    else
+                        exit = true;
+                }
+                // обработка строки
+            } while (!exit);
         }
 
 

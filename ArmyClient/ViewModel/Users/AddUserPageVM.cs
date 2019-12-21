@@ -31,7 +31,7 @@ namespace ArmyClient.ViewModel.Users
                     if (!string.IsNullOrWhiteSpace(WebAddress) && SelectedType != null)
                     {
                         MySocNetTypes.Add(new SocialNetworkUser() { WebAddress = WebAddress, SocialNetworkId = SelectedType.Id, SocialNetworkType = SocialNetworkTypesList.FirstOrDefault(i => i.Id == SelectedType.Id) });
-                        user.SocialNetworkUser.Add(new SocialNetworkUser() { SocialNetworkId = SelectedType.Id, SocialNetworkType = SocialNetworkTypesList.FirstOrDefault(i => i.Id == SelectedType.Id), WebAddress = WebAddress });
+                        user.SocialNetworkUser.Add(new SocialNetworkUser() { SocialNetworkId = SelectedType.Id, WebAddress = WebAddress });
                         WebAddress = null;
                         SelectedType = null;
                     }

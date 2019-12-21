@@ -10,14 +10,21 @@ namespace ArmyClient.LogicApp.Realisation
 {
     class SocStatusesLogic : ISocStatusesLogic
     {
+        private ArmyDBContext db;
+
+        public SocStatusesLogic(ArmyDBContext db)
+        {
+            this.db = db;
+        }
+
+
         public async Task<List<SocialStatuses>> GetSocialStatuses()
         {
             return await Task.Run(() =>
             {
                 try
                 {
-                    using (ArmyDB db = new ArmyDB())
-                        return db.SocialStatuses.ToList();
+                    return db.SocialStatuses.ToList();
                 }
                 catch (Exception)
                 {

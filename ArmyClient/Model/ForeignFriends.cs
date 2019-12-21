@@ -33,7 +33,7 @@ namespace ArmyClient.Model
         [Column(TypeName = "date")]
         public DateTime? BirthDay { get; set; }
 
-        [Column(TypeName = "image")]
+        //[Column(TypeName = "Bytea")]
         public byte[] Photo { get; set; }
 
         public virtual Countries Countries { get; set; }

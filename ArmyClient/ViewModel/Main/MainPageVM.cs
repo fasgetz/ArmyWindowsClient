@@ -13,6 +13,40 @@ namespace ArmyClient.ViewModel.Main
     {
         #region Свойства        
 
+        private bool _facebook;
+        public bool facebook
+        {
+            get => _facebook;
+            set
+            {
+                _facebook = value;
+                OnPropertyChanged("facebook");
+            }
+        }
+
+        private bool _vk;
+        public bool vk
+        {
+            get => _vk;
+            set
+            {
+                _vk = value;
+                OnPropertyChanged("vk");
+            }
+        }
+
+        private bool _instagram;
+        public bool instagram
+        {
+            get => _instagram;
+            set
+            {
+                _instagram = value;
+                OnPropertyChanged("instagram");
+            }
+        }
+
+
         private List<Model.Users> _users;
         public List<Model.Users> users
         {
@@ -210,6 +244,10 @@ namespace ArmyClient.ViewModel.Main
             SelectedType = new SocialNetworkType();
             MySocNetTypes = new ObservableCollection<SocialNetworkUser>();
             user = new Model.Users();
+            user.IsMonitoring = false;
+            vk = true;
+            instagram = true;
+            facebook = true;
 
 
             // Загружаем данные с БД
@@ -220,7 +258,7 @@ namespace ArmyClient.ViewModel.Main
 
         private async void LoadUsers()
         {
-            users = await logic.userLogic.GetUsersAsync(user);
+            users = await logic.userLogic.GetUsersAsync(user, vk, instagram, facebook);
         }
 
 
