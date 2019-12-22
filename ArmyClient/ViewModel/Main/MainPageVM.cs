@@ -13,6 +13,18 @@ namespace ArmyClient.ViewModel.Main
     {
         #region Свойства        
 
+
+        private Model.Users _SelectedUser;
+        public Model.Users SelectedUser
+        {
+            get => _SelectedUser;
+            set
+            {
+                _SelectedUser = value;
+                OnPropertyChanged("SelectedUser");
+            }
+        }
+
         private bool _facebook;
         public bool facebook
         {

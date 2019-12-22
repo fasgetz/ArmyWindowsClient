@@ -24,6 +24,7 @@ namespace ArmyClient.Model
         public string GetCountryCity
         {
             get => $"{Countries1.Name}, {CurrentCityResience}";
+ 
         }
 
         // Получить причастность к ВЧ

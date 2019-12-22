@@ -168,7 +168,7 @@
                     <Label Grid.Column="1" FontSize="22" Content="Список пользователей"/>
                     <Button Command="{Binding GoToAddUserPage}" Grid.Column="2" Content="+" FontSize="18" VerticalContentAlignment="Top"/>
                 </Grid>
-                <DataGrid ItemsSource="{Binding users}" Background="White" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid SelectedItem="{Binding SelectedUser}" ItemsSource="{Binding users}" Background="White" AutoGenerateColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="5*" Header="ФИО" Binding="{Binding GetFIO}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                         <DataGridTextColumn Width="4*" Header="Страна, город" Binding="{Binding GetCountryCity}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
