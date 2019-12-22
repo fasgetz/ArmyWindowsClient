@@ -5,11 +5,38 @@ namespace ArmyClient.Model
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Linq;
 
     public partial class Users
     {
 
-        #region
+        #region Дополнительные свойства
+
+        // Получить количество нарушений
+        public int GetCrimesCount
+        {
+            get
+            {
+                return UserCrimes.Where(i => i.IsCrime == true).Count();
+            }
+        }
+
+        public string GetCountryCity
+        {
+            get => $"{Countries1.Name}, {CurrentCityResience}";
+        }
+
+        // Получить причастность к ВЧ
+        public string GetUS
+        {
+            get
+            {
+                if (UserSoldierService == null)
+                    return "Нет";
+
+                return "Да";
+            }
+        }
 
         // Получить ФИО
         public string GetFIO

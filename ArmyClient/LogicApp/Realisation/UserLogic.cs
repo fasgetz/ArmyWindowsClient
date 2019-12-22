@@ -94,7 +94,7 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 using (db = provider.GetProvider())
                 {
-                    var users = from vm in db.Users
+                    var users = from vm in db.Users.Include("UserSoldierService").Include("UserCrimes").Include("Countries1")
                                 where
                                   (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
                                   (!(string.IsNullOrEmpty(user.Family)) ? vm.Family.Contains(user.Family) : (string.IsNullOrEmpty(vm.Family) || !string.IsNullOrEmpty(vm.Family))) &&
@@ -109,13 +109,18 @@ namespace ArmyClient.LogicApp.Realisation
                                   ((user.SocialStatusID != null) ? vm.SocialStatusID == user.SocialStatusID : vm.SocialStatusID != 0) &&
                                   (!(string.IsNullOrEmpty(user.email)) ? vm.email.Contains(user.email) : (string.IsNullOrEmpty(vm.email) || !string.IsNullOrEmpty(vm.email))) &&
                                   (!(string.IsNullOrEmpty(user.phone)) ? vm.phone.Contains(user.phone) : (string.IsNullOrEmpty(vm.phone) || !string.IsNullOrEmpty(vm.phone))) &&
-                                  (user.IsMonitoring == true ? vm.IsMonitoring == true : vm.IsMonitoring == false) &&
+                                  (user.IsMonitoring == false ? (vm.IsMonitoring == true || vm.IsMonitoring == false) : vm.IsMonitoring == true) &&
                                   // Тут самое сложное. По социальным сетям вывести если стоят галочки
                                   (((vk == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 1).SocialNetworkId == 1 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
                                   ((instagram == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 3).SocialNetworkId == 3 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
                                   ((facebook == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 2).SocialNetworkId == 2 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0))
 
                                 select vm;
+                    
+                    
+                    //var a = users;
+   
+                    //users.FirstOrDefault().Countries1.Name;
 
                     return users.ToList();
                 }
