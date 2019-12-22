@@ -10,11 +10,12 @@ namespace ArmyClient.LogicApp.Realisation
 {
     class SocStatusesLogic : ISocStatusesLogic
     {
-        private ArmyDBContext db;
+        LogicProviderDB provider;
+        ArmyDBContext db;
 
-        public SocStatusesLogic(ArmyDBContext db)
+        public SocStatusesLogic(LogicProviderDB provider)
         {
-            this.db = db;
+            this.provider = provider;
         }
 
 
@@ -24,7 +25,10 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 try
                 {
-                    return db.SocialStatuses.ToList();
+                    using (db = provider.GetProvider())
+                    {
+                        return db.SocialStatuses.ToList();
+                    }
                 }
                 catch (Exception)
                 {

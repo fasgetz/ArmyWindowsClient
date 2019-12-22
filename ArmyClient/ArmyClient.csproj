@@ -103,6 +103,7 @@
     <Compile Include="LogicApp\Interfaces\IUsersLogic.cs" />
     <Compile Include="LogicApp\Realisation\CountriesLogic.cs" />
     <Compile Include="LogicApp\Realisation\LogicApp.cs" />
+    <Compile Include="LogicApp\Realisation\LogicProviderDB.cs" />
     <Compile Include="LogicApp\Realisation\SocialNetworksLogic.cs" />
     <Compile Include="LogicApp\Realisation\SocStatusesLogic.cs" />
     <Compile Include="LogicApp\Realisation\SoldierUnitsLogic.cs" />

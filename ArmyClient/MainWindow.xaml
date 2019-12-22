@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArmyClient"
         mc:Ignorable="d"
-        Title="Главное окно" Height="550" Width="800" MinWidth="800" MinHeight="450" WindowStartupLocation="CenterScreen">
+        Title="Главное окно" Height="768" Width="1024" MinWidth="1024" MinHeight="768" WindowStartupLocation="CenterScreen">
     <Grid>
         <Frame NavigationUIVisibility="Hidden" x:Name="myframe"/>
     </Grid>

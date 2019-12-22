@@ -55,8 +55,8 @@
                 <ComboBox SelectedItem="{Binding SelectedCountryUS}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" md:HintAssist.Hint="Страна проживания" />
                 <TextBox Text="{Binding user.CurrentCityResience}" md:HintAssist.Hint="Город проживания"/>
                 <TextBox Text="{Binding user.AddressResidence}" md:HintAssist.Hint="Адрес"/>
-                <ComboBox md:HintAssist.Hint="Социальный статус" ItemsSource="{Binding SocStatuses}" DisplayMemberPath="Name" />
-                <ComboBox ItemsSource="{Binding SoldierUnits}" DisplayMemberPath="GetSU" md:HintAssist.Hint="Воинская часть" />
+                <ComboBox md:HintAssist.Hint="Социальный статус" ItemsSource="{Binding SocStatuses}" SelectedItem="{Binding SelectedSocStatus}" DisplayMemberPath="Name" />
+                <!--<ComboBox ItemsSource="{Binding SoldierUnits}" DisplayMemberPath="GetSU" md:HintAssist.Hint="Воинская часть" />-->
                 <TextBox Text="{Binding user.email}" md:HintAssist.Hint="Email"/>
                 <TextBox Text="{Binding user.phone}" md:HintAssist.Hint="Телефон"/>
                 <StackPanel Height="40" Margin="25 0">

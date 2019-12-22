@@ -10,11 +10,12 @@ namespace ArmyClient.LogicApp.Realisation
 {
     class SocialNetworksLogic : ISocialNetworksLogic
     {
-        private ArmyDBContext db;
+        LogicProviderDB provider;
+        ArmyDBContext db;
 
-        public SocialNetworksLogic(ArmyDBContext db)
+        public SocialNetworksLogic(LogicProviderDB provider)
         {
-            this.db = db;
+            this.provider = provider;
         }
 
 
@@ -24,7 +25,11 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 try
                 {
-                    return db.SocialNetworkType.ToList();
+                    using (db = db = provider.GetProvider())
+                    {
+                        return db.SocialNetworkType.ToList();
+                    }
+                        
                 }
                 catch (Exception)
                 {

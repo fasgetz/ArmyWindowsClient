@@ -10,11 +10,12 @@ namespace ArmyClient.LogicApp.Realisation
 {
     internal class SoldierUnitsLogic : ISoldierUnitsLogic
     {
-        private ArmyDBContext db;
+        LogicProviderDB provider;
+        ArmyDBContext db;
 
-        public SoldierUnitsLogic(ArmyDBContext db)
+        public SoldierUnitsLogic(LogicProviderDB provider)
         {
-            this.db = db;
+            this.provider = provider;
         }
 
         /// <summary>
@@ -28,10 +29,16 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 try
                 {
-                    if (IdCountry == 0)
-                        return db.SoldierUnit.ToList();
+                    using (db = provider.GetProvider())
+                    {
+                        if (IdCountry == 0)
+                            return db.SoldierUnit.ToList();
 
-                    return db.SoldierUnit.Where(i => i.IdCountry == IdCountry).ToList(); // Возвращаем по айди страны
+                        return db.SoldierUnit.Where(i => i.IdCountry == IdCountry).ToList(); // Возвращаем по айди страны
+                    }
+                        
+
+
                 }
                 catch (Exception)
                 {

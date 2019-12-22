@@ -10,10 +10,12 @@ namespace ArmyClient.LogicApp.Realisation
 {
     class CountriesLogic : ICountriesLogic
     {
-        private ArmyDBContext db;
-        public CountriesLogic(ArmyDBContext db)
+        LogicProviderDB provider;
+        ArmyDBContext db;
+
+        public CountriesLogic(LogicProviderDB provider)
         {
-            this.db = db;
+            this.provider = provider;                        
         }
 
         /// <summary>
@@ -26,7 +28,10 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 try
                 {
-                    return db.Countries.ToList();
+                    using (db = provider.GetProvider())
+                    {
+                        return db.Countries.ToList();
+                    }
                 }
                 catch (Exception)
                 {

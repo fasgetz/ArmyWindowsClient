@@ -15,11 +15,12 @@ namespace ArmyClient.LogicApp.Realisation
     internal class UserLogic : IUsersLogic
     {
 
-        private ArmyDBContext db;
+        LogicProviderDB provider;
+        ArmyDBContext db;
 
-        public UserLogic(ArmyDBContext db)
+        public UserLogic(LogicProviderDB provider)
         {
-            this.db = db;
+            this.provider = provider;
         }
 
         #region Синхронные версии методов
@@ -33,10 +34,13 @@ namespace ArmyClient.LogicApp.Realisation
         {
             try
             {
-                db.Users.Add(user);
-                db.SaveChanges();
+                using (db = provider.GetProvider())
+                {
+                    db.Users.Add(user);
+                    db.SaveChanges();
 
-                return true;
+                    return true;
+                }
             }
             catch (Exception)
             {
@@ -61,10 +65,13 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 try
                 {
-                    db.Users.Add(user);
-                    db.SaveChanges();
+                    using (db = provider.GetProvider())
+                    {
+                        db.Users.Add(user);
+                        db.SaveChanges();
 
-                    return true;
+                        return true;
+                    }
                 }
                 catch (Exception)
                 {
@@ -85,23 +92,33 @@ namespace ArmyClient.LogicApp.Realisation
              
             return await Task.Run(() =>
             {
-                var users = from vm in db.Users
-                            where
-                              (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
-                              (!(string.IsNullOrEmpty(user.Family)) ? vm.Family.Contains(user.Family) : (string.IsNullOrEmpty(vm.Family) || !string.IsNullOrEmpty(vm.Family))) &&
-                              (!(string.IsNullOrEmpty(user.Surname)) ? vm.Surname.Contains(user.Surname) : (string.IsNullOrEmpty(vm.Surname) || !string.IsNullOrEmpty(vm.Surname))) &&
-                              ((user.DateBirth != null) ? vm.DateBirth == user.DateBirth : (vm.DateBirth >= new DateTime() || vm.DateBirth == null)) &&
-                              ((user.IdCountryBirth != null) ? vm.IdCountryBirth == user.IdCountryBirth : vm.IdCountryBirth != 0) &&
-                              (!(string.IsNullOrEmpty(user.CityBirth)) ? vm.CityBirth.Contains(user.CityBirth) : (string.IsNullOrEmpty(vm.CityBirth) || !string.IsNullOrEmpty(vm.CityBirth))) &&
+                using (db = provider.GetProvider())
+                {
+                    var users = from vm in db.Users
+                                where
+                                  (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
+                                  (!(string.IsNullOrEmpty(user.Family)) ? vm.Family.Contains(user.Family) : (string.IsNullOrEmpty(vm.Family) || !string.IsNullOrEmpty(vm.Family))) &&
+                                  (!(string.IsNullOrEmpty(user.Surname)) ? vm.Surname.Contains(user.Surname) : (string.IsNullOrEmpty(vm.Surname) || !string.IsNullOrEmpty(vm.Surname))) &&
+                                  ((user.DateBirth != null) ? vm.DateBirth == user.DateBirth : (vm.DateBirth >= new DateTime() || vm.DateBirth == null)) &&
+                                  ((user.IdCountryBirth != null) ? vm.IdCountryBirth == user.IdCountryBirth : vm.IdCountryBirth != 0) &&
+                                  (!(string.IsNullOrEmpty(user.CityBirth)) ? vm.CityBirth.Contains(user.CityBirth) : (string.IsNullOrEmpty(vm.CityBirth) || !string.IsNullOrEmpty(vm.CityBirth))) &&
+                                  ((user.IdCurrentCountryResidence != null) ? vm.IdCurrentCountryResidence == user.IdCurrentCountryResidence : vm.IdCurrentCountryResidence != 0) &&
+                                  (!(string.IsNullOrEmpty(user.CurrentCityResience)) ? vm.CurrentCityResience.Contains(user.CurrentCityResience) : (string.IsNullOrEmpty(vm.CurrentCityResience) || !string.IsNullOrEmpty(vm.CurrentCityResience))) &&
+                                  (!(string.IsNullOrEmpty(user.AddressResidence)) ? vm.AddressResidence.Contains(user.AddressResidence) : (string.IsNullOrEmpty(vm.AddressResidence) || !string.IsNullOrEmpty(vm.AddressResidence))) &&
+                                  // Ищем по социальному статусу
+                                  ((user.SocialStatusID != null) ? vm.SocialStatusID == user.SocialStatusID : vm.SocialStatusID != 0) &&
+                                  (!(string.IsNullOrEmpty(user.email)) ? vm.email.Contains(user.email) : (string.IsNullOrEmpty(vm.email) || !string.IsNullOrEmpty(vm.email))) &&
+                                  (!(string.IsNullOrEmpty(user.phone)) ? vm.phone.Contains(user.phone) : (string.IsNullOrEmpty(vm.phone) || !string.IsNullOrEmpty(vm.phone))) &&
+                                  (user.IsMonitoring == true ? vm.IsMonitoring == true : vm.IsMonitoring == false) &&
+                                  // Тут самое сложное. По социальным сетям вывести если стоят галочки
+                                  (((vk == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 1).SocialNetworkId == 1 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
+                                  ((instagram == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 3).SocialNetworkId == 3 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
+                                  ((facebook == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 2).SocialNetworkId == 2 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0))
 
-                              // Тут самое сложное. По социальным сетям вывести если стоят галочки
-                              (((vk == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 1).SocialNetworkId == 1 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
-                              ((instagram == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 3).SocialNetworkId == 3 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
-                              ((facebook == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 2).SocialNetworkId == 2 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0))
-                              
-                            select vm;
+                                select vm;
 
-                return users.ToList();
+                    return users.ToList();
+                }
 
             });
         }

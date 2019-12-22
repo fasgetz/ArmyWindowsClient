@@ -20,12 +20,15 @@ namespace ArmyClient.LogicApp.Realisation
         {
             ArmyDBContext db = new ArmyDB();
 
+            // Провайдер базы данных
+            var provider = new LogicProviderDB(LogicProviderDB.databases.mssql);
 
-            socialNetworksLogic = new SocialNetworksLogic(db);
-            userLogic = new UserLogic(db);
-            CountriesLogic = new CountriesLogic(db);
-            SoldierUnitLogic = new SoldierUnitsLogic(db);
-            SocStatusesLogic = new SocStatusesLogic(db);
+
+            socialNetworksLogic = new SocialNetworksLogic(provider);
+            userLogic = new UserLogic(provider);
+            CountriesLogic = new CountriesLogic(provider);
+            SoldierUnitLogic = new SoldierUnitsLogic(provider);
+            SocStatusesLogic = new SocStatusesLogic(provider);
         }
     }
 }
