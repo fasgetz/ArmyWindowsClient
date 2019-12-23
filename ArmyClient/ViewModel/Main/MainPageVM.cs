@@ -123,10 +123,13 @@ namespace ArmyClient.ViewModel.Main
         }
 
         // Выбранная страна рождения
-        private Countries _SelectedCountryBirth;
+        private Countries _SelectedCountryBirth = new Model.Countries();
         public Countries SelectedCountryBirth
         {
-            get => _SelectedCountryBirth;
+            get
+            {
+                return _SelectedCountryBirth;
+            }
             set
             {
                 _SelectedCountryBirth = value;
@@ -224,6 +227,19 @@ namespace ArmyClient.ViewModel.Main
         #region Команды
 
         // Команда по переходу на страницу добавить пользователя
+
+        public DelegateCommand GoToAboutUserPage
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (SelectedUser != null)
+                        MyNavigation.GoToAboutUser(SelectedUser.Id);
+                });
+            }
+        }
+
         public DelegateCommand GoToAddUserPage
         {
             get
@@ -257,13 +273,27 @@ namespace ArmyClient.ViewModel.Main
             MySocNetTypes = new ObservableCollection<SocialNetworkUser>();
             user = new Model.Users();
             user.IsMonitoring = false;
-            vk = true;
-            instagram = true;
-            facebook = true;
-
 
             // Загружаем данные с БД
             LoadData();
+        }
+
+        public MainPageVM(bool WatchMod)
+            :this()
+        {
+            vk = true;
+            instagram = true;
+            facebook = true;
+        }
+
+        /// <summary>
+        /// Конструктор, который прогружает одного юзера
+        /// </summary>
+        /// <param name="UserID"></param>
+        public MainPageVM(int UserID)
+            :this()
+        {
+
         }
 
         #region Вспомогательные методы 

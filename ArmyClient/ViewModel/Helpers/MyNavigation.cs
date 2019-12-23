@@ -21,5 +21,10 @@ namespace ArmyClient.ViewModel.Helpers
         {
             navigation.Navigate(new AddUserPage());
         }
+
+        public static void GoToAboutUser(int UserID)
+        {
+            navigation.Navigate(new AboutUserPage(UserID));
+        }
     }
 }

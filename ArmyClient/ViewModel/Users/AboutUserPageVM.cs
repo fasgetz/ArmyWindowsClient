@@ -1,24 +1,18 @@
-﻿using ArmyClient.LogicApp;
-using ArmyClient.LogicApp.Helps;
-using ArmyClient.LogicApp.Realisation;
+﻿using ArmyClient.LogicApp.Helps;
 using ArmyClient.Model;
 using ArmyClient.ViewModel.Helpers;
 using ArmyClient.ViewModel.Main;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace ArmyClient.ViewModel.Users
 {
-    class AddUserPageVM : MainPageVM
+    class AboutUserPageVM : MainPageVM
     {
-
         #region Секция команд
 
         // Команда по добавлению соц. сети пользователю
@@ -39,18 +33,6 @@ namespace ArmyClient.ViewModel.Users
             }
         }
 
-        // Команда по добавлению пользователя в БД
-        public DelegateCommand AddUser
-        {
-            get
-            {
-                return new DelegateCommand(obj =>
-                {
-                    // Добавляем юзера
-                    AddUserDB();                    
-                });
-            }
-        }
 
 
         // Команда вернуться назад
@@ -91,10 +73,19 @@ namespace ArmyClient.ViewModel.Users
 
         #region Вспомогательные методы
 
+
+
+        private async void GetUser(int UserID)
+        {
+            user = await logic.userLogic.GetUserAsync(UserID);
+
+            MySocNetTypes = new System.Collections.ObjectModel.ObservableCollection<SocialNetworkUser>(user.SocialNetworkUser);
+        }
+
         /// <summary>
-        /// Метод добавления юзера в БД
+        /// Метод сохранения юзера
         /// </summary>
-        private async void AddUserDB()
+        private async void SaveUserOnDB()
         {
             user.DateOfEntry = DateTime.Now;
             bool added = await logic.userLogic.AddUserAsync(user);
@@ -107,9 +98,14 @@ namespace ArmyClient.ViewModel.Users
 
         #endregion
 
-        public AddUserPageVM(bool AddMod)
+        /// <summary>
+        /// Конструктор, который прогружает информацию о юзере по айди
+        /// </summary>
+        /// <param name="UserID">Айди юзера</param>
+        public AboutUserPageVM(int UserID)
+            :base(UserID)
         {
-
+            GetUser(UserID);
         }
 
     }

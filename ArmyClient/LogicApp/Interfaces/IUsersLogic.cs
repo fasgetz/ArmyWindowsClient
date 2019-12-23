@@ -40,6 +40,13 @@ namespace ArmyClient.LogicApp.Interfaces
         /// <returns>Возвращает пользователей</returns>
         Task<List<Users>> GetUsersAsync(Users user, bool vk = false, bool instagram = false, bool facebook = false);
 
+
+        /// <summary>
+        /// Получить пользователя по айди
+        /// </summary>
+        /// <param name="UserID">Айди Пользователя</param>
+        /// <returns>Возвращает данные о пользователе</returns>
+        Task<Users> GetUserAsync(int UserID);
         #region Асинхронные версии методов
 
 

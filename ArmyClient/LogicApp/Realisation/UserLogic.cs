@@ -126,6 +126,7 @@ namespace ArmyClient.LogicApp.Realisation
                                                    UserSoldierService = vm.UserSoldierService,
                                                    UserCrimes = vm.UserCrimes
                                                }).ToList()
+                                 // Выбираем столбцы, которые будут отображаться в таблице
                                  select new Users()
                                  {
                                      Id = item.Id,
@@ -145,6 +146,21 @@ namespace ArmyClient.LogicApp.Realisation
             });
         }
 
+        /// <summary>
+        /// Получить пользователя по айди
+        /// </summary>
+        /// <param name="UserID">Айди Пользователя</param>
+        /// <returns>Возвращает данные о пользователе</returns>
+        public async Task<Users> GetUserAsync(int UserID)
+        {
+
+
+            return await Task.Run(() =>
+            {
+                using (db = provider.GetProvider())
+                    return db.Users.Include("Countries").Include("Countries1").Include("SocialNetworkUser.SocialNetworkType").FirstOrDefault(i => i.Id == UserID);
+            });
+        }
 
         #endregion
 

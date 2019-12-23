@@ -27,7 +27,7 @@ namespace ArmyClient.View.Users
         {
             InitializeComponent();
             
-            vm = new AddUserPageVM();
+            vm = new AddUserPageVM(true);
             DataContext = vm;
         }
 

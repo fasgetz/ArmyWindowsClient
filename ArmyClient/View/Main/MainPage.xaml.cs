@@ -27,7 +27,7 @@ namespace ArmyClient.View.Main
         {
             InitializeComponent();
 
-            this.DataContext = new MainPageVM();
+            this.DataContext = new MainPageVM(true);
         }
 
     }
