@@ -66,7 +66,7 @@
                         <Button Grid.Column="2" Content="+" Command="{Binding AddSocNetType}"/>
                     </Grid>
 
-                    <ListView x:Name="lv" ItemsSource="{Binding MySocNetTypes}" DisplayMemberPath="GetSocialName" />
+                    <ListView ItemsSource="{Binding MySocNetTypes}" DisplayMemberPath="GetSocialName" />
                 </DockPanel>
             </Grid>
 
@@ -172,16 +172,25 @@
                             <ComboBox ItemsSource="{Binding SocStatuses}" Grid.Column="1" Margin="50 0" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSocStatus}"/>
                         </Grid>
                     </StackPanel>
-                    <StackPanel>
+                    <DockPanel Height="200">
                         <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="8*" />
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="14*"/>
+                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Content="Воинская часть"/>
-                            <ComboBox Grid.Column="1" Margin="50 0" ItemsSource="{Binding SoldierUnits}" DisplayMemberPath="GetSU"/>
+                            <Label VerticalAlignment="Center" Grid.Row="0" Content="Воинская часть"/>
+                            <ComboBox Grid.Row="0" Grid.Column="1" Margin="70 0 0 0" ItemsSource="{Binding SoldierUnits}" SelectedItem="{Binding SelectedSoldierUnit}" DisplayMemberPath="GetSU"/>
+                            <Button Command="{Binding AddSoldierService}" Grid.Column="2" Content="+" Margin="5" VerticalAlignment="Center"/>
+                            <DockPanel Margin="50 0" Grid.Row="1"  Grid.ColumnSpan="3">
+                                <ListView ItemsSource="{Binding UserSoldierServices, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="SoldierUnit.GetSU" />
+                            </DockPanel>
                         </Grid>
-                    </StackPanel>
+                    </DockPanel>
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>

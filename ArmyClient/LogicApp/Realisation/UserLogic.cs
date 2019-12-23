@@ -158,7 +158,7 @@ namespace ArmyClient.LogicApp.Realisation
             return await Task.Run(() =>
             {
                 using (db = provider.GetProvider())
-                    return db.Users.Include("Countries").Include("Countries1").Include("SocialNetworkUser.SocialNetworkType").FirstOrDefault(i => i.Id == UserID);
+                    return db.Users.Include("Countries").Include("Countries1").Include("SocialStatuses").Include("UserSoldierService.SoldierUnit").Include("SocialNetworkUser.SocialNetworkType").FirstOrDefault(i => i.Id == UserID);
             });
         }
 

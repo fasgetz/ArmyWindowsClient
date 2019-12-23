@@ -12,6 +12,18 @@ namespace ArmyClient.Model
 
         #region Дополнительные свойства
 
+
+        public string GetFirstUS
+        {
+            get
+            {
+                if (UserSoldierService == null | UserSoldierService.Count == 0)
+                    return "Нет сведений";
+
+                return UserSoldierService.FirstOrDefault().SoldierUnit.Name;
+            }
+        }
+
         // Получить количество нарушений
         public int GetCrimesCount
         {

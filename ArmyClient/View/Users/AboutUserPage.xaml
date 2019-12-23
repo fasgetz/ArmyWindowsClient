@@ -170,7 +170,7 @@
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Label Content="Социальный статус"/>
-                            <ComboBox ItemsSource="{Binding SocStatuses}" Grid.Column="1" Margin="50 0" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSocStatus}"/>
+                            <ComboBox ItemsSource="{Binding SocStatuses}" md:HintAssist.Hint="{Binding user.SocialStatuses.Name}" Grid.Column="1" Margin="50 0" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSocStatus}"/>
                         </Grid>
                     </StackPanel>
                     <StackPanel>
@@ -180,7 +180,7 @@
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Label Content="Воинская часть"/>
-                            <ComboBox Grid.Column="1" Margin="50 0" ItemsSource="{Binding SoldierUnits}" DisplayMemberPath="GetSU"/>
+                            <ComboBox Grid.Column="1" Margin="50 0" ItemsSource="{Binding SoldierUnits}" md:HintAssist.Hint="{Binding user.GetFirstUS}" DisplayMemberPath="GetSU"/>
                         </Grid>
                     </StackPanel>
                     <StackPanel>

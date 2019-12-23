@@ -80,6 +80,7 @@ namespace ArmyClient.ViewModel.Users
             user = await logic.userLogic.GetUserAsync(UserID);
 
             MySocNetTypes = new System.Collections.ObjectModel.ObservableCollection<SocialNetworkUser>(user.SocialNetworkUser);
+            //Soldi = new System.Collections.ObjectModel.ObservableCollection<SoldierUnit>(user.UserSoldierService)
         }
 
         /// <summary>

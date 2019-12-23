@@ -13,6 +13,17 @@ namespace ArmyClient.ViewModel.Main
     {
         #region Свойства        
 
+        private ObservableCollection<Model.UserSoldierService> _UserSoldierServices;
+        public ObservableCollection<Model.UserSoldierService> UserSoldierServices
+        {
+            get => _UserSoldierServices;
+            set
+            {
+                _UserSoldierServices = value;
+                OnPropertyChanged("UserSoldierServices");
+            }
+        }
+
 
         private Model.Users _SelectedUser;
         public Model.Users SelectedUser
@@ -222,9 +233,44 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
+        private SoldierUnit _SelectedSoldierUnit;
+        public SoldierUnit SelectedSoldierUnit
+        {
+            get => _SelectedSoldierUnit;
+            set
+            {
+                _SelectedSoldierUnit = value;
+                OnPropertyChanged("SelectedSoldierUnit");
+            }
+        }
+
         #endregion
 
         #region Команды
+
+        // Команда добавления службы пользователю
+        public DelegateCommand AddSoldierService
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (SelectedSoldierUnit != null)
+                    {
+                        UserSoldierService service = new UserSoldierService();
+                        service.IdSoldierUnit = SelectedSoldierUnit.Id;
+                        service.IdUser = user.Id;
+                        service.SoldierUnit = SelectedSoldierUnit;
+
+                        UserSoldierServices.Add(service);
+                        SoldierUnits.Remove(SoldierUnits.Where(i => i.Id == service.IdSoldierUnit).FirstOrDefault());
+
+                        SelectedSoldierUnit = null;
+                    }
+                });
+            }
+        }
+
 
         // Команда по переходу на страницу добавить пользователя
 
@@ -273,6 +319,7 @@ namespace ArmyClient.ViewModel.Main
             MySocNetTypes = new ObservableCollection<SocialNetworkUser>();
             user = new Model.Users();
             user.IsMonitoring = false;
+            UserSoldierServices = new ObservableCollection<UserSoldierService>();
 
             // Загружаем данные с БД
             LoadData();
