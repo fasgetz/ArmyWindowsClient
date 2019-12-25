@@ -13,8 +13,8 @@ namespace ArmyClient.ViewModel.Main
     {
         #region Свойства        
 
-        private ObservableCollection<Model.UserSoldierService> _UserSoldierServices;
-        public ObservableCollection<Model.UserSoldierService> UserSoldierServices
+        private ObservableCollection<Model.SoldierUnit> _UserSoldierServices;
+        public ObservableCollection<Model.SoldierUnit> UserSoldierServices
         {
             get => _UserSoldierServices;
             set
@@ -150,7 +150,7 @@ namespace ArmyClient.ViewModel.Main
 
                 user.City1.CountryId = value.Id;
                 //user.City = value;
-                //loadunits(value.Id);
+                
                 OnPropertyChanged("SelectedCountryUS");
             }
         }
@@ -165,9 +165,20 @@ namespace ArmyClient.ViewModel.Main
                 _SelectedCityResidence = value;
 
                 if (value != null)
+                {                    
                     user.CurrentCityResience_Id = value.Id;
+
+                    // Загружаем В/Ч города
+                    loadunits(value.Id);
+
+                    //SoldierUnits = new ObservableCollection<SoldierUnit>();
+                    //SoldierUnits.Add(new SoldierUnit() { Name = "В/Ч 49289" });
+                }
+                    
                 else
                     user.CurrentCityResience_Id = null;
+
+
                 OnPropertyChanged("SelectedCityResidence");
             }
         }
@@ -335,13 +346,17 @@ namespace ArmyClient.ViewModel.Main
                 {
                     if (SelectedSoldierUnit != null)
                     {
-                        UserSoldierService service = new UserSoldierService();
-                        service.IdSoldierUnit = SelectedSoldierUnit.Id;
-                        service.IdUser = user.Id;
-                        service.SoldierUnit = SelectedSoldierUnit;
+                        UserSoldierService service = new UserSoldierService()
+                        {
+                            IdSoldierUnit = SelectedSoldierUnit.Id,
+                            IdUser = user.Id
+                        };
+                        //service.IdSoldierUnit = SelectedSoldierUnit.Id;
+                        //service.IdUser = user.Id;
+                        //service.SoldierUnit = SelectedSoldierUnit;
 
                         user.UserSoldierService.Add(service);
-                        UserSoldierServices.Add(service);
+                        UserSoldierServices.Add(SoldierUnits.Where(i => i.Id == service.IdSoldierUnit).FirstOrDefault());
                         SoldierUnits.Remove(SoldierUnits.Where(i => i.Id == service.IdSoldierUnit).FirstOrDefault());
 
                         SelectedSoldierUnit = null;
@@ -398,7 +413,7 @@ namespace ArmyClient.ViewModel.Main
             MySocNetTypes = new ObservableCollection<SocialNetworkUser>();
             user = new Model.Users() { City1 = new City(), City = new City() };
             user.IsMonitoring = false;
-            UserSoldierServices = new ObservableCollection<UserSoldierService>();
+            UserSoldierServices = new ObservableCollection<SoldierUnit>();
 
             // Загружаем данные с БД
             LoadData();
@@ -451,7 +466,7 @@ namespace ArmyClient.ViewModel.Main
         }
 
         // Метод для загрузки В/Ч
-        private async void loadunits(int id)
+        protected async void loadunits(int id)
         {
             SoldierUnits = new ObservableCollection<SoldierUnit>(await logic.SoldierUnitLogic.GetSoldierUnitsAsync(id));
         }

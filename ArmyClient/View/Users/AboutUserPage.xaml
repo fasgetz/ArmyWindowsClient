@@ -10,9 +10,11 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AboutUserPage">
     <Page.Resources>
-        <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="ComboBox">
+        <Style BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}" TargetType="ComboBox">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="10 0 0 5"/>
+            <Setter Property="Margin" Value="50 0"/>
+            <Setter Property="Grid.Column" Value="1"/>
         </Style>
         <Style BasedOn="{StaticResource MaterialDesignLabel}"
            TargetType="{x:Type Label}">
@@ -120,7 +122,7 @@
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Label  Content="Родная страна"/>
-                            <ComboBox Margin="50 0" Grid.Column="1" SelectedItem="{Binding SelectedCountryBirth}" md:HintAssist.Hint="{Binding user.Countries.Name}" ItemsSource="{Binding Countries}"  DisplayMemberPath="Name" />
+                            <ComboBox Margin="50 0" Grid.Column="1" SelectedItem="{Binding SelectedCountryBirth}" md:HintAssist.Hint="{Binding user.City.Countries.Name}" ItemsSource="{Binding Countries}"  DisplayMemberPath="Name" />
                         </Grid>
                     </StackPanel>
                     <StackPanel>
@@ -130,7 +132,7 @@
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Label Content="Родной город"/>
-                            <TextBox Text="{Binding user.CityBirth}" />
+                            <ComboBox ItemsSource="{Binding CitiesBirthCountry}" md:HintAssist.Hint="{Binding user.City.Name}" SelectedItem="{Binding SelectedCityBirth}"  DisplayMemberPath="Name"  />
                         </Grid>
                     </StackPanel>
                     <StackPanel>
@@ -140,7 +142,7 @@
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Label  Content="Страна проживания"/>
-                            <ComboBox SelectedItem="{Binding SelectedCountryUS}" Margin="50 0" Grid.Column="1" md:HintAssist.Hint="{Binding user.Countries1.Name}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" />
+                            <ComboBox SelectedItem="{Binding SelectedCountryUS}" md:HintAssist.Hint="{Binding user.City1.Countries.Name}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" />
                         </Grid>
                     </StackPanel>
                     <StackPanel>
@@ -150,7 +152,7 @@
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Label  Content="Город проживания"/>
-                            <TextBox Text="{Binding user.CurrentCityResience}" />
+                            <ComboBox md:HintAssist.Hint="{Binding user.City1.Name}" ItemsSource="{Binding CitiesResidence}" SelectedItem="{Binding SelectedCityResidence}"  DisplayMemberPath="Name" />
                         </Grid>
                     </StackPanel>
                     <StackPanel>

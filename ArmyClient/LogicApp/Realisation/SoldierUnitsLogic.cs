@@ -34,7 +34,7 @@ namespace ArmyClient.LogicApp.Realisation
                         if (IdCountry == 0)
                             return db.SoldierUnit.ToList();
 
-                        return db.SoldierUnit.Where(i => i.City.Id == IdCountry).ToList(); // Возвращаем по айди страны
+                        return db.SoldierUnit.Where(i => i.IdCity == IdCountry).ToList(); // Возвращаем по айди города
                     }
                         
 
