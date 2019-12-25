@@ -140,6 +140,9 @@
     <Compile Include="View\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SoldierUnits\AddSoldierUnitPage.xaml.cs">
+      <DependentUpon>AddSoldierUnitPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Users\AboutUserPage.xaml.cs">
       <DependentUpon>AboutUserPage.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\Main\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SoldierUnits\AddSoldierUnitPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -216,7 +223,9 @@
   <ItemGroup>
     <Resource Include="Images\Logo_SocialNetworks\MyWorld_logo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModel\SoldierUnits\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
