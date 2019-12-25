@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 
 namespace ArmyClient.LogicApp.Realisation
 {
-    internal class SoldierUnitsLogic : ISoldierUnitsLogic
+    class CitiesLogic : ICitiesLogic
     {
         LogicProviderDB provider;
         ArmyDBContext db;
 
-        public SoldierUnitsLogic(LogicProviderDB provider)
+        public CitiesLogic(LogicProviderDB provider)
         {
             this.provider = provider;
         }
 
+
         /// <summary>
-        /// Получить список В/Ч по стране
+        /// Получить список городов страны
         /// </summary>
-        /// <param name="IdCountry">Айди города</param>
-        /// <returns>Возвращает список В/Ч</returns>
-        public async Task<List<SoldierUnit>> GetSoldierUnitsAsync(int IdCountry)
+        /// <returns>Возвращает список городов страны</returns>
+        public async Task<List<City>> GetCities(byte idCountry)
         {
             return await Task.Run(() =>
             {
@@ -31,14 +31,8 @@ namespace ArmyClient.LogicApp.Realisation
                 {
                     using (db = provider.GetProvider())
                     {
-                        if (IdCountry == 0)
-                            return db.SoldierUnit.ToList();
-
-                        return db.SoldierUnit.Where(i => i.City.Id == IdCountry).ToList(); // Возвращаем по айди страны
+                        return db.City.Where(i => i.CountryId == idCountry).ToList();
                     }
-                        
-
-
                 }
                 catch (Exception)
                 {
@@ -46,9 +40,5 @@ namespace ArmyClient.LogicApp.Realisation
                 }
             });
         }
-
-
-
-
     }
 }

@@ -10,6 +10,7 @@ namespace ArmyClient.LogicApp.Realisation
 {
     internal class LogicApp
     {
+        internal ICitiesLogic citiesLogic;
         internal IUsersLogic userLogic;
         internal ISocialNetworksLogic socialNetworksLogic;
         internal ISoldierUnitsLogic SoldierUnitLogic;
@@ -29,6 +30,7 @@ namespace ArmyClient.LogicApp.Realisation
             CountriesLogic = new CountriesLogic(provider);
             SoldierUnitLogic = new SoldierUnitsLogic(provider);
             SocStatusesLogic = new SocStatusesLogic(provider);
+            citiesLogic = new CitiesLogic(provider);
         }
     }
 }

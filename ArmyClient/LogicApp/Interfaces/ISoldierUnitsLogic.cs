@@ -17,7 +17,7 @@ namespace ArmyClient.LogicApp.Interfaces
         /// </summary>
         /// <param name="IdCountry">Айди страны</param>
         /// <returns>Возвращает список В/Ч</returns>
-        Task<List<SoldierUnit>> GetSoldierUnitsAsync(byte IdCountry);
+        Task<List<SoldierUnit>> GetSoldierUnitsAsync(int IdCountry);
 
 
         #endregion

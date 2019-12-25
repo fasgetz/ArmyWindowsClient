@@ -52,7 +52,7 @@ namespace ArmyClient.LogicApp.Realisation
         #endregion
 
 
-             #region Асинхронные версии методов
+        #region Асинхронные версии методов
 
         /// <summary>
         /// Асинхронная версия метод по добавлению пользователя в бд
@@ -94,19 +94,28 @@ namespace ArmyClient.LogicApp.Realisation
             {
                 using (db = provider.GetProvider())
                 {
-                    var users = (from item in (from vm in db.Users.Include("UserSoldierService").Include("UserCrimes").Include("Countries1")
+                    //var users = db.Users.Include("UserSoldierService").Include("UserCrimes").Include("City1.Countries").Where(i => i.City1 != null);
+
+                    //var test = users.ToList();
+
+                    //var a = test;
+                    var users = (from item in (from vm in db.Users.Include("UserSoldierService").Include("UserCrimes").Include("City1.Countries")
                                                where
                                                  (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
                                                  (!(string.IsNullOrEmpty(user.Family)) ? vm.Family.Contains(user.Family) : (string.IsNullOrEmpty(vm.Family) || !string.IsNullOrEmpty(vm.Family))) &&
                                                  (!(string.IsNullOrEmpty(user.Surname)) ? vm.Surname.Contains(user.Surname) : (string.IsNullOrEmpty(vm.Surname) || !string.IsNullOrEmpty(vm.Surname))) &&
                                                  ((user.DateBirth != null) ? vm.DateBirth == user.DateBirth : (vm.DateBirth >= new DateTime() || vm.DateBirth == null)) &&
-                                                 ((user.IdCountryBirth != null) ? vm.IdCountryBirth == user.IdCountryBirth : vm.IdCountryBirth != 0) &&
-                                                 (!(string.IsNullOrEmpty(user.CityBirth)) ? vm.CityBirth.Contains(user.CityBirth) : (string.IsNullOrEmpty(vm.CityBirth) || !string.IsNullOrEmpty(vm.CityBirth))) &&
-                                                 ((user.IdCurrentCountryResidence != null) ? vm.IdCurrentCountryResidence == user.IdCurrentCountryResidence : vm.IdCurrentCountryResidence != 0) &&
-                                                 (!(string.IsNullOrEmpty(user.CurrentCityResience)) ? vm.CurrentCityResience.Contains(user.CurrentCityResience) : (string.IsNullOrEmpty(vm.CurrentCityResience) || !string.IsNullOrEmpty(vm.CurrentCityResience))) &&
+                                                 // Страна рождения
+                                                 ((user.City.CountryId != null) ? vm.City.CountryId == user.City.CountryId : vm.City.CountryId != 0) &&
+                                                 // Страна проживания
+                                                 ((user.City1.CountryId != null) ? vm.City1.CountryId == user.City1.CountryId : vm.City1.CountryId != 0) &&
+                                                 // Город рождения
+                                                 (user.CityBirth_Id != null ? vm.CityBirth_Id == user.CityBirth_Id : vm.CityBirth_Id != 0) &&
+                                                 // Город текущего проживания
+                                                 (user.CurrentCityResience_Id != null ? vm.CurrentCityResience_Id == user.CurrentCityResience_Id : vm.CurrentCityResience_Id != 0) &&
                                                  (!(string.IsNullOrEmpty(user.AddressResidence)) ? vm.AddressResidence.Contains(user.AddressResidence) : (string.IsNullOrEmpty(vm.AddressResidence) || !string.IsNullOrEmpty(vm.AddressResidence))) &&
                                                  // Ищем по социальному статусу
-                                                 ((user.SocialStatusID != null) ? vm.SocialStatusID == user.SocialStatusID : vm.SocialStatusID != 0) &&
+                                                 ((user.SocialStatusID != null) ? vm.SocialStatusID == user.SocialStatusID : (vm.SocialStatusID != 0 | vm.SocialStatusID == null)) &&
                                                  (!(string.IsNullOrEmpty(user.email)) ? vm.email.Contains(user.email) : (string.IsNullOrEmpty(vm.email) || !string.IsNullOrEmpty(vm.email))) &&
                                                  (!(string.IsNullOrEmpty(user.phone)) ? vm.phone.Contains(user.phone) : (string.IsNullOrEmpty(vm.phone) || !string.IsNullOrEmpty(vm.phone))) &&
                                                  (user.IsMonitoring == false ? (vm.IsMonitoring == true || vm.IsMonitoring == false) : vm.IsMonitoring == true) &&
@@ -121,24 +130,24 @@ namespace ArmyClient.LogicApp.Realisation
                                                    Name = vm.Name,
                                                    Family = vm.Family,
                                                    Surname = vm.Surname,
-                                                   Countries1 = vm.Countries1,
-                                                   CurrentCityResience = vm.CurrentCityResience,
+                                                   City1 = vm.City1,
+                                                   Country = vm.City1.Countries.Name,
                                                    UserSoldierService = vm.UserSoldierService,
                                                    UserCrimes = vm.UserCrimes
                                                }).ToList()
-                                 // Выбираем столбцы, которые будут отображаться в таблице
+                                     // Выбираем столбцы, которые будут отображаться в таблице
                                  select new Users()
                                  {
                                      Id = item.Id,
                                      Name = item.Name,
                                      Family = item.Family,
                                      Surname = item.Surname,
-                                     Countries1 = item.Countries1,
-                                     CurrentCityResience = item.CurrentCityResience,
+
+                                     City1 = item.City1,
+                                     
                                      UserSoldierService = item.UserSoldierService,
                                      UserCrimes = item.UserCrimes
                                  });
-                      
 
                     return users.ToList();
                 }
@@ -158,7 +167,7 @@ namespace ArmyClient.LogicApp.Realisation
             return await Task.Run(() =>
             {
                 using (db = provider.GetProvider())
-                    return db.Users.Include("Countries").Include("Countries1").Include("SocialStatuses").Include("UserSoldierService.SoldierUnit").Include("SocialNetworkUser.SocialNetworkType").FirstOrDefault(i => i.Id == UserID);
+                    return db.Users.Include("City1.Countries").Include("City.Countries").Include("SocialStatuses").Include("UserSoldierService.SoldierUnit").Include("SocialNetworkUser.SocialNetworkType").FirstOrDefault(i => i.Id == UserID);
             });
         }
 

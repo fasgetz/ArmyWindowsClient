@@ -102,11 +102,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="LogicApp\Helps\ImageLogic.cs" />
+    <Compile Include="LogicApp\Interfaces\ICitiesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ICountriesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ISocialNetworksLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ISocStatusesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ISoldierUnitsLogic.cs" />
     <Compile Include="LogicApp\Interfaces\IUsersLogic.cs" />
+    <Compile Include="LogicApp\Realisation\CitiesLogic.cs" />
     <Compile Include="LogicApp\Realisation\CountriesLogic.cs" />
     <Compile Include="LogicApp\Realisation\LogicApp.cs" />
     <Compile Include="LogicApp\Realisation\LogicProviderDB.cs" />
@@ -114,33 +116,13 @@
     <Compile Include="LogicApp\Realisation\SocStatusesLogic.cs" />
     <Compile Include="LogicApp\Realisation\SoldierUnitsLogic.cs" />
     <Compile Include="LogicApp\Realisation\UserLogic.cs" />
-    <Compile Include="Migrations\201912191847134_start_test.cs" />
-    <Compile Include="Migrations\201912191847134_start_test.designer.cs">
-      <DependentUpon>201912191847134_start_test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912191852389_start_1.cs" />
-    <Compile Include="Migrations\201912191852389_start_1.designer.cs">
-      <DependentUpon>201912191852389_start_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912191856027_start_.cs" />
-    <Compile Include="Migrations\201912191856027_start_.designer.cs">
-      <DependentUpon>201912191856027_start_.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912191858357_start_2.cs" />
-    <Compile Include="Migrations\201912191858357_start_2.designer.cs">
-      <DependentUpon>201912191858357_start_2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912211518513_test1.cs" />
-    <Compile Include="Migrations\201912211518513_test1.designer.cs">
-      <DependentUpon>201912211518513_test1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ArmyDB.cs" />
     <Compile Include="Model\ArmyDBContext.cs" />
-    <Compile Include="Model\ArmyDB_PG.cs" />
+    <Compile Include="Model\City.cs" />
     <Compile Include="Model\Countries.cs" />
     <Compile Include="Model\CrimesType.cs" />
     <Compile Include="Model\ForeignFriends.cs" />
+    <Compile Include="Model\ArmyDB_PG.cs" />
     <Compile Include="Model\SocialNetworkType.cs" />
     <Compile Include="Model\SocialNetworkUser.cs" />
     <Compile Include="Model\SocialStatuses.cs" />
@@ -203,21 +185,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201912191847134_start_test.resx">
-      <DependentUpon>201912191847134_start_test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912191852389_start_1.resx">
-      <DependentUpon>201912191852389_start_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912191856027_start_.resx">
-      <DependentUpon>201912191856027_start_.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912191858357_start_2.resx">
-      <DependentUpon>201912191858357_start_2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912211518513_test1.resx">
-      <DependentUpon>201912211518513_test1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -35,8 +35,8 @@ namespace ArmyClient.Model
 
         public string GetCountryCity
         {
-            get => $"{Countries1.Name}, {CurrentCityResience}";
- 
+            get => $"{City1?.Name}";
+
         }
 
         // Получить причастность к ВЧ
@@ -59,6 +59,7 @@ namespace ArmyClient.Model
 
         #endregion
 
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Users()
         {
@@ -78,26 +79,13 @@ namespace ArmyClient.Model
         [StringLength(25)]
         public string Surname { get; set; }
 
-        //[Column(TypeName = "Bytea")]
         public byte[] Photo { get; set; }
 
-        //[Column(TypeName = "date")]
         public DateTime? DateBirth { get; set; }
-
-        public byte? IdCountryBirth { get; set; }
-
-        [StringLength(35)]
-        public string CityBirth { get; set; }
-
-        public byte? IdCurrentCountryResidence { get; set; }
-
-        [StringLength(35)]
-        public string CurrentCityResience { get; set; }
 
         [StringLength(150)]
         public string AddressResidence { get; set; }
 
-        //[Column(TypeName = "text")]
         public string Characteristic { get; set; }
 
         public bool? IsMonitoring { get; set; }
@@ -112,9 +100,13 @@ namespace ArmyClient.Model
 
         public DateTime? DateOfEntry { get; set; }
 
-        public virtual Countries Countries { get; set; }
+        public int? CityBirth_Id { get; set; }
 
-        public virtual Countries Countries1 { get; set; }
+        public int? CurrentCityResience_Id { get; set; }
+
+        public virtual City City { get; set; }
+
+        public virtual City City1 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SocialNetworkUser> SocialNetworkUser { get; set; }

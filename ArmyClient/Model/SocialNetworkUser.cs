@@ -24,12 +24,11 @@ namespace ArmyClient.Model
         public SocialNetworkUser()
         {
             ForeignFriends = new HashSet<ForeignFriends>();
-            UserCrimes = new HashSet<UserCrimes>();
         }
 
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        public int IdUser { get; set; }
 
         public byte SocialNetworkId { get; set; }
 
@@ -39,7 +38,6 @@ namespace ArmyClient.Model
 
         public bool Opened { get; set; }
 
-        //[Column(TypeName = "text")]
         public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -48,8 +46,5 @@ namespace ArmyClient.Model
         public virtual SocialNetworkType SocialNetworkType { get; set; }
 
         public virtual Users Users { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserCrimes> UserCrimes { get; set; }
     }
 }

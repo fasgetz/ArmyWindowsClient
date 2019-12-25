@@ -36,6 +36,8 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
+        #region Социальные сети
+
         private bool _facebook;
         public bool facebook
         {
@@ -68,6 +70,8 @@ namespace ArmyClient.ViewModel.Main
                 OnPropertyChanged("instagram");
             }
         }
+
+        #endregion
 
 
         private List<Model.Users> _users;
@@ -107,7 +111,9 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
-        // Страны
+        #region Страны - города
+
+        // Список стран
         private ObservableCollection<Countries> _Countries;
         public ObservableCollection<Countries> Countries
         {
@@ -119,6 +125,19 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
+
+        // Города выбранной страны проживания
+        private ObservableCollection<City> _CitiesResidence;
+        public ObservableCollection<City> CitiesResidence
+        {
+            get => _CitiesResidence;
+            set
+            {
+                _CitiesResidence = value;
+                OnPropertyChanged("CitiesResidence");
+            }
+        }
+
         // Выбранная страна проживания
         private Countries _SelectedCountryUS;
         public Countries SelectedCountryUS
@@ -127,14 +146,64 @@ namespace ArmyClient.ViewModel.Main
             set
             {
                 _SelectedCountryUS = value;
-                user.IdCurrentCountryResidence = value.Id;
-                loadunits(value.Id);
+                LoadResidenceCities(value.Id); // Загружаем города
+
+                user.City1.CountryId = value.Id;
+                //user.City = value;
+                //loadunits(value.Id);
                 OnPropertyChanged("SelectedCountryUS");
             }
         }
 
+        // Выбранный город проживания
+        private City _SelectedCityResidence;
+        public City SelectedCityResidence
+        {
+            get => _SelectedCityResidence;
+            set
+            {
+                _SelectedCityResidence = value;
+
+                if (value != null)
+                    user.CurrentCityResience_Id = value.Id;
+                else
+                    user.CurrentCityResience_Id = null;
+                OnPropertyChanged("SelectedCityResidence");
+            }
+        }
+
+        // Выбранный город рождения
+        private City _SelectedCityBirth;
+        public City SelectedCityBirth
+        {
+            get => _SelectedCityBirth;
+            set
+            {
+                _SelectedCityBirth = value;
+
+                if (value != null)
+                    user.CityBirth_Id = value.Id;
+                else
+                    user.CityBirth_Id = null;
+
+                OnPropertyChanged("SelectedCityBirth");
+            }
+        }
+
+        // Города выбранной страны рождения
+        private ObservableCollection<City> _CitiesBirthCountry;
+        public ObservableCollection<City> CitiesBirthCountry
+        {
+            get => _CitiesBirthCountry;
+            set
+            {
+                _CitiesBirthCountry = value;
+                OnPropertyChanged("CitiesBirthCountry");
+            }
+        }
+
         // Выбранная страна рождения
-        private Countries _SelectedCountryBirth = new Model.Countries();
+        private Countries _SelectedCountryBirth;
         public Countries SelectedCountryBirth
         {
             get
@@ -144,10 +213,16 @@ namespace ArmyClient.ViewModel.Main
             set
             {
                 _SelectedCountryBirth = value;
-                user.IdCountryBirth = value.Id;
+                LoadBirthCities(value.Id);
+
+                user.City.CountryId = value.Id;
                 OnPropertyChanged("SelectedCountryBirth");
             }
         }
+
+
+        #endregion
+
 
         // Изображение в байтах
         byte[] _ImageBytes;
@@ -248,6 +323,9 @@ namespace ArmyClient.ViewModel.Main
 
         #region Команды
 
+
+
+
         // Команда добавления службы пользователю
         public DelegateCommand AddSoldierService
         {
@@ -262,6 +340,7 @@ namespace ArmyClient.ViewModel.Main
                         service.IdUser = user.Id;
                         service.SoldierUnit = SelectedSoldierUnit;
 
+                        user.UserSoldierService.Add(service);
                         UserSoldierServices.Add(service);
                         SoldierUnits.Remove(SoldierUnits.Where(i => i.Id == service.IdSoldierUnit).FirstOrDefault());
 
@@ -317,7 +396,7 @@ namespace ArmyClient.ViewModel.Main
             logic = new LogicApp.Realisation.LogicApp();
             SelectedType = new SocialNetworkType();
             MySocNetTypes = new ObservableCollection<SocialNetworkUser>();
-            user = new Model.Users();
+            user = new Model.Users() { City1 = new City(), City = new City() };
             user.IsMonitoring = false;
             UserSoldierServices = new ObservableCollection<UserSoldierService>();
 
@@ -345,6 +424,18 @@ namespace ArmyClient.ViewModel.Main
 
         #region Вспомогательные методы 
 
+        // Загрузка городов страны рождения
+        protected async void LoadBirthCities(byte idCountry)
+        {
+            CitiesBirthCountry = new ObservableCollection<City>(await logic.citiesLogic.GetCities(idCountry));
+        }
+
+        // Загрузка городов страны проживания
+        protected async void LoadResidenceCities(byte idCountry)
+        {
+            CitiesResidence = new ObservableCollection<City>(await logic.citiesLogic.GetCities(idCountry));
+        }
+
         private async void LoadUsers()
         {
             users = await logic.userLogic.GetUsersAsync(user, vk, instagram, facebook);
@@ -360,7 +451,7 @@ namespace ArmyClient.ViewModel.Main
         }
 
         // Метод для загрузки В/Ч
-        private async void loadunits(byte id)
+        private async void loadunits(int id)
         {
             SoldierUnits = new ObservableCollection<SoldierUnit>(await logic.SoldierUnitLogic.GetSoldierUnitsAsync(id));
         }

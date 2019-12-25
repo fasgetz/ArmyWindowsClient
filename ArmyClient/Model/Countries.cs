@@ -11,9 +11,7 @@ namespace ArmyClient.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Countries()
         {
-            ForeignFriends = new HashSet<ForeignFriends>();
-            Users = new HashSet<Users>();
-            Users1 = new HashSet<Users>();
+            City = new HashSet<City>();
         }
 
         public byte Id { get; set; }
@@ -23,12 +21,6 @@ namespace ArmyClient.Model
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ForeignFriends> ForeignFriends { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Users> Users { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Users> Users1 { get; set; }
+        public virtual ICollection<City> City { get; set; }
     }
 }

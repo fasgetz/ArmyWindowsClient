@@ -97,6 +97,7 @@ namespace ArmyClient.ViewModel.Users
         private async void AddUserDB()
         {
             user.DateOfEntry = DateTime.Now;
+
             //user.
             bool added = await logic.userLogic.AddUserAsync(user);
 

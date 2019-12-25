@@ -52,9 +52,9 @@
                 <TextBox Text="{Binding user.Surname}" md:HintAssist.Hint="Отчество"/>
                 <DatePicker SelectedDate="{Binding user.DateBirth}" Margin="25 0" md:HintAssist.Hint="Дата рождения" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" FontSize="16"/>
                 <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountryBirth}" DisplayMemberPath="Name" md:HintAssist.Hint="Родная страна" />
-                <TextBox Text="{Binding user.CityBirth}" md:HintAssist.Hint="Родной город"/>
+                <ComboBox ItemsSource="{Binding CitiesBirthCountry}" SelectedItem="{Binding SelectedCityBirth}"  DisplayMemberPath="Name" md:HintAssist.Hint="Город рождения" />
                 <ComboBox SelectedItem="{Binding SelectedCountryUS}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" md:HintAssist.Hint="Страна проживания" />
-                <TextBox Text="{Binding user.CurrentCityResience}" md:HintAssist.Hint="Город проживания"/>
+                <ComboBox ItemsSource="{Binding CitiesResidence}" SelectedItem="{Binding SelectedCityResidence}"  DisplayMemberPath="Name" md:HintAssist.Hint="Город проживания" />
                 <TextBox Text="{Binding user.AddressResidence}" md:HintAssist.Hint="Адрес"/>
                 <ComboBox md:HintAssist.Hint="Социальный статус" ItemsSource="{Binding SocStatuses}" SelectedItem="{Binding SelectedSocStatus}" DisplayMemberPath="Name" />
                 <!--<ComboBox ItemsSource="{Binding SoldierUnits}" DisplayMemberPath="GetSU" md:HintAssist.Hint="Воинская часть" />-->

@@ -20,22 +20,20 @@ namespace ArmyClient.Model
 
         public int? IdSocialNetworkUser { get; set; }
 
-        //[Column(TypeName = "Bytea")]
         public byte[] Photo { get; set; }
 
         public DateTime? DateLoad { get; set; }
 
         [Column(TypeName = "text")]
         public string Description { get; set; }
+
         public DateTime DateEnty { get; set; }
-        
+
         public bool IsCrime { get; set; }
-
-        public virtual SocialNetworkUser SocialNetworkUser { get; set; }
-
-        public virtual Users Users { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCrimesCategory> UserCrimesCategory { get; set; }
+
+        public virtual Users Users { get; set; }
     }
 }

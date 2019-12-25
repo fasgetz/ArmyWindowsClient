@@ -9,6 +9,7 @@ namespace ArmyClient.Model
     [Table("SoldierUnit")]
     public partial class SoldierUnit
     {
+
         #region Вспомогательные свойства
 
         public string GetSU
@@ -33,16 +34,14 @@ namespace ArmyClient.Model
         [StringLength(50)]
         public string Affilation { get; set; }
 
-        public byte? IdCountry { get; set; }
-
-        [StringLength(35)]
-        public string City { get; set; }
+        public int? IdCity { get; set; }
 
         [StringLength(150)]
         public string AddressResidence { get; set; }
 
-        //[Column(TypeName = "text")]
         public string AbountInform { get; set; }
+
+        public virtual City City { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserSoldierService> UserSoldierService { get; set; }

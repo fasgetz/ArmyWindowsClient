@@ -25,18 +25,14 @@ namespace ArmyClient.Model
         [StringLength(25)]
         public string Surname { get; set; }
 
-        public byte? IdCountry { get; set; }
-
-        [StringLength(25)]
-        public string City { get; set; }
+        public int? IdCity { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime? BirthDay { get; set; }
 
-        //[Column(TypeName = "Bytea")]
         public byte[] Photo { get; set; }
 
-        public virtual Countries Countries { get; set; }
+        public virtual City City { get; set; }
 
         public virtual SocialNetworkUser SocialNetworkUser { get; set; }
     }
