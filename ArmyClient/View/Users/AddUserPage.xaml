@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       Title="AddUserPage">
     <Page.Resources>
         <Style BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}" TargetType="ComboBox">
@@ -53,7 +54,7 @@
                     <Button Command="{Binding GoBack}" Margin="10 10 0 0" Content="Back" VerticalAlignment="Top"/>
                 </Grid>
                 <Button Margin="0 10 0 0" Background="White" Grid.Column="1" Command="{Binding AddImage}" Height="Auto" >
-                    <Image MouseRightButtonDown="img_MouseRightButtonDown" Source="{Binding ImageBytes}" Stretch="Fill"/>
+                    <Image MouseRightButtonDown="img_MouseRightButtonDown" Source="{Binding ImageBytes}" Stretch="Uniform"/>
                 </Button>
                 <DockPanel Margin="5 10 5 5" Grid.Column="2">
                     <Label FontSize="18" Content="Социальные сети" DockPanel.Dock="Top"/>
@@ -63,12 +64,18 @@
                             <ColumnDefinition Width="8*"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
-                        <ComboBox Grid.Column="0" ItemsSource="{Binding SocialNetworkTypesList}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedType}"/>
-                        <TextBox MaxLength="100" Margin="10 0 10 2" Grid.Column="1" Text="{Binding WebAddress, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox Grid.Column="0" Margin="0 0 0 2"  ItemsSource="{Binding SocialNetworkTypesList}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedType}"/>
+                        <TextBox VerticalContentAlignment="Bottom" MaxLength="100" Margin="10 0 10 2" Grid.Column="1" Text="{Binding WebAddress, UpdateSourceTrigger=PropertyChanged}"/>
                         <Button Grid.Column="2" Content="+" Command="{Binding AddSocNetType}"/>
                     </Grid>
 
-                    <ListView ItemsSource="{Binding MySocNetTypes}" DisplayMemberPath="GetSocialName" />
+                    <ListView SelectedItem="{Binding SelectedSocialNetwork}" ItemsSource="{Binding MySocNetTypes, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="GetSocialName">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseRightButtonUp">
+                                <i:InvokeCommandAction Command="{Binding RemoveSocNetType}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListView>
                 </DockPanel>
             </Grid>
 
@@ -174,7 +181,7 @@
                             <ComboBox ItemsSource="{Binding SocStatuses}" Grid.Column="1" Margin="50 0" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSocStatus}"/>
                         </Grid>
                     </StackPanel>
-                    <DockPanel Height="200">
+                    <DockPanel Height="100">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="40"/>

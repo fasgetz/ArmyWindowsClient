@@ -120,10 +120,16 @@ namespace ArmyClient.LogicApp.Realisation
                                                  (!(string.IsNullOrEmpty(user.phone)) ? vm.phone.Contains(user.phone) : (string.IsNullOrEmpty(vm.phone) || !string.IsNullOrEmpty(vm.phone))) &&
                                                  (user.IsMonitoring == false ? (vm.IsMonitoring == true || vm.IsMonitoring == false) : vm.IsMonitoring == true) &&
                                                  // Тут самое сложное. По социальным сетям вывести если стоят галочки
-                                                 (((vk == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 1).SocialNetworkId == 1 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
+                                                 (
+                                                 ( ((vk == true) || (instagram == true) || (facebook == true)) ?
+                                                 ((vk == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 1).SocialNetworkId == 1 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
                                                  ((instagram == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 3).SocialNetworkId == 3 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
-                                                 ((facebook == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 2).SocialNetworkId == 2 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0))
-
+                                                 ((facebook == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 2).SocialNetworkId == 2 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0)
+                                                 :
+                                                 // Вывести всех, у кого нет соц сетей
+                                                 vm.SocialNetworkUser.Count == 0 )
+                                                 )
+                                                 
                                                select new
                                                {
                                                    Id = vm.Id,
@@ -142,9 +148,7 @@ namespace ArmyClient.LogicApp.Realisation
                                      Name = item.Name,
                                      Family = item.Family,
                                      Surname = item.Surname,
-
-                                     City1 = item.City1,
-                                     
+                                     City1 = item.City1,                                     
                                      UserSoldierService = item.UserSoldierService,
                                      UserCrimes = item.UserCrimes
                                  });

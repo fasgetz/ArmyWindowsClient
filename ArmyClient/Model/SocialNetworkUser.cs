@@ -14,7 +14,7 @@ namespace ArmyClient.Model
 
         public string GetSocialName
         {
-            get => $"{SocialNetworkType.Name} - {WebAddress}";
+            get => $"{SocialNetworkType?.Name} - {WebAddress}";
         }
 
         #endregion

@@ -143,6 +143,9 @@
     <Compile Include="View\SoldierUnits\AddSoldierUnitPage.xaml.cs">
       <DependentUpon>AddSoldierUnitPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UserCrimes\UserCrimesPage.xaml.cs">
+      <DependentUpon>UserCrimesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Users\AboutUserPage.xaml.cs">
       <DependentUpon>AboutUserPage.xaml</DependentUpon>
     </Compile>
@@ -166,6 +169,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SoldierUnits\AddSoldierUnitPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserCrimes\UserCrimesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -225,6 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModel\SoldierUnits\" />
+    <Folder Include="ViewModel\UserCrimes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets')" />

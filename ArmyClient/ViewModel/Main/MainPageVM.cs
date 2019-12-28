@@ -148,9 +148,11 @@ namespace ArmyClient.ViewModel.Main
                 _SelectedCountryUS = value;
                 LoadResidenceCities(value.Id); // Загружаем города
 
-                user.City1.CountryId = value.Id;
-                //user.City = value;
-                
+                //user.City1.CountryId = value.Id;
+
+                // Загружаем В/Ч страны
+                LoadUnitsCountry(value.Id);
+
                 OnPropertyChanged("SelectedCountryUS");
             }
         }
@@ -169,10 +171,7 @@ namespace ArmyClient.ViewModel.Main
                     user.CurrentCityResience_Id = value.Id;
 
                     // Загружаем В/Ч города
-                    loadunits(value.Id);
-
-                    //SoldierUnits = new ObservableCollection<SoldierUnit>();
-                    //SoldierUnits.Add(new SoldierUnit() { Name = "В/Ч 49289" });
+                    LoadUnitsCity(value.Id);
                 }
                     
                 else
@@ -226,7 +225,7 @@ namespace ArmyClient.ViewModel.Main
                 _SelectedCountryBirth = value;
                 LoadBirthCities(value.Id);
 
-                user.City.CountryId = value.Id;
+                //user.City.CountryId = value.Id;
                 OnPropertyChanged("SelectedCountryBirth");
             }
         }
@@ -330,10 +329,39 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
+        private SocialNetworkUser _SelectedSocialNetwork;
+        public SocialNetworkUser SelectedSocialNetwork
+        {
+            get => _SelectedSocialNetwork;
+            set
+            {
+                _SelectedSocialNetwork = value;
+                OnPropertyChanged("SelectedSocialNetwork");
+            }
+        }
+
         #endregion
 
         #region Команды
 
+        // Команда удаления социальной сети из списка добавленных
+        public DelegateCommand RemoveSocNetType
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (SelectedSocialNetwork != null)
+                    {
+                        var item = MySocNetTypes.FirstOrDefault(i => i.GetSocialName == SelectedSocialNetwork.GetSocialName);
+
+                        MySocNetTypes.Remove(item);
+                        user.SocialNetworkUser = MySocNetTypes.ToList();
+                        SelectedSocialNetwork = null;
+                    }
+                });
+            }
+        }
 
 
 
@@ -409,7 +437,7 @@ namespace ArmyClient.ViewModel.Main
         {
             // Выделяем память
             logic = new LogicApp.Realisation.LogicApp();
-            SelectedType = new SocialNetworkType();
+            //SelectedType = new SocialNetworkType();
             MySocNetTypes = new ObservableCollection<SocialNetworkUser>();
             user = new Model.Users() { City1 = new City(), City = new City() };
             user.IsMonitoring = false;
@@ -465,10 +493,16 @@ namespace ArmyClient.ViewModel.Main
             SocStatuses = new ObservableCollection<SocialStatuses>(await logic.SocStatusesLogic.GetSocialStatuses());
         }
 
-        // Метод для загрузки В/Ч
-        protected async void loadunits(int id)
+        // Метод для загрузки В/Ч по городу
+        protected async void LoadUnitsCity(int id)
         {
-            SoldierUnits = new ObservableCollection<SoldierUnit>(await logic.SoldierUnitLogic.GetSoldierUnitsAsync(id));
+            SoldierUnits = new ObservableCollection<SoldierUnit>(await logic.SoldierUnitLogic.GetSoldierUnitsCityAsync(id));
+        }
+
+        // Метод для загрузки В/Ч по стране
+        protected async void LoadUnitsCountry(int id)
+        {
+            SoldierUnits = new ObservableCollection<SoldierUnit>(await logic.SoldierUnitLogic.GetSoldierUnitsCountryAsync(id));
         }
 
         #endregion

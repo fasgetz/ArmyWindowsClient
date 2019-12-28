@@ -19,11 +19,11 @@ namespace ArmyClient.LogicApp.Realisation
         }
 
         /// <summary>
-        /// Получить список В/Ч по стране
+        /// Получить список В/Ч по городу
         /// </summary>
-        /// <param name="IdCountry">Айди города</param>
+        /// <param name="IdCity">Айди города</param>
         /// <returns>Возвращает список В/Ч</returns>
-        public async Task<List<SoldierUnit>> GetSoldierUnitsAsync(int IdCountry)
+        public async Task<List<SoldierUnit>> GetSoldierUnitsCityAsync(int IdCity)
         {
             return await Task.Run(() =>
             {
@@ -31,10 +31,10 @@ namespace ArmyClient.LogicApp.Realisation
                 {
                     using (db = provider.GetProvider())
                     {
-                        if (IdCountry == 0)
+                        if (IdCity == 0)
                             return db.SoldierUnit.ToList();
 
-                        return db.SoldierUnit.Where(i => i.IdCity == IdCountry).ToList(); // Возвращаем по айди города
+                        return db.SoldierUnit.Where(i => i.IdCity == IdCity).ToList(); // Возвращаем по айди города
                     }
                         
 
@@ -48,7 +48,33 @@ namespace ArmyClient.LogicApp.Realisation
         }
 
 
+        /// <summary>
+        /// Получить список В/Ч по стране
+        /// </summary>
+        /// <param name="IdCountry">Айди страны</param>
+        /// <returns>Возвращает список В/Ч</returns>
+        public async Task<List<SoldierUnit>> GetSoldierUnitsCountryAsync(int IdCountry)
+        {
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    using (db = provider.GetProvider())
+                    {
+                        if (IdCountry == 0)
+                            return db.SoldierUnit.ToList();
+
+                        return db.SoldierUnit.Where(i => i.City.CountryId == IdCountry).ToList(); // Возвращаем по айди города
+                    }
 
 
+
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            });
+        }
     }
 }

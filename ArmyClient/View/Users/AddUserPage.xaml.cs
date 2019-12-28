@@ -42,5 +42,7 @@ namespace ArmyClient.View.Users
             vm.ImageBytes = null;
             vm.user.Photo = null;       
         }
+
+
     }
 }

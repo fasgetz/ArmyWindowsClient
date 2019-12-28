@@ -21,6 +21,7 @@ namespace ArmyClient.ViewModel.Users
 
         #region Секция команд
 
+
         // Команда по добавлению соц. сети пользователю
         public DelegateCommand AddSocNetType
         {
@@ -98,7 +99,6 @@ namespace ArmyClient.ViewModel.Users
         {
             user.DateOfEntry = DateTime.Now;
 
-            //user.
             bool added = await logic.userLogic.AddUserAsync(user);
 
             if (added == true)
@@ -111,7 +111,8 @@ namespace ArmyClient.ViewModel.Users
 
         public AddUserPageVM(bool AddMod)
         {
-
+            user.City1 = null;
+            user.City = null;
         }
 
     }

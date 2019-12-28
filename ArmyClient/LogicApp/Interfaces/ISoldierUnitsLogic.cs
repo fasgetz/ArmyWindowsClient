@@ -13,13 +13,18 @@ namespace ArmyClient.LogicApp.Interfaces
 
 
         /// <summary>
+        /// Получить список В/Ч по городу
+        /// </summary>
+        /// <param name="IdCity">Айди города</param>
+        /// <returns>Возвращает список В/Ч</returns>
+        Task<List<SoldierUnit>> GetSoldierUnitsCityAsync(int IdCity);
+
+        /// <summary>
         /// Получить список В/Ч по стране
         /// </summary>
         /// <param name="IdCountry">Айди страны</param>
         /// <returns>Возвращает список В/Ч</returns>
-        Task<List<SoldierUnit>> GetSoldierUnitsAsync(int IdCountry);
-
-
+        Task<List<SoldierUnit>> GetSoldierUnitsCountryAsync(int IdCountry);
         #endregion
     }
 }
