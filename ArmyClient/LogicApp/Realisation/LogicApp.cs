@@ -16,6 +16,7 @@ namespace ArmyClient.LogicApp.Realisation
         internal ISoldierUnitsLogic SoldierUnitLogic;
         internal ICountriesLogic CountriesLogic;
         internal ISocStatusesLogic SocStatusesLogic;
+        internal ICrimesLogic CrimesLogic;
 
         internal LogicApp()
         {
@@ -31,6 +32,7 @@ namespace ArmyClient.LogicApp.Realisation
             SoldierUnitLogic = new SoldierUnitsLogic(provider);
             SocStatusesLogic = new SocStatusesLogic(provider);
             citiesLogic = new CitiesLogic(provider);
+            CrimesLogic = new CrimesLogic(provider);
         }
     }
 }

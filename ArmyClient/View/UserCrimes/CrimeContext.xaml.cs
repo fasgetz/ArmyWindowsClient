@@ -1,5 +1,4 @@
-﻿using ArmyClient.ViewModel.UserCrimes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,14 +16,13 @@ using System.Windows.Shapes;
 namespace ArmyClient.View.UserCrimes
 {
     /// <summary>
-    /// Логика взаимодействия для UserCrimesPage.xaml
+    /// Логика взаимодействия для CrimeContext.xaml
     /// </summary>
-    public partial class UserCrimesPage : Page
+    public partial class CrimeContext : Page
     {
-        public UserCrimesPage(Model.Users user)
+        public CrimeContext()
         {
             InitializeComponent();
-            DataContext = new UserCrimesVM(user);
         }
     }
 }

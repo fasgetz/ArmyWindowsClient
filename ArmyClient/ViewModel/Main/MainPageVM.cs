@@ -1,5 +1,7 @@
-﻿using ArmyClient.Model;
+﻿using ArmyClient.LogicApp.Helps;
+using ArmyClient.Model;
 using ArmyClient.ViewModel.Helpers;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -254,6 +256,8 @@ namespace ArmyClient.ViewModel.Main
             set
             {
                 _user = value;
+                if (user.Photo != null)
+                    ImageBytes = user.Photo;
                 OnPropertyChanged("user");
             }
         }
@@ -290,7 +294,7 @@ namespace ArmyClient.ViewModel.Main
             set
             {
                 _MySocNetTypes = value;
-                OnPropertyChanged("_MySocNetTypes");
+                OnPropertyChanged("MySocNetTypes");
             }
         }
 
@@ -343,6 +347,29 @@ namespace ArmyClient.ViewModel.Main
         #endregion
 
         #region Команды
+
+        // Метод по добавлению изображения
+        public DelegateCommand AddImage
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+
+                    OpenFileDialog openFileDialog = new OpenFileDialog();
+                    openFileDialog.Filter = "Файлы изображений (*.jpg, *.png)|*.jpg;*.png";
+
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        string FilePath = openFileDialog.FileName; // Путь файла изображения
+
+                        ImageBytes = ImageLogic.GetImageBinary(FilePath); // Изображение в бинарном формате
+                        user.Photo = ImageBytes;
+                    }
+                });
+            }
+        }
+
 
         // Команда удаления социальной сети из списка добавленных
         public DelegateCommand RemoveSocNetType

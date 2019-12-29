@@ -33,6 +33,22 @@ namespace ArmyClient.ViewModel.Users
             }
         }
 
+        // Команда по переходу на страницу преступлений
+        public DelegateCommand GoToCrimes
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    // Если выбрали соц сеть, то перейти на страницу
+                    if (SelectedSocialNetwork != null)
+                    {
+                        MyNavigation.GoToCrimes(user);
+                    }
+                    
+                });
+            }
+        }
 
 
         // Команда вернуться назад
@@ -47,27 +63,6 @@ namespace ArmyClient.ViewModel.Users
             }
         }
 
-        // Метод по добавлению изображения
-        public DelegateCommand AddImage
-        {
-            get
-            {
-                return new DelegateCommand(obj =>
-                {
-
-                    OpenFileDialog openFileDialog = new OpenFileDialog();
-                    openFileDialog.Filter = "Файлы изображений (*.jpg, *.png)|*.jpg;*.png";
-
-                    if (openFileDialog.ShowDialog() == true)
-                    {
-                        string FilePath = openFileDialog.FileName; // Путь файла изображения
-
-                        ImageBytes = ImageLogic.GetImageBinary(FilePath); // Изображение в бинарном формате
-                        user.Photo = ImageBytes;
-                    }
-                });
-            }
-        }
 
         #endregion
 
@@ -78,7 +73,7 @@ namespace ArmyClient.ViewModel.Users
         private async void GetUser(int UserID)
         {
             user = await logic.userLogic.GetUserAsync(UserID);
-            
+
 
             MySocNetTypes = new System.Collections.ObjectModel.ObservableCollection<SocialNetworkUser>(user.SocialNetworkUser);
             //Soldi = new System.Collections.ObjectModel.ObservableCollection<SoldierUnit>(user.UserSoldierService)
@@ -108,6 +103,11 @@ namespace ArmyClient.ViewModel.Users
             :base(UserID)
         {
             GetUser(UserID);
+        }
+
+        public AboutUserPageVM()
+        {
+
         }
 
     }

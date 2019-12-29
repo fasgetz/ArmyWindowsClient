@@ -66,27 +66,7 @@ namespace ArmyClient.ViewModel.Users
             }
         }
 
-        // Метод по добавлению изображения
-        public DelegateCommand AddImage
-        {
-            get
-            {
-                return new DelegateCommand(obj =>
-                {
 
-                    OpenFileDialog openFileDialog = new OpenFileDialog();
-                    openFileDialog.Filter = "Файлы изображений (*.jpg, *.png)|*.jpg;*.png";
-
-                    if (openFileDialog.ShowDialog() == true)
-                    {
-                        string FilePath = openFileDialog.FileName; // Путь файла изображения
-
-                        ImageBytes = ImageLogic.GetImageBinary(FilePath); // Изображение в бинарном формате
-                        user.Photo = ImageBytes;
-                    }
-                });
-            }
-        }
 
         #endregion
 
