@@ -348,6 +348,22 @@ namespace ArmyClient.ViewModel.Main
 
         #region Команды
 
+        // Команда по удалению изображения
+        public DelegateCommand RemoveImage
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    ImageBytes = null;
+                    user.Photo = null;
+                    //Crimes.Add(new Model.UserCrimes() { Id = 123 });
+
+                });
+            }
+        }
+
+
         // Метод по добавлению изображения
         public DelegateCommand AddImage
         {

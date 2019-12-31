@@ -315,7 +315,7 @@ namespace ConsoleTest
 
             MyApiVK api = new MyApiVK();
             token = api.GetToken("89114876557", "Simplepass19");
-            SearchUnitSoldier(token, 235000808);
+            SearchUnitSoldier(token, 11137217);
 
 
 

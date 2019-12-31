@@ -179,7 +179,7 @@
                         <DataGridTextColumn Width="5*" Header="ФИО" Binding="{Binding GetFIO}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                         <DataGridTextColumn Width="4*" Header="Страна, город" Binding="{Binding GetCountryCity}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                         <DataGridTextColumn Width="4*" Header="Военная служба" Binding="{Binding GetUS}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
-                        <DataGridTextColumn Width="3*" Header="Нарушений" Binding="{Binding GetCrimesCount}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
+                        <DataGridTextColumn Width="3*" Header="Нарушений" Binding="{Binding CrimesCount}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

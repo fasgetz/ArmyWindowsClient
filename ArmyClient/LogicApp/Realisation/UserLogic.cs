@@ -99,7 +99,7 @@ namespace ArmyClient.LogicApp.Realisation
                     //var test = users.ToList();
 
                     //var a = test;
-                    var users = (from item in (from vm in db.Users.Include("UserSoldierService").Include("UserCrimes").Include("City1.Countries")
+                    var users = (from item in (from vm in db.Users.Include("UserSoldierService").Include("SocialNetworkUser.UserCrimes").Include("City1.Countries")
                                                where
                                                  (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
                                                  (!(string.IsNullOrEmpty(user.Family)) ? vm.Family.Contains(user.Family) : (string.IsNullOrEmpty(vm.Family) || !string.IsNullOrEmpty(vm.Family))) &&
@@ -121,25 +121,27 @@ namespace ArmyClient.LogicApp.Realisation
                                                  (user.IsMonitoring == false ? (vm.IsMonitoring == true || vm.IsMonitoring == false) : vm.IsMonitoring == true) &&
                                                  // Тут самое сложное. По социальным сетям вывести если стоят галочки
                                                  (
-                                                 ( ((vk == true) || (instagram == true) || (facebook == true)) ?
+                                                 (((vk == true) || (instagram == true) || (facebook == true)) ?
                                                  ((vk == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 1).SocialNetworkId == 1 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
                                                  ((instagram == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 3).SocialNetworkId == 3 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
                                                  ((facebook == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 2).SocialNetworkId == 2 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0)
                                                  :
                                                  // Вывести всех, у кого нет соц сетей
-                                                 vm.SocialNetworkUser.Count == 0 )
+                                                 vm.SocialNetworkUser.Count == 0)
                                                  )
-                                                 
+
                                                select new
                                                {
-                                                   Id = vm.Id,
+                                                   Id = vm.Id,                                                   
                                                    Name = vm.Name,
                                                    Family = vm.Family,
                                                    Surname = vm.Surname,
                                                    City1 = vm.City1,
                                                    Country = vm.City1.Countries.Name,
                                                    UserSoldierService = vm.UserSoldierService,
-                                                   UserCrimes = vm.UserCrimes
+                                                   SocialNetworkUser = vm.SocialNetworkUser
+                                                   // Преступления пользователя
+                                                   //UserCrimes = vm.UserCrimes
                                                }).ToList()
                                      // Выбираем столбцы, которые будут отображаться в таблице
                                  select new Users()
@@ -148,10 +150,18 @@ namespace ArmyClient.LogicApp.Realisation
                                      Name = item.Name,
                                      Family = item.Family,
                                      Surname = item.Surname,
-                                     City1 = item.City1,                                     
+                                     City1 = item.City1,
                                      UserSoldierService = item.UserSoldierService,
-                                     UserCrimes = item.UserCrimes
-                                 });
+                                     SocialNetworkUser = db.SocialNetworkUser.Include("UserCrimes").Where(i => i.IdUser == item.Id).ToList()
+                                     //CrimesCount = item.SocialNetworkUser.Where(i => i.UserCrimes.Count > 0).Sum(i => i.UserCrimes.Count)
+                                     //UserCrimes = item.UserCrimes
+                                 }); ;
+                    
+                    //foreach (var item in users.ToList())
+                    //{
+                    //    item.SocialNetworkUser.Where(i => i.UserCrimes.Count > 0).Sum(i => i.UserCrimes.Count);
+                    //}
+
 
                     return users.ToList();
                 }

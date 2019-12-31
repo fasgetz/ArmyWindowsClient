@@ -43,7 +43,7 @@ namespace ArmyClient.ViewModel.Users
                     // Если выбрали соц сеть, то перейти на страницу
                     if (SelectedSocialNetwork != null)
                     {
-                        MyNavigation.GoToCrimes(user);
+                        MyNavigation.GoToCrimes(user, SelectedSocialNetwork);
                     }
                     
                 });

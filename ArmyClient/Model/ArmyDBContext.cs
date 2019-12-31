@@ -58,6 +58,12 @@ namespace ArmyClient.Model
                 .HasForeignKey(e => e.SocialNetworkId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<SocialNetworkUser>()
+                .HasMany(e => e.UserCrimes)
+                .WithOptional(e => e.SocialNetworkUser)
+                .HasForeignKey(e => e.IdSocialNetworkUser)
+                .WillCascadeOnDelete();
+
             modelBuilder.Entity<SocialStatuses>()
                 .HasMany(e => e.Users)
                 .WithOptional(e => e.SocialStatuses)
@@ -78,12 +84,6 @@ namespace ArmyClient.Model
 
             modelBuilder.Entity<Users>()
                 .HasMany(e => e.SocialNetworkUser)
-                .WithRequired(e => e.Users)
-                .HasForeignKey(e => e.IdUser)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Users>()
-                .HasMany(e => e.UserCrimes)
                 .WithRequired(e => e.Users)
                 .HasForeignKey(e => e.IdUser)
                 .WillCascadeOnDelete(false);

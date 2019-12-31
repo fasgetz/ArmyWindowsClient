@@ -16,8 +16,6 @@ namespace ArmyClient.Model
 
         public int Id { get; set; }
 
-        public int IdUser { get; set; }
-
         public int? IdSocialNetworkUser { get; set; }
 
         public byte[] Photo { get; set; }
@@ -31,9 +29,14 @@ namespace ArmyClient.Model
 
         public bool IsCrime { get; set; }
 
+        // Адрес поста 
+        [Required]
+        public string WebAddressPost { get; set; }
+
+        public virtual SocialNetworkUser SocialNetworkUser { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCrimesCategory> UserCrimesCategory { get; set; }
 
-        public virtual Users Users { get; set; }
     }
 }

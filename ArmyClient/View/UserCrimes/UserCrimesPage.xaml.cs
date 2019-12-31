@@ -1,4 +1,5 @@
-﻿using ArmyClient.ViewModel.UserCrimes;
+﻿using ArmyClient.Model;
+using ArmyClient.ViewModel.UserCrimes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,11 @@ namespace ArmyClient.View.UserCrimes
     /// </summary>
     public partial class UserCrimesPage : Page
     {
-        public UserCrimesPage(Model.Users user)
+        public UserCrimesPage(Model.Users user, SocialNetworkUser selectedSocialNetwork)
         {
             InitializeComponent();
-            DataContext = new UserCrimesVM(user);
+            DataContext = new UserCrimesVM(user, selectedSocialNetwork);
         }
+
     }
 }

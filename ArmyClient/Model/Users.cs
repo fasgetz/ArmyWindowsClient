@@ -25,13 +25,15 @@ namespace ArmyClient.Model
         }
 
         // Получить количество нарушений
-        public int GetCrimesCount
-        {
+        public int CrimesCount 
+        { 
             get
             {
-                return UserCrimes.Where(i => i.IsCrime == true).Count();
+                return SocialNetworkUser.Where(i => i.UserCrimes.Count > 0).Sum(i => i.UserCrimes.Count);
             }
         }
+        
+
 
         public string GetCountryCity
         {
@@ -64,7 +66,6 @@ namespace ArmyClient.Model
         public Users()
         {
             SocialNetworkUser = new HashSet<SocialNetworkUser>();
-            UserCrimes = new HashSet<UserCrimes>();
             UserSoldierService = new HashSet<UserSoldierService>();
         }
 
@@ -112,9 +113,6 @@ namespace ArmyClient.Model
         public virtual ICollection<SocialNetworkUser> SocialNetworkUser { get; set; }
 
         public virtual SocialStatuses SocialStatuses { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserCrimes> UserCrimes { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserSoldierService> UserSoldierService { get; set; }

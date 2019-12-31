@@ -1,4 +1,5 @@
-﻿using ArmyClient.View.UserCrimes;
+﻿using ArmyClient.Model;
+using ArmyClient.View.UserCrimes;
 using ArmyClient.View.Users;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,9 @@ namespace ArmyClient.ViewModel.Helpers
             navigation.Navigate(new AboutUserPage(UserID));
         }
 
-        public static void GoToCrimes(Model.Users user)
+        public static void GoToCrimes(Model.Users user, SocialNetworkUser selectedSocialNetwork)
         {
-            navigation.Navigate(new UserCrimesPage(user));
+            navigation.Navigate(new UserCrimesPage(user, selectedSocialNetwork));
         }
     }
 }
