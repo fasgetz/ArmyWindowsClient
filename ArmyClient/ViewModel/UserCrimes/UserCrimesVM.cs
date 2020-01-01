@@ -17,6 +17,41 @@ namespace ArmyClient.ViewModel.UserCrimes
 
         #region Свойства
 
+        // Выбранный крайм в списке
+        private CrimesType _SelectedCrimeOnLV;
+        public CrimesType SelectedCrimeOnLV
+        {
+            get => _SelectedCrimeOnLV;
+            set
+            {
+                _SelectedCrimeOnLV = value;
+                OnPropertyChanged("SelectedCrimeOnLV");
+            }
+        }
+
+        // Для отображения в списке
+        private ObservableCollection<CrimesType> _MyCrimesCategory;
+        public ObservableCollection<CrimesType> MyCrimesCategory
+        {
+            get => _MyCrimesCategory;
+            set
+            {
+                _MyCrimesCategory = value;
+                OnPropertyChanged("MyCrimesCategory");
+            }
+        }
+
+        private CrimesType _SelectedCategory;
+        public CrimesType SelectedCategory
+        {
+            get => _SelectedCategory;
+            set
+            {
+                _SelectedCategory = value;
+                OnPropertyChanged("SelectedCategory");
+            }
+        }
+
         // Выбранная социальная сеть
         private SocialNetworkUser _selectedSocialNetwork;
         public SocialNetworkUser selectedSocialNetwork
@@ -90,7 +125,7 @@ namespace ArmyClient.ViewModel.UserCrimes
 
         private async void LoadData()
         {
-            if (CrimesCategory != null)
+            if (CrimesCategory == null)
                 CrimesCategory = new ObservableCollection<CrimesType>(await logic.CrimesLogic.LoadCrimesCategory());
 
             Crimes = new ObservableCollection<Model.UserCrimes>(await logic.CrimesLogic.GetSocialNetworkCrimes(selectedSocialNetwork.Id));
@@ -130,6 +165,39 @@ namespace ArmyClient.ViewModel.UserCrimes
         #endregion
 
         #region Команды
+
+        // Команда по удалению категории из списка
+        public DelegateCommand RemoveCrimesCategory
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (SelectedCrimeOnLV != null)
+                    {
+                        SelectedCategory = SelectedCrimeOnLV;
+                        MyCrimesCategory.Remove(SelectedCategory);
+                        CrimesCategory.Add(SelectedCategory);
+                        SelectedCategory = null;
+                    }
+                });
+            }
+        }
+
+
+        // Команда по добавлению категории в список
+        public DelegateCommand AddCategory
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {   
+                    MyCrimesCategory.Add(SelectedCategory);
+                    CrimesCategory.Remove(SelectedCategory);
+                    SelectedCategory = null;
+                });
+            }
+        }
 
         // Команда по добавлению изображения нарушению
         public DelegateCommand AddCrimeImage
@@ -214,13 +282,10 @@ namespace ArmyClient.ViewModel.UserCrimes
             this.user = user;
             this.selectedSocialNetwork = selectedSocialNetwork;
             ImageBytes = null;
-            
-            //Crime.
+            MyCrimesCategory = new ObservableCollection<CrimesType>();
+
             // Загружаем данные
             LoadData();
-
-            if (Crimes != null)
-                Crime = Crimes.FirstOrDefault();
         }
 
 

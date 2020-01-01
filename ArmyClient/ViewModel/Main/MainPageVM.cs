@@ -40,6 +40,17 @@ namespace ArmyClient.ViewModel.Main
 
         #region Социальные сети
 
+        private bool _odnoklassniki;
+        public bool odnoklassniki
+        {
+            get => _odnoklassniki;
+            set
+            {
+                _odnoklassniki = value;
+                OnPropertyChanged("odnoklassniki");
+            }
+        }
+
         private bool _facebook;
         public bool facebook
         {
@@ -496,6 +507,7 @@ namespace ArmyClient.ViewModel.Main
             vk = true;
             instagram = true;
             facebook = true;
+            odnoklassniki = true;
         }
 
         /// <summary>
@@ -524,7 +536,7 @@ namespace ArmyClient.ViewModel.Main
 
         private async void LoadUsers()
         {
-            users = await logic.userLogic.GetUsersAsync(user, vk, instagram, facebook);
+            users = await logic.userLogic.GetUsersAsync(user, vk, instagram, facebook, odnoklassniki);
         }
 
 

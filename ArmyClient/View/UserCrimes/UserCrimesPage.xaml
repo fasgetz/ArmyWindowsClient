@@ -87,13 +87,19 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="8*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="3*"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox ItemsSource="{Binding CrimesCategory}" Margin="0" DisplayMemberPath="Name" materialDesign:HintAssist.Hint="Тип нарушения"/>
-                            <Button Grid.Column="1" Margin="5" Content="+" FontSize="18"/>
+                            <ComboBox SelectedItem="{Binding SelectedCategory}" ItemsSource="{Binding CrimesCategory}" Margin="0" DisplayMemberPath="Name" materialDesign:HintAssist.Hint="Тип нарушения"/>
+                            <Button Command="{Binding AddCategory}" Grid.Column="1" Margin="5" Content="+" FontSize="18"/>
                         </Grid>
                     </StackPanel>
-                    <ListView DockPanel.Dock="Top"/>
+                    <ListView SelectedItem="{Binding SelectedCrimeOnLV}" DisplayMemberPath="Name" ItemsSource="{Binding MyCrimesCategory}" DockPanel.Dock="Top">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseRightButtonUp">
+                                <i:InvokeCommandAction Command="{Binding RemoveCrimesCategory}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListView>
                 </DockPanel>
                 <TextBox Grid.Row="1"
                             Text="{Binding Crime.Description}"

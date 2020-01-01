@@ -86,7 +86,7 @@ namespace ArmyClient.LogicApp.Realisation
         /// </summary>
         /// <param name="user">Параметр, по модели которой делается выборка</param>
         /// <returns>Возвращает пользователей</returns>
-        public async Task<List<Users>> GetUsersAsync(Users user, bool vk = false, bool instagram = false, bool facebook = false)
+        public async Task<List<Users>> GetUsersAsync(Users user, bool vk = false, bool instagram = false, bool facebook = false, bool odnoklassniki = false)
         {
 
              
@@ -124,7 +124,8 @@ namespace ArmyClient.LogicApp.Realisation
                                                  (((vk == true) || (instagram == true) || (facebook == true)) ?
                                                  ((vk == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 1).SocialNetworkId == 1 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
                                                  ((instagram == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 3).SocialNetworkId == 3 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
-                                                 ((facebook == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 2).SocialNetworkId == 2 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0)
+                                                 ((facebook == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 2).SocialNetworkId == 2 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0) ||
+                                                 ((odnoklassniki == true) ? vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 4).SocialNetworkId == 4 : vm.SocialNetworkUser.FirstOrDefault(i => i.SocialNetworkId == 0).SocialNetworkId == 0)
                                                  :
                                                  // Вывести всех, у кого нет соц сетей
                                                  vm.SocialNetworkUser.Count == 0)

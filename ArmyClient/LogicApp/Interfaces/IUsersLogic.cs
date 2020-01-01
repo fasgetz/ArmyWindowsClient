@@ -38,7 +38,7 @@ namespace ArmyClient.LogicApp.Interfaces
         /// </summary>
         /// <param name="user">Параметр, по модели которой делается выборка</param>
         /// <returns>Возвращает пользователей</returns>
-        Task<List<Users>> GetUsersAsync(Users user, bool vk = false, bool instagram = false, bool facebook = false);
+        Task<List<Users>> GetUsersAsync(Users user, bool vk = false, bool instagram = false, bool facebook = false, bool odnoklassniki = false);
 
 
         /// <summary>
