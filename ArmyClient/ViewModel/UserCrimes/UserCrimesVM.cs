@@ -12,14 +12,15 @@ using System.Threading.Tasks;
 
 namespace ArmyClient.ViewModel.UserCrimes
 {
+
     class UserCrimesVM : AboutUserPageVM
     {
 
         #region Свойства
 
         // Выбранный крайм в списке
-        private CrimesType _SelectedCrimeOnLV;
-        public CrimesType SelectedCrimeOnLV
+        private UserCrimesCategory _SelectedCrimeOnLV;
+        public UserCrimesCategory SelectedCrimeOnLV
         {
             get => _SelectedCrimeOnLV;
             set
@@ -30,8 +31,8 @@ namespace ArmyClient.ViewModel.UserCrimes
         }
 
         // Для отображения в списке
-        private ObservableCollection<CrimesType> _MyCrimesCategory;
-        public ObservableCollection<CrimesType> MyCrimesCategory
+        private ObservableCollection<UserCrimesCategory> _MyCrimesCategory;
+        public ObservableCollection<UserCrimesCategory> MyCrimesCategory
         {
             get => _MyCrimesCategory;
             set
@@ -88,8 +89,29 @@ namespace ArmyClient.ViewModel.UserCrimes
                 _MyCrime = value;
                 Crime = value;
                 if (value != null)
+                {
                     ImageBytes = value.Photo;
 
+                    MyCrimesCategory = new ObservableCollection<UserCrimesCategory>(value.UserCrimesCategory);
+                    CrimesCategory = new ObservableCollection<CrimesType>();
+
+                    // Теперь необходимо выбрать элементы, которые еще можно добавить в список
+                    var list = new List<CrimesType>();
+
+                    // Перебираем коллекцию
+                    foreach (var item in CrimesTypesAll)
+                    {
+                        // Проверяем. Есть ли элемент в коллекции
+                        var type = MyCrimesCategory.FirstOrDefault(i => i.CrimesTypeId == item.Id);
+
+                        // Если есть, то удаляем
+                        if (type == null)
+                        {
+                            list.Add(item);
+                            CrimesCategory.Add(item);
+                        }
+                    }
+                }
                 OnPropertyChanged("MyCrime");
             }
         }
@@ -107,7 +129,7 @@ namespace ArmyClient.ViewModel.UserCrimes
         }
 
 
-        // Типы преступлений
+        // Общие Типы преступлений
         private ObservableCollection<CrimesType> _CrimesCategory;
         public ObservableCollection<CrimesType> CrimesCategory
         {
@@ -119,14 +141,26 @@ namespace ArmyClient.ViewModel.UserCrimes
             }
         }
 
+        // ВСЕ типы преступлений, которые могут быть
+        private List<CrimesType> _CrimesTypesAll;
+        public List<CrimesType> CrimesTypesAll
+        {
+            get => _CrimesTypesAll;
+            set
+            {
+                _CrimesTypesAll = value;
+                OnPropertyChanged("CrimesTypesAll");
+            }
+        }
+
         #endregion
 
         #region Вспомогательные методы
 
         private async void LoadData()
         {
-            if (CrimesCategory == null)
-                CrimesCategory = new ObservableCollection<CrimesType>(await logic.CrimesLogic.LoadCrimesCategory());
+            if (CrimesTypesAll == null)
+                CrimesTypesAll = await logic.CrimesLogic.LoadCrimesCategory();
 
             Crimes = new ObservableCollection<Model.UserCrimes>(await logic.CrimesLogic.GetSocialNetworkCrimes(selectedSocialNetwork.Id));
         }
@@ -143,6 +177,8 @@ namespace ArmyClient.ViewModel.UserCrimes
             ImageBytes = null;
             Crime = null;
             MyCrime = null;
+            MyCrimesCategory = null;
+            CrimesCategory = null;
         }
 
 
@@ -175,9 +211,11 @@ namespace ArmyClient.ViewModel.UserCrimes
                 {
                     if (SelectedCrimeOnLV != null)
                     {
-                        SelectedCategory = SelectedCrimeOnLV;
-                        MyCrimesCategory.Remove(SelectedCategory);
-                        CrimesCategory.Add(SelectedCategory);
+                        var item = SelectedCrimeOnLV;
+                        MyCrimesCategory.Remove(item);
+                        CrimesCategory.Add(item.CrimesType);                        
+                        Crime.UserCrimesCategory.Remove(Crime.UserCrimesCategory.FirstOrDefault(i => i.CrimesTypeId == item.CrimesTypeId));
+
                         SelectedCategory = null;
                     }
                 });
@@ -191,10 +229,21 @@ namespace ArmyClient.ViewModel.UserCrimes
             get
             {
                 return new DelegateCommand(obj =>
-                {   
-                    MyCrimesCategory.Add(SelectedCategory);
-                    CrimesCategory.Remove(SelectedCategory);
-                    SelectedCategory = null;
+                {
+
+
+                    if (SelectedCategory != null)
+                    {
+                        var item = SelectedCategory;
+
+                        MyCrimesCategory.Add(new UserCrimesCategory() { CrimesTypeId = item.Id, CrimesType = item });
+                        CrimesCategory.Remove(SelectedCategory);
+                        Crime.UserCrimesCategory.Add(new UserCrimesCategory() { CrimesTypeId = item.Id });
+                        //Crime.UserCrimesCategory.Add(new UserCrimesCategory() { CrimesTypeId = SelectedCategory.Id });
+
+                        SelectedCategory = null;
+                    }
+                  
                 });
             }
         }
@@ -206,17 +255,19 @@ namespace ArmyClient.ViewModel.UserCrimes
             {
                 return new DelegateCommand(obj =>
                 {
-                    OpenFileDialog openFileDialog = new OpenFileDialog();
-                    openFileDialog.Filter = "Файлы изображений (*.jpg, *.png)|*.jpg;*.png";
-
-                    if (openFileDialog.ShowDialog() == true)
+                    if (Crime != null)
                     {
-                        string FilePath = openFileDialog.FileName; // Путь файла изображения
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                        openFileDialog.Filter = "Файлы изображений (*.jpg, *.png)|*.jpg;*.png";
 
-                        ImageBytes = ImageLogic.GetImageBinary(FilePath); // Изображение в бинарном формате
-                        Crime.Photo = ImageBytes;
+                        if (openFileDialog.ShowDialog() == true)
+                        {
+                            string FilePath = openFileDialog.FileName; // Путь файла изображения
+
+                            ImageBytes = ImageLogic.GetImageBinary(FilePath); // Изображение в бинарном формате
+                            Crime.Photo = ImageBytes;
+                        }
                     }
-
                 });
             }
         }
@@ -282,7 +333,7 @@ namespace ArmyClient.ViewModel.UserCrimes
             this.user = user;
             this.selectedSocialNetwork = selectedSocialNetwork;
             ImageBytes = null;
-            MyCrimesCategory = new ObservableCollection<CrimesType>();
+            MyCrimesCategory = new ObservableCollection<UserCrimesCategory>();
 
             // Загружаем данные
             LoadData();

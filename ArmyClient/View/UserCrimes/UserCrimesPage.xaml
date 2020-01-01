@@ -93,7 +93,7 @@
                             <Button Command="{Binding AddCategory}" Grid.Column="1" Margin="5" Content="+" FontSize="18"/>
                         </Grid>
                     </StackPanel>
-                    <ListView SelectedItem="{Binding SelectedCrimeOnLV}" DisplayMemberPath="Name" ItemsSource="{Binding MyCrimesCategory}" DockPanel.Dock="Top">
+                    <ListView SelectedItem="{Binding SelectedCrimeOnLV}" DisplayMemberPath="CrimesType.Name" ItemsSource="{Binding MyCrimesCategory}" DockPanel.Dock="Top">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseRightButtonUp">
                                 <i:InvokeCommandAction Command="{Binding RemoveCrimesCategory}" />

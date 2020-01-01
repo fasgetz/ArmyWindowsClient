@@ -59,9 +59,26 @@ namespace ArmyClient.LogicApp.Realisation
                 {
                     using (db = provider.GetProvider())
                     {
-                        db.Entry(crime).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
 
+                        //db.Entry(crime).State = System.Data.Entity.EntityState.Modified;
+                        //db.Entry(crime).Property(i => i.UserCrimesCategory).IsModified = true;
+
+                        // Получаем список категорий из БД, которые есть у нарушения
+                        var items = db.UserCrimesCategory.Where(i => i.UserCrimesId == crime.Id).ToList();
+                        //items.ForEach(s => s.Id = crime.Id);
+
+                        db.UserCrimesCategory.RemoveRange(items);
+
+                        // Далее необходимо вставить айдишники
+                        var sss = crime.UserCrimesCategory.ToList();
+                        sss.ForEach(s => { s.UserCrimesId = crime.Id; s.Id = 0; s.UserCrimes = null; s.CrimesType = null; });
+                        //crime.UserCrimesCategory.ToList().ForEach(s => s.Id = crime.Id);
+
+                        db.UserCrimesCategory.AddRange(sss);
+
+                        db.Entry(crime).State = System.Data.Entity.EntityState.Modified;
+
+                        db.SaveChanges();
                         return true;
                     }
                 }
@@ -86,7 +103,7 @@ namespace ArmyClient.LogicApp.Realisation
                 {
                     using (db = provider.GetProvider())
                     {
-                        return db.UserCrimes.Where(i => i.IdSocialNetworkUser == ID).ToList();
+                        return db.UserCrimes.Include("UserCrimesCategory.CrimesType").Where(i => i.IdSocialNetworkUser == ID).ToList();
                     }
                 }
                 catch (Exception)
