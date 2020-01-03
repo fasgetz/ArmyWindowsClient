@@ -15,7 +15,7 @@ namespace ConsoleTest
 {
     class Program
     {
-
+        
         /// <summary>
         /// Искать друзей, у которых есть воинские части
         /// </summary>
