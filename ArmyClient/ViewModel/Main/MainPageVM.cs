@@ -340,6 +340,16 @@ namespace ArmyClient.ViewModel.Main
             set
             {
                 _SelectedSoldierUnit = value;
+
+                if (value == null)
+                    user.UserSoldierService = null;
+                else
+                    user.UserSoldierService = new List<UserSoldierService>()
+                    {
+                        new UserSoldierService(){ IdSoldierUnit = value.Id}                    
+                    };
+
+
                 OnPropertyChanged("SelectedSoldierUnit");
             }
         }

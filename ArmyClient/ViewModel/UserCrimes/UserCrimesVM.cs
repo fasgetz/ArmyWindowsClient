@@ -331,7 +331,7 @@ namespace ArmyClient.ViewModel.UserCrimes
         public UserCrimesVM(Model.Users user, SocialNetworkUser selectedSocialNetwork)
         {
             this.user = user;
-            this.selectedSocialNetwork = selectedSocialNetwork;
+            this.selectedSocialNetwork = selectedSocialNetwork;            
             ImageBytes = null;
             MyCrimesCategory = new ObservableCollection<UserCrimesCategory>();
 

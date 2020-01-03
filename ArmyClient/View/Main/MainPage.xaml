@@ -55,6 +55,7 @@
                 <ComboBox ItemsSource="{Binding CitiesBirthCountry}" SelectedItem="{Binding SelectedCityBirth}"  DisplayMemberPath="Name" md:HintAssist.Hint="Город рождения" />
                 <ComboBox SelectedItem="{Binding SelectedCountryUS}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" md:HintAssist.Hint="Страна проживания" />
                 <ComboBox ItemsSource="{Binding CitiesResidence}" SelectedItem="{Binding SelectedCityResidence}"  DisplayMemberPath="Name" md:HintAssist.Hint="Город проживания" />
+                <ComboBox ItemsSource="{Binding SoldierUnits}" SelectedItem="{Binding SelectedSoldierUnit}"  DisplayMemberPath="Name" md:HintAssist.Hint="Воинская часть" />
                 <TextBox Text="{Binding user.AddressResidence}" md:HintAssist.Hint="Адрес"/>
                 <ComboBox md:HintAssist.Hint="Социальный статус" ItemsSource="{Binding SocStatuses}" SelectedItem="{Binding SelectedSocStatus}" DisplayMemberPath="Name" />
                 <!--<ComboBox ItemsSource="{Binding SoldierUnits}" DisplayMemberPath="GetSU" md:HintAssist.Hint="Воинская часть" />-->
@@ -179,7 +180,7 @@
                         <DataGridTextColumn Width="5*" Header="ФИО" Binding="{Binding GetFIO}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                         <DataGridTextColumn Width="4*" Header="Страна, город" Binding="{Binding GetCountryCity}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                         <DataGridTextColumn Width="4*" Header="Военная служба" Binding="{Binding GetUS}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
-                        <DataGridTextColumn Width="3*" Header="Нарушений" Binding="{Binding CrimesCount}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
+                        <DataGridTextColumn Width="3*" Header="Фотографий" Binding="{Binding CrimesCount}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

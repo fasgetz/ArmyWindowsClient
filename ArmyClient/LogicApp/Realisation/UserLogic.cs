@@ -97,6 +97,9 @@ namespace ArmyClient.LogicApp.Realisation
                     //var users = db.Users.Include("UserSoldierService").Include("UserCrimes").Include("City1.Countries").Where(i => i.City1 != null);
 
                     //var test = users.ToList();
+                    short? IdSoldUnit = 0;
+                    if (user.UserSoldierService.FirstOrDefault() != null)
+                        IdSoldUnit = user.UserSoldierService.FirstOrDefault().IdSoldierUnit;
 
                     //var a = test;
                     var users = (from item in (from vm in db.Users.Include("UserSoldierService").Include("SocialNetworkUser.UserCrimes").Include("City1.Countries")
@@ -109,6 +112,9 @@ namespace ArmyClient.LogicApp.Realisation
                                                  ((user.City.CountryId != null) ? vm.City.CountryId == user.City.CountryId : vm.City.CountryId != 0) &&
                                                  // Страна проживания
                                                  ((user.City1.CountryId != null) ? vm.City1.CountryId == user.City1.CountryId : vm.City1.CountryId != 0) &&
+                                                 // Воинская часть    
+                                                 (IdSoldUnit != 0 ? vm.UserSoldierService.FirstOrDefault(i => i.IdSoldierUnit == IdSoldUnit).IdSoldierUnit == IdSoldUnit : true) &&
+                                                 //(user.UserSoldierService.FirstOrDefault() != null ? vm.UserSoldierService.Where(i => i.IdSoldierUnit == user.UserSoldierService.FirstOrDefault().IdSoldierUnit) :  vm.UserSoldierService.FirstOrDefault() != null)&&
                                                  // Город рождения
                                                  (user.CityBirth_Id != null ? vm.CityBirth_Id == user.CityBirth_Id : vm.CityBirth_Id != 0) &&
                                                  // Город текущего проживания
@@ -157,12 +163,10 @@ namespace ArmyClient.LogicApp.Realisation
                                      //CrimesCount = item.SocialNetworkUser.Where(i => i.UserCrimes.Count > 0).Sum(i => i.UserCrimes.Count)
                                      //UserCrimes = item.UserCrimes
                                  }); ;
-                    
-                    //foreach (var item in users.ToList())
-                    //{
-                    //    item.SocialNetworkUser.Where(i => i.UserCrimes.Count > 0).Sum(i => i.UserCrimes.Count);
-                    //}
+                    //user.UserSoldierService.
+                    //var items = db.UserSoldierService.Where(i => i.UserSoldierService.Intersect(user.UserSoldierService).Any()).ToList();
 
+                    //int a = 5;
 
                     return users.ToList();
                 }
