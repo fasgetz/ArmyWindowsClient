@@ -295,9 +295,31 @@ namespace ConsoleTest
             });
         }
 
+ 
+
+        static void Main()
+        {
+            Console.WriteLine("Старт");
+
+            MyApiVK api = new MyApiVK();
+            token = api.GetToken("89114876557", "Simplepass19");
+            MyMethod(token, 58186231);
+            //SearchUnitSoldier(token, 11137217);
+            //Parallel.For(1, 10, Factorial);
+
+
+            Console.WriteLine("Завершение работы!");
+            Console.ReadKey();
+        }
+
+        static void Display()
+        {
+            Console.WriteLine($"Выполняется задача {Task.CurrentId}");
+            Thread.Sleep(5000);
+        }
+
         static void Factorial(int x)
         {
-
             int result = 1;
 
             for (int i = 1; i <= x; i++)
@@ -309,62 +331,64 @@ namespace ConsoleTest
             Thread.Sleep(3000);
         }
 
-        static void Main()
+
+        /// <summary>
+        /// Искать друзей, у которых есть воинские части
+        /// </summary>
+        /// <param name="UserID">айди пользователя</param>
+        static async void MyMethod(VkApi token, int UserID)
         {
-            Console.WriteLine("Старт");
-
-            MyApiVK api = new MyApiVK();
-            token = api.GetToken("89114876557", "Simplepass19");
-            SearchUnitSoldier(token, 11137217);
-
-
-
-            Console.WriteLine("end!");
-            Console.ReadKey();
-
-
-
-
-
-            //// Токен
-            //MyApiVK api = new MyApiVK();
-            //token = api.GetToken("89114876557", "Simplepass19");
-
-            //SearchUnitSoldier(token, 252766755);
-
-            //Thread[] threads = new Thread[Environment.ProcessorCount];
-
-            //for (int i = 0; i < threads.Length; i++)
-            //{
-            //    threads[i] = new Thread(new ThreadStart(startThread));
-            //    threads[i].Start();
-            //}
-
-
-
-        }
-
-        private static string[] bla = new string[] { "", "", "", "", "", "", "", "", "", "", "", "" };
-        private static IEnumerator tmp = bla.GetEnumerator();
-
-        private static void startThread()
-        {
-            bool exit = false;
-            do
+            await Task.Run(() =>
             {
-                string workstr;
-                lock (tmp)
+                friends = token.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams()
                 {
-                    if (tmp.MoveNext())
+                    UserId = UserID,
+                    Count = 10000,
+                    Fields = ProfileFields.Military
+                }).ToArray();
+
+                void test(int s)
+                {
+
+                    for (int i = s * 5; i < (s + 1) * 5; i++)
                     {
-                        workstr = tmp.Current as string;
-                        Console.WriteLine(workstr);
+                        // Инфа о юзере
+                        var user = token.Users.Get(new long[]
+                        {
+                                friends[i].Id
+                        }, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
+
+                        Console.Write($"{i}) Выполняется задача {Task.CurrentId} ");
+
+                        // Если такого юзера нашли, то выведи в консоль и запиши его в файлик
+                        if (user.Military != null)
+                            Console.WriteLine($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
+                        else
+                            Console.WriteLine($"У {user.Id} нет В/Ч");
+
+
                     }
-                    else
-                        exit = true;
+
+
+                    //// Инфа о юзере
+                    //var user = token.Users.Get(new long[]
+                    //{
+                    //        myuser.Id
+                    //}, VkNet.Enums.Filters.ProfileFields.All).FirstOrDefault();
+
+                    //// Если такого юзера нашли, то выведи в консоль и запиши его в файлик
+                    //if (user.Military != null)
+                    //    Console.WriteLine($"{user.Id} {user.FirstName} {user.LastName} {user.Country?.Title} {user.City?.Title} {user.Military?.Unit}");
+                    //else
+                    //    Console.WriteLine($"У {user.Id} нет В/Ч");
                 }
-                // обработка строки
-            } while (!exit);
+
+                //ParallelLoopResult result = Parallel.ForEach<VkNet.Model.User>(friends, test);
+
+                Parallel.For(0, friends.Length / 5, test);
+
+                Console.WriteLine("end");
+            });
         }
 
 
