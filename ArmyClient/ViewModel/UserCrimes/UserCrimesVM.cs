@@ -2,6 +2,7 @@
 using ArmyClient.Model;
 using ArmyClient.ViewModel.Helpers;
 using ArmyClient.ViewModel.Users;
+using ArmyVkAPI;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VkNet.Model;
 
 namespace ArmyClient.ViewModel.UserCrimes
 {
@@ -17,6 +19,9 @@ namespace ArmyClient.ViewModel.UserCrimes
     {
 
         #region Свойства
+
+        // Апи для работы с ВК
+        private MyApiVK api;
 
         // Выбранный крайм в списке
         private UserCrimesCategory _SelectedCrimeOnLV;
@@ -337,8 +342,45 @@ namespace ArmyClient.ViewModel.UserCrimes
 
             // Загружаем данные
             LoadData();
+
+
+            //api.
+
         }
 
+        // Команда по автозагрузке иностранных друзей
+        public DelegateCommand autoload
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    Loads(189251970);
+                });
+            }
+        }
+
+        private async void Loads(int UserID)
+        {
+            await Task.Run(() =>
+            {
+                api = new MyApiVK();
+                api.Authorization("89114876557", "Simplepass19");
+
+                ForeignFriends = api.UserLogic.GetForeignFriends(UserID).ToList();
+            });
+        }
+
+        private List<User> _ForeignFriends;
+        public List<User> ForeignFriends
+        {
+            get => _ForeignFriends;
+            set
+            {
+                _ForeignFriends = value;
+                OnPropertyChanged("ForeignFriends");
+            }
+        }
 
     }
 }

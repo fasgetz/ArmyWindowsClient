@@ -74,9 +74,9 @@
                     <Button Grid.Column="1" Content="+"/>
                 </Grid>
                 <Border Margin="0 5" BorderBrush="Black" BorderThickness="0.7" Grid.Row="1">
-                    <ListView />
+                    <ListView DisplayMemberPath="FirstName" ItemsSource="{Binding ForeignFriends}" />
                 </Border>
-                <Button Grid.Row="2" Content="Авто"/>
+                <Button Command="{Binding autoload}" Grid.Row="2" Content="Авто загрузка"/>
             </Grid>
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
                 <Button Background="White" Command="{Binding AddCrimeImage}" Height="Auto" >
