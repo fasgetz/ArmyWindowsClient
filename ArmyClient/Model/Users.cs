@@ -37,7 +37,7 @@ namespace ArmyClient.Model
 
         public string GetCountryCity
         {
-            get => $"{City1?.Name}";
+            get => $"{CountryResidence?.Name}, {City1?.Name}";
 
         }
 
@@ -104,6 +104,14 @@ namespace ArmyClient.Model
         public int? CityBirth_Id { get; set; }
 
         public int? CurrentCityResience_Id { get; set; }
+
+        // Страна рождения
+        public virtual Countries CountryBirth { get; set; }
+        public byte? CountryBirth_Id { get; set; }
+
+        // Страна проживания
+        public virtual Countries CountryResidence { get; set; }
+        public byte? CountryResidence_Id { get; set; }
 
         public virtual City City { get; set; }
 

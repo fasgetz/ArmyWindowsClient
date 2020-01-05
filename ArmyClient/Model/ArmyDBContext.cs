@@ -10,6 +10,7 @@ namespace ArmyClient.Model
         public ArmyDBContext(string connectionstring)
             : base(connectionstring)
         {
+            
         }
 
         public virtual DbSet<City> City { get; set; }
@@ -25,73 +26,12 @@ namespace ArmyClient.Model
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<UserSoldierService> UserSoldierService { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+
+
+
+        protected override void OnModelCreating(DbModelBuilder builder)
         {
-            modelBuilder.Entity<City>()
-                .HasMany(e => e.Users)
-                .WithOptional(e => e.City)
-                .HasForeignKey(e => e.CityBirth_Id);
-
-            modelBuilder.Entity<City>()
-                .HasMany(e => e.Users1)
-                .WithOptional(e => e.City1)
-                .HasForeignKey(e => e.CurrentCityResience_Id);
-
-            modelBuilder.Entity<City>()
-                .HasMany(e => e.ForeignFriends)
-                .WithOptional(e => e.City)
-                .HasForeignKey(e => e.IdCity);
-
-            modelBuilder.Entity<City>()
-                .HasMany(e => e.SoldierUnit)
-                .WithOptional(e => e.City)
-                .HasForeignKey(e => e.IdCity);
-
-            modelBuilder.Entity<Countries>()
-                .HasMany(e => e.City)
-                .WithOptional(e => e.Countries)
-                .HasForeignKey(e => e.CountryId);
-
-            modelBuilder.Entity<SocialNetworkType>()
-                .HasMany(e => e.SocialNetworkUser)
-                .WithRequired(e => e.SocialNetworkType)
-                .HasForeignKey(e => e.SocialNetworkId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<SocialNetworkUser>()
-                .HasMany(e => e.UserCrimes)
-                .WithOptional(e => e.SocialNetworkUser)
-                .HasForeignKey(e => e.IdSocialNetworkUser)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<SocialStatuses>()
-                .HasMany(e => e.Users)
-                .WithOptional(e => e.SocialStatuses)
-                .HasForeignKey(e => e.SocialStatusID);
-
-            modelBuilder.Entity<SoldierUnit>()
-                .HasMany(e => e.UserSoldierService)
-                .WithOptional(e => e.SoldierUnit)
-                .HasForeignKey(e => e.IdSoldierUnit);
-
-            modelBuilder.Entity<UserCrimes>()
-                .Property(e => e.Description)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Users>()
-                .Property(e => e.Characteristic)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Users>()
-                .HasMany(e => e.SocialNetworkUser)
-                .WithRequired(e => e.Users)
-                .HasForeignKey(e => e.IdUser)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Users>()
-                .HasMany(e => e.UserSoldierService)
-                .WithOptional(e => e.Users)
-                .HasForeignKey(e => e.IdUser);
+            base.OnModelCreating(builder);
         }
     }
 }

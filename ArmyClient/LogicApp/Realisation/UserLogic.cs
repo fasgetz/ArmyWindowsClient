@@ -101,16 +101,30 @@ namespace ArmyClient.LogicApp.Realisation
                     if (user.UserSoldierService.FirstOrDefault() != null)
                         IdSoldUnit = user.UserSoldierService.FirstOrDefault().IdSoldierUnit;
 
+
+                    short? countryBirth = 0;
+                    if (user.CountryBirth != null)
+                        countryBirth = user.CountryBirth.Id;
+
+                    short? countryResidence = 0;
+                    if (user.CountryResidence != null)
+                        countryResidence = user.CountryResidence.Id;
+
                     //var a = test;
-                    var users = (from item in (from vm in db.Users.Include("UserSoldierService").Include("SocialNetworkUser.UserCrimes").Include("City1.Countries")
+                    var users = (from item in (from vm in db.Users.Include("UserSoldierService").Include("CountryBirth").Include("SocialNetworkUser.UserCrimes").Include("City1.Countries")
                                                where
+                                                 
                                                  (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
                                                  (!(string.IsNullOrEmpty(user.Family)) ? vm.Family.Contains(user.Family) : (string.IsNullOrEmpty(vm.Family) || !string.IsNullOrEmpty(vm.Family))) &&
                                                  (!(string.IsNullOrEmpty(user.Surname)) ? vm.Surname.Contains(user.Surname) : (string.IsNullOrEmpty(vm.Surname) || !string.IsNullOrEmpty(vm.Surname))) &&
                                                  ((user.DateBirth != null) ? vm.DateBirth == user.DateBirth : (vm.DateBirth >= new DateTime() || vm.DateBirth == null)) &&
                                                  // Страна рождения
+                                                 ((countryBirth != 0) ? vm.CountryBirth.Id == countryBirth : vm.CountryBirth.Id != 0) &&
+                                                 // Город рождения
                                                  ((user.City.CountryId != null) ? vm.City.CountryId == user.City.CountryId : vm.City.CountryId != 0) &&
                                                  // Страна проживания
+                                                 ((countryResidence != 0) ? vm.CountryResidence.Id == countryResidence : vm.CountryResidence.Id != 0) &&
+                                                 // Город проживания
                                                  ((user.City1.CountryId != null) ? vm.City1.CountryId == user.City1.CountryId : vm.City1.CountryId != 0) &&
                                                  // Воинская часть    
                                                  (IdSoldUnit != 0 ? vm.UserSoldierService.FirstOrDefault(i => i.IdSoldierUnit == IdSoldUnit).IdSoldierUnit == IdSoldUnit : true) &&
@@ -144,6 +158,7 @@ namespace ArmyClient.LogicApp.Realisation
                                                    Family = vm.Family,
                                                    Surname = vm.Surname,
                                                    City1 = vm.City1,
+                                                   CountryResidence = vm.CountryResidence,
                                                    Country = vm.City1.Countries.Name,
                                                    UserSoldierService = vm.UserSoldierService,
                                                    SocialNetworkUser = vm.SocialNetworkUser
@@ -158,6 +173,7 @@ namespace ArmyClient.LogicApp.Realisation
                                      Family = item.Family,
                                      Surname = item.Surname,
                                      City1 = item.City1,
+                                     CountryResidence = item.CountryResidence,
                                      UserSoldierService = item.UserSoldierService,
                                      SocialNetworkUser = db.SocialNetworkUser.Include("UserCrimes").Where(i => i.IdUser == item.Id).ToList()
                                      //CrimesCount = item.SocialNetworkUser.Where(i => i.UserCrimes.Count > 0).Sum(i => i.UserCrimes.Count)
@@ -165,6 +181,7 @@ namespace ArmyClient.LogicApp.Realisation
                                  }); ;
                     //user.UserSoldierService.
                     //var items = db.UserSoldierService.Where(i => i.UserSoldierService.Intersect(user.UserSoldierService).Any()).ToList();
+
 
                     //int a = 5;
 

@@ -118,31 +118,24 @@
     <Compile Include="LogicApp\Realisation\SocStatusesLogic.cs" />
     <Compile Include="LogicApp\Realisation\SoldierUnitsLogic.cs" />
     <Compile Include="LogicApp\Realisation\UserLogic.cs" />
-    <Compile Include="Migrations\201912311005544_EditUserCrime.cs" />
-    <Compile Include="Migrations\201912311005544_EditUserCrime.designer.cs">
-      <DependentUpon>201912311005544_EditUserCrime.cs</DependentUpon>
+    <Compile Include="Migrations\MSSQL\202001051413569_StartMigrations.cs" />
+    <Compile Include="Migrations\MSSQL\202001051413569_StartMigrations.designer.cs">
+      <DependentUpon>202001051413569_StartMigrations.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912311007151_EditUserCrime1.cs" />
-    <Compile Include="Migrations\201912311007151_EditUserCrime1.designer.cs">
-      <DependentUpon>201912311007151_EditUserCrime1.cs</DependentUpon>
+    <Compile Include="Migrations\MSSQL\202001051416083_AddCountryResidenceColumn.cs" />
+    <Compile Include="Migrations\MSSQL\202001051416083_AddCountryResidenceColumn.designer.cs">
+      <DependentUpon>202001051416083_AddCountryResidenceColumn.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912311008380_EditUserCrime2.cs" />
-    <Compile Include="Migrations\201912311008380_EditUserCrime2.designer.cs">
-      <DependentUpon>201912311008380_EditUserCrime2.cs</DependentUpon>
+    <Compile Include="Migrations\MSSQL\Configuration.cs" />
+    <Compile Include="Migrations\PostgreSQL\202001051216062_InitialCreate.cs" />
+    <Compile Include="Migrations\PostgreSQL\202001051216062_InitialCreate.designer.cs">
+      <DependentUpon>202001051216062_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912311011553_EditUserCrime3.cs" />
-    <Compile Include="Migrations\201912311011553_EditUserCrime3.designer.cs">
-      <DependentUpon>201912311011553_EditUserCrime3.cs</DependentUpon>
+    <Compile Include="Migrations\PostgreSQL\202001051217133_pg_1.cs" />
+    <Compile Include="Migrations\PostgreSQL\202001051217133_pg_1.designer.cs">
+      <DependentUpon>202001051217133_pg_1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912311012408_EditUserCrime4.cs" />
-    <Compile Include="Migrations\201912311012408_EditUserCrime4.designer.cs">
-      <DependentUpon>201912311012408_EditUserCrime4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912311015074_EditUserCrime5.cs" />
-    <Compile Include="Migrations\201912311015074_EditUserCrime5.designer.cs">
-      <DependentUpon>201912311015074_EditUserCrime5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\PostgreSQL\Configuration.cs" />
     <Compile Include="Model\ArmyDB.cs" />
     <Compile Include="Model\ArmyDBContext.cs" />
     <Compile Include="Model\City.cs" />
@@ -234,23 +227,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201912311005544_EditUserCrime.resx">
-      <DependentUpon>201912311005544_EditUserCrime.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\MSSQL\202001051413569_StartMigrations.resx">
+      <DependentUpon>202001051413569_StartMigrations.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912311007151_EditUserCrime1.resx">
-      <DependentUpon>201912311007151_EditUserCrime1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\MSSQL\202001051416083_AddCountryResidenceColumn.resx">
+      <DependentUpon>202001051416083_AddCountryResidenceColumn.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912311008380_EditUserCrime2.resx">
-      <DependentUpon>201912311008380_EditUserCrime2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\PostgreSQL\202001051216062_InitialCreate.resx">
+      <DependentUpon>202001051216062_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912311011553_EditUserCrime3.resx">
-      <DependentUpon>201912311011553_EditUserCrime3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912311012408_EditUserCrime4.resx">
-      <DependentUpon>201912311012408_EditUserCrime4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912311015074_EditUserCrime5.resx">
-      <DependentUpon>201912311015074_EditUserCrime5.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\PostgreSQL\202001051217133_pg_1.resx">
+      <DependentUpon>202001051217133_pg_1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -12,6 +12,8 @@ namespace ArmyClient.Model
         public Countries()
         {
             City = new HashSet<City>();
+            UsersBirthInCountry = new HashSet<Users>();
+            UsersResidence = new HashSet<Users>();
         }
 
         public byte Id { get; set; }
@@ -22,5 +24,13 @@ namespace ArmyClient.Model
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<City> City { get; set; }
+
+        // Список пользователей, родившихся в стране
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Users> UsersBirthInCountry { get; set; }
+
+        // Список пользователей, проживающих в стране
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Users> UsersResidence { get; set; }
     }
 }

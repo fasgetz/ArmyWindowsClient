@@ -1,4 +1,4 @@
-﻿namespace ArmyClient.Migrations
+﻿namespace ArmyClient.Migrations.MSSQL
 {
     using System;
     using System.Data.Entity;
@@ -10,6 +10,7 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            MigrationsDirectory = @"Migrations\MSSQL";
         }
 
         protected override void Seed(ArmyClient.Model.ArmyDB context)

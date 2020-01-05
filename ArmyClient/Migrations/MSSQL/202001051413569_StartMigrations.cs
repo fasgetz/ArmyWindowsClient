@@ -1,9 +1,9 @@
-﻿namespace ArmyClient.Migrations
+﻿namespace ArmyClient.Migrations.MSSQL
 {
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class EditUserCrime1 : DbMigration
+    public partial class StartMigrations : DbMigration
     {
         public override void Up()
         {

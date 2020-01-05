@@ -23,17 +23,11 @@ namespace ArmyClient.LogicApp.Realisation
         {
             return await Task.Run(() =>
             {
-                try
-                {
-                    using (db = db = provider.GetProvider())
-                    {
-                        return db.SocialNetworkType.ToList();
-                    }
-                        
-                }
-                catch (Exception)
-                {
-                    return null;
+                using (db = db = provider.GetProvider())
+                {                  
+                    var types = db.SocialNetworkType.ToList();
+    
+                    return types;
                 }
             });
 

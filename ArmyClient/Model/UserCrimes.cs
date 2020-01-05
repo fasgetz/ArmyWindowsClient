@@ -22,7 +22,7 @@ namespace ArmyClient.Model
 
         public DateTime? DateLoad { get; set; }
 
-        [Column(TypeName = "text")]
+        //[Column(TypeName = "text")]
         public string Description { get; set; }
 
         public DateTime DateEnty { get; set; }

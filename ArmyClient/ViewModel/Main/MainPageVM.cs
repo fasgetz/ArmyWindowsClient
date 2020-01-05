@@ -159,7 +159,13 @@ namespace ArmyClient.ViewModel.Main
             set
             {
                 _SelectedCountryUS = value;
-                LoadResidenceCities(value.Id); // Загружаем города
+
+                if (value != null)
+                {
+                    user.CountryBirth = new Countries() { Id = value.Id };
+                    LoadResidenceCities(value.Id); // Загружаем города
+                }
+                
 
                 //user.City1.CountryId = value.Id;
 
@@ -236,7 +242,12 @@ namespace ArmyClient.ViewModel.Main
             set
             {
                 _SelectedCountryBirth = value;
-                LoadBirthCities(value.Id);
+                if (value != null)
+                {
+                    user.CountryBirth = new Countries() { Id = value.Id };
+                    LoadBirthCities(value.Id);                    
+                }
+                
 
                 //user.City.CountryId = value.Id;
                 OnPropertyChanged("SelectedCountryBirth");

@@ -60,7 +60,14 @@
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0">
-                <Label Content="Иностранные друзья"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="Иностранные друзья"/>
+                <ListView Grid.Row="1"/>
+                <Button Grid.Row="2" Content="Авто"/>
             </Grid>
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
                 <Button Background="White" Command="{Binding AddCrimeImage}" Height="Auto" >

@@ -1,9 +1,9 @@
-﻿namespace ArmyClient.Migrations
+﻿namespace ArmyClient.Migrations.PostgreSQL
 {
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class EditUserCrime3 : DbMigration
+    public partial class pg_1 : DbMigration
     {
         public override void Up()
         {
