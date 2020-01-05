@@ -14,6 +14,7 @@ namespace ArmyClient.Model
             City = new HashSet<City>();
             UsersBirthInCountry = new HashSet<Users>();
             UsersResidence = new HashSet<Users>();
+            ForeignFriends = new HashSet<ForeignFriends>();
         }
 
         public byte Id { get; set; }
@@ -32,5 +33,9 @@ namespace ArmyClient.Model
         // Список пользователей, проживающих в стране
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Users> UsersResidence { get; set; }
+
+        // Список иностранных друзей пользователя
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ForeignFriends> ForeignFriends { get; set; }
     }
 }

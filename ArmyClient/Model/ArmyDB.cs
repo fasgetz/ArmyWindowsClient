@@ -51,6 +51,12 @@ namespace ArmyClient.Model
                 .WithOptional(e => e.CountryResidence)
                 .HasForeignKey(e => e.CountryResidence_Id);
 
+            // Иностранные друзья пользователя
+            modelBuilder.Entity<Countries>()
+                .HasMany(e => e.ForeignFriends)
+                .WithOptional(e => e.Country)
+                .HasForeignKey(e => e.CountryId);
+
             modelBuilder.Entity<SocialNetworkType>()
                 .HasMany(e => e.SocialNetworkUser)
                 .WithRequired(e => e.SocialNetworkType)

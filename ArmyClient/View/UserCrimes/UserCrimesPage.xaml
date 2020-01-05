@@ -55,18 +55,27 @@
         </Grid>
         <Grid Margin="5" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="9*"/>
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="8*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Content="Иностранные друзья"/>
-                <ListView Grid.Row="1"/>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label VerticalAlignment="Center" Content="Иностранные друзья"/>
+                    <Button Grid.Column="1" Content="+"/>
+                </Grid>
+                <Border Margin="0 5" BorderBrush="Black" BorderThickness="0.7" Grid.Row="1">
+                    <ListView />
+                </Border>
                 <Button Grid.Row="2" Content="Авто"/>
             </Grid>
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">

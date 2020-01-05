@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ArmyVkAPI">
+      <HintPath>..\..\ArmyApiVK\ArmyVkAPI\ArmyVkAPI\bin\Debug\ArmyVkAPI.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -125,6 +128,10 @@
     <Compile Include="Migrations\MSSQL\202001051416083_AddCountryResidenceColumn.cs" />
     <Compile Include="Migrations\MSSQL\202001051416083_AddCountryResidenceColumn.designer.cs">
       <DependentUpon>202001051416083_AddCountryResidenceColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202001051450029_AddCountryForeignFriendsColumn.cs" />
+    <Compile Include="Migrations\MSSQL\202001051450029_AddCountryForeignFriendsColumn.designer.cs">
+      <DependentUpon>202001051450029_AddCountryForeignFriendsColumn.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\MSSQL\Configuration.cs" />
     <Compile Include="Migrations\PostgreSQL\202001051216062_InitialCreate.cs" />
@@ -232,6 +239,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\MSSQL\202001051416083_AddCountryResidenceColumn.resx">
       <DependentUpon>202001051416083_AddCountryResidenceColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202001051450029_AddCountryForeignFriendsColumn.resx">
+      <DependentUpon>202001051450029_AddCountryForeignFriendsColumn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\PostgreSQL\202001051216062_InitialCreate.resx">
       <DependentUpon>202001051216062_InitialCreate.cs</DependentUpon>

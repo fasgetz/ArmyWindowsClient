@@ -34,6 +34,11 @@ namespace ArmyClient.Model
 
         public virtual City City { get; set; }
 
+        // Страна
+        public virtual Countries Country { get; set; }
+        public byte? CountryId { get; set; }
+
+
         public virtual SocialNetworkUser SocialNetworkUser { get; set; }
     }
 }
