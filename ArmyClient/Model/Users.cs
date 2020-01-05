@@ -46,10 +46,10 @@ namespace ArmyClient.Model
         {
             get
             {
-                if (UserSoldierService == null)
-                    return "Нет";
+                if (UserSoldierService.Count != 0)
+                    return "Да";
 
-                return "Да";
+                return "Нет";
             }
         }
 
