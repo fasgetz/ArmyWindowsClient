@@ -11,6 +11,13 @@ namespace ArmyClient.LogicApp.Interfaces
     {
 
         /// <summary>
+        /// Удаление крайма
+        /// </summary>
+        /// <param name="crime">Крайм</param>
+        /// <returns>Возвращает true, если успешно, иначе false</returns>
+        Task<bool> RemoveCrime(UserCrimes crime);
+
+        /// <summary>
         /// Загрузка типов преступлений
         /// </summary>
         /// <returns>Возвращаем список типов преступлений</returns>

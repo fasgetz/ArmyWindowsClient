@@ -2,9 +2,11 @@
 using ArmyClient.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ArmyClient.LogicApp.Realisation
 {
@@ -28,20 +30,51 @@ namespace ArmyClient.LogicApp.Realisation
         {
             return await Task.Run(() =>
             {
-                try
-                {
-                    using (db = provider.GetProvider())
-                    {
-                        db.UserCrimes.Add(crime);
-                        db.SaveChanges();
 
-                        return true;
-                    }
-                }
-                catch (Exception)
+                using (db = provider.GetProvider())
                 {
-                    return false;
+                    //crime.DateEnty = DateTime.Now;
+                    db.UserCrimes.Add(new UserCrimes() { IdSocialNetworkUser = crime.IdSocialNetworkUser, DateEnty = DateTime.Now });
+                    //db.UserCrimes.Add(new UserCrimes()
+                    //{
+                    //    DateEnty = DateTime.Now,
+                    //    IdSocialNetworkUser = crime.IdSocialNetworkUser,
+                    //    Photo = crime.Photo,
+                    //    Description = crime.Description,
+                    //    WebAddressPost = crime.WebAddressPost,
+                    //    UserCrimesCategory = crime.UserCrimesCategory
+                    //});
+                    //db.Entry(crime).State = System.Data.Entity.EntityState.Added;
+                    db.SaveChanges();
+
+                    return true;
                 }
+
+
+                //// Если необходимые поля введены, то добавь в бд, иначе выдай экзепшен
+                //if (!string.IsNullOrWhiteSpace(crime.WebAddressPost))
+                //    using (db = provider.GetProvider())
+                //    {
+                //        db.UserCrimes.Add(new UserCrimes()
+                //        {
+                //            DateEnty = DateTime.Now,
+                //            IdSocialNetworkUser = 3,
+                //            //Photo = crime.Photo,
+                //            //Description = crime.Description,
+                //            WebAddressPost = crime.WebAddressPost
+                //        });
+                //        db.SaveChanges();
+
+                //        return true;
+                //    }
+                //else
+                //{
+                //    new Exception("Введите необходимые поля");
+                //    return false;
+                //}
+                    
+
+                
             });
         }
 
@@ -133,6 +166,32 @@ namespace ArmyClient.LogicApp.Realisation
                 catch (Exception)
                 {
                     return null;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Удаление крайма
+        /// </summary>
+        /// <param name="crime">Крайм</param>
+        /// <returns>Возвращает true, если успешно, иначе false</returns>
+        public async Task<bool> RemoveCrime(UserCrimes crime)
+        {
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    using (db = provider.GetProvider())
+                    {
+                        db.UserCrimes.Remove(db.UserCrimes.FirstOrDefault(i => i.Id == crime.Id));
+                        db.SaveChanges();
+
+                        return true;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
             });
         }

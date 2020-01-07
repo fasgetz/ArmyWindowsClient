@@ -8,11 +8,21 @@ namespace ArmyClient.Model
 
     public partial class ForeignFriends
     {
+
+        #region Дополнительные свойства
+
+        public string GetFioCountry
+        {
+            get => $"{Name} {Family} - {Country?.Name}";
+        }
+
+        #endregion
+
+
         public int Id { get; set; }
 
         public int SocialNetworkUserID { get; set; }
 
-        [Required]
         [StringLength(60)]
         public string WebAddress { get; set; }
 

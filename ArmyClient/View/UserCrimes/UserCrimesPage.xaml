@@ -74,9 +74,9 @@
                     <Button Grid.Column="1" Content="+"/>
                 </Grid>
                 <Border Margin="0 5" BorderBrush="Black" BorderThickness="0.7" Grid.Row="1">
-                    <ListView DisplayMemberPath="FirstName" ItemsSource="{Binding ForeignFriends}" />
+                    <ListView DisplayMemberPath="GetFioCountry" ItemsSource="{Binding ForeignFriends}" />
                 </Border>
-                <Button Command="{Binding autoload}" Grid.Row="2" Content="Авто загрузка"/>
+                <Button IsEnabled="{Binding enabledLoadButton}" Command="{Binding autoload}" Grid.Row="2" Content="Авто загрузка"/>
             </Grid>
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
                 <Button Background="White" Command="{Binding AddCrimeImage}" Height="Auto" >
@@ -142,7 +142,7 @@
                 <ListView SelectedItem="{Binding MyCrime}" ItemsSource="{Binding Crimes}" >
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Удалить" Command="{Binding DeleteImage}"></MenuItem>
+                            <MenuItem Header="Удалить" Command="{Binding DeleteCrime}"></MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.ItemsPanel>
@@ -152,11 +152,11 @@
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Height="70" Width="70" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Stretch="Uniform" Source="{Binding Path=Photo}">
-
-                                </Image>
-                            </StackPanel>
+                            <Border BorderBrush="Black" BorderThickness="0.7">
+                                <StackPanel  Height="65" Width="65" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                    <Image Stretch="Uniform" Source="{Binding Path=Photo}" />
+                                </StackPanel>
+                            </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListView>

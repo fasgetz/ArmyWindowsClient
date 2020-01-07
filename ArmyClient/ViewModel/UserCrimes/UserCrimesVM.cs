@@ -8,8 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using VkNet.Model;
 
 namespace ArmyClient.ViewModel.UserCrimes
@@ -162,10 +162,18 @@ namespace ArmyClient.ViewModel.UserCrimes
 
         #region Вспомогательные методы
 
+        // Загрузка иностранных друзей
+        private async void LoadFF()
+        {
+            ForeignFriends = new ObservableCollection<ForeignFriends>(await logic.ForeignFriendsLogic.GetForeignFriends(selectedSocialNetwork.Id));
+        }
+
         private async void LoadData()
         {
             if (CrimesTypesAll == null)
                 CrimesTypesAll = await logic.CrimesLogic.LoadCrimesCategory();
+
+            
 
             Crimes = new ObservableCollection<Model.UserCrimes>(await logic.CrimesLogic.GetSocialNetworkCrimes(selectedSocialNetwork.Id));
         }
@@ -187,11 +195,12 @@ namespace ArmyClient.ViewModel.UserCrimes
         }
 
 
-        private async void AddCrimeDB()
+        private async void AddCrimeDB(Model.UserCrimes mycrime)
         {
 
             // Добавляем преступление в БД
-            bool added = await logic.CrimesLogic.AddCrime(Crime);
+            bool added = await logic.CrimesLogic.AddCrime(mycrime);
+            //var test = MyCrime;
 
             // Если успешно, то прогрузи
             if (added == true)
@@ -200,7 +209,28 @@ namespace ArmyClient.ViewModel.UserCrimes
 
             ImageBytes = null;
             Crime = null;
-            MyCrime = null;
+            //MyCrime = null;
+        }
+
+
+        private async void Delete()
+        {
+            if (MyCrime != null)
+            {
+                bool isDeleted = await logic.CrimesLogic.RemoveCrime(MyCrime);
+
+                // Загружает данные если удалено успешно
+                if (isDeleted)
+                {
+                    LoadData();
+
+                    MyCrime = null;
+                    ImageBytes = null;
+                    CrimesCategory = null;
+                    MyCrimesCategory = null;
+                }
+
+            }
         }
 
         #endregion
@@ -297,14 +327,20 @@ namespace ArmyClient.ViewModel.UserCrimes
             {
                 return new DelegateCommand(obj =>
                 {
-                    Crime = new Model.UserCrimes()
+
+
+
+                    var item = new Model.UserCrimes()
                     {
-                        DateEnty = DateTime.Now,
                         IdSocialNetworkUser = selectedSocialNetwork.Id
                     };
+                    //CrimesCategory = new ObservableCollection<CrimesType>(CrimesTypesAll);
+                    //MyCrimesCategory = new ObservableCollection<UserCrimesCategory>();
 
-                    //MyCrime = null;
-                    ImageBytes = null;
+                    AddCrimeDB(item);
+
+                    ////MyCrime = null;
+                    //ImageBytes = null;
                 });
             }
         }
@@ -320,7 +356,7 @@ namespace ArmyClient.ViewModel.UserCrimes
                     {
                         // Добавляем преступление в БД, если айди == 0, т.к. объект только создан
                         if (Crime.Id == 0)
-                            AddCrimeDB();
+                            AddCrimeDB(Crime);
 
                         // Иначе обновляем объект в БД
                         UpdateCrime();
@@ -330,23 +366,36 @@ namespace ArmyClient.ViewModel.UserCrimes
             }
         }
 
+        // Команда по удалению нарушения
+        public DelegateCommand DeleteCrime
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    Delete();
+                });
+            }
+        }
+
 
         #endregion
-        
+
         public UserCrimesVM(Model.Users user, SocialNetworkUser selectedSocialNetwork)
         {
             this.user = user;
             this.selectedSocialNetwork = selectedSocialNetwork;            
             ImageBytes = null;
             MyCrimesCategory = new ObservableCollection<UserCrimesCategory>();
-
+            
             // Загружаем данные
             LoadData();
-
-
-            //api.
-
+            // Загружаем иностранных друзей
+            LoadFF();
         }
+
+
+        #region Блок "иностранных друзей"
 
         // Команда по автозагрузке иностранных друзей
         public DelegateCommand autoload
@@ -355,24 +404,116 @@ namespace ArmyClient.ViewModel.UserCrimes
             {
                 return new DelegateCommand(obj =>
                 {
-                    Loads(189251970);
+
+                    // По типу социальной сети загрузить иностранных друзей
+                    switch (selectedSocialNetwork.SocialNetworkType.Id)
+                    {
+                        // Если ВК
+                        case (1):
+                            LoadForeignFriendsVK();
+                            break;
+                        default:
+                            // Отключить кнопку загрузки, т.к. нет соответствующей социальной сети
+                            enabledLoadButton = false;
+                            break;
+                    }
                 });
             }
         }
 
-        private async void Loads(int UserID)
+        private async void LoadForeignFriendsVK()
         {
             await Task.Run(() =>
             {
-                api = new MyApiVK();
-                api.Authorization("89114876557", "Simplepass19");
+                enabledLoadButton = false;
+                var vkfriends = new List<User>();
 
-                ForeignFriends = api.UserLogic.GetForeignFriends(UserID).ToList();
+                // Нужно выбрать только цифры из адреса вк
+                int UserID = 0;
+                int.TryParse(string.Join("", selectedSocialNetwork.WebAddress.Where(c => char.IsDigit(c))), out UserID);
+
+                // Если айди юзера указан, то загрузи
+                if (UserID != 0)
+                {                    
+                    api = new MyApiVK();
+                    api.Authorization("89114876557", "Simplepass19");
+
+                    // Сформировали список друзей
+                    vkfriends = api.UserLogic.GetForeignFriends(UserID).ToList();
+
+                    // Далее сравниваем. Есть ли необходимость добавления новых друзей и тп.
+                    if (ForeignFriends.Count != vkfriends.Count)
+                    {
+                        // Делаем перебор и сравниваем кого нету. Кого нет, тех добавляем
+                        foreach (var item in vkfriends)
+                        {
+                            var friend = ForeignFriends.Where(i => i.WebAddress == $"https://vk.com/id{item.Id}").FirstOrDefault();
+
+                            // Если друга не нашлось, то необходимо добавить в базу данных
+                            if (friend == null)
+                            {
+                                // Дату рождения парсим
+                                DateTime date;
+
+                                DateTime.TryParse(item.BirthDate, out date);
+
+
+                                // Добавляем друга
+                                friend = new Model.ForeignFriends()
+                                {
+                                    CountryId = (byte)item.Country?.Id,
+                                    Name = item.FirstName,
+                                    Family = item.LastName,
+                                    SocialNetworkUserID = selectedSocialNetwork.Id,
+                                    BirthDay = date,
+                                    WebAddress = $"https://vk.com/id{item.Id}"
+
+                                };
+
+                                // Добавляем друга
+                                logic.ForeignFriendsLogic.AddForeignFriend(friend);
+                            }
+                        }
+
+
+                        // Загружаем иностранных друзей после добавления
+                        LoadFF();
+                    }
+                    else
+                    {
+                        enabledLoadButton = false;
+                        MessageBox.Show("все уже загружены");
+                        return;
+                    }
+                        
+                }                
+
+                
+                enabledLoadButton = true;
             });
         }
 
-        private List<User> _ForeignFriends;
-        public List<User> ForeignFriends
+        //private async void AddFF(Model.ForeignFriends friend)
+        //{
+        //    bool isAdded = await logic.ForeignFriendsLogic.AddForeignFriend(friend);
+        //}
+
+
+
+        private bool _enabledLoadButton = true;
+        public bool enabledLoadButton
+        {
+            get => _enabledLoadButton;
+            set
+            {
+                _enabledLoadButton = value;
+                OnPropertyChanged("enabledLoadButton");
+            }
+        }
+
+        // Список иностранных друзей из БД
+        private ObservableCollection<ForeignFriends> _ForeignFriends;
+        public ObservableCollection<ForeignFriends> ForeignFriends
         {
             get => _ForeignFriends;
             set
@@ -381,6 +522,10 @@ namespace ArmyClient.ViewModel.UserCrimes
                 OnPropertyChanged("ForeignFriends");
             }
         }
+
+        //
+
+        #endregion
 
     }
 }

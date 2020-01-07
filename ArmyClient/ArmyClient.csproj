@@ -131,6 +131,7 @@
     <Compile Include="LogicApp\Interfaces\ICitiesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ICountriesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ICrimesLogic.cs" />
+    <Compile Include="LogicApp\Interfaces\IForeignFriendsLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ISocialNetworksLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ISocStatusesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ISoldierUnitsLogic.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="LogicApp\Realisation\CitiesLogic.cs" />
     <Compile Include="LogicApp\Realisation\CountriesLogic.cs" />
     <Compile Include="LogicApp\Realisation\CrimesLogic.cs" />
+    <Compile Include="LogicApp\Realisation\ForeignFriendsLogic.cs" />
     <Compile Include="LogicApp\Realisation\LogicApp.cs" />
     <Compile Include="LogicApp\Realisation\LogicProviderDB.cs" />
     <Compile Include="LogicApp\Realisation\SocialNetworksLogic.cs" />
@@ -155,6 +157,26 @@
     <Compile Include="Migrations\MSSQL\202001051450029_AddCountryForeignFriendsColumn.cs" />
     <Compile Include="Migrations\MSSQL\202001051450029_AddCountryForeignFriendsColumn.designer.cs">
       <DependentUpon>202001051450029_AddCountryForeignFriendsColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202001061007041_ChangeStringLengthCoutryName.cs" />
+    <Compile Include="Migrations\MSSQL\202001061007041_ChangeStringLengthCoutryName.Designer.cs">
+      <DependentUpon>202001061007041_ChangeStringLengthCoutryName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202001061008400_ChangeStringLengthCoutryName1.cs" />
+    <Compile Include="Migrations\MSSQL\202001061008400_ChangeStringLengthCoutryName1.Designer.cs">
+      <DependentUpon>202001061008400_ChangeStringLengthCoutryName1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202001070745284_RemoveRequiredWebAdressOnForgnFriends.cs" />
+    <Compile Include="Migrations\MSSQL\202001070745284_RemoveRequiredWebAdressOnForgnFriends.Designer.cs">
+      <DependentUpon>202001070745284_RemoveRequiredWebAdressOnForgnFriends.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202001070758365_RemoveRequiredWebAdressOnForgnFriends1.cs" />
+    <Compile Include="Migrations\MSSQL\202001070758365_RemoveRequiredWebAdressOnForgnFriends1.Designer.cs">
+      <DependentUpon>202001070758365_RemoveRequiredWebAdressOnForgnFriends1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202001070805228_RemoveRequiredWebAdressOnForgnFriends2.cs" />
+    <Compile Include="Migrations\MSSQL\202001070805228_RemoveRequiredWebAdressOnForgnFriends2.Designer.cs">
+      <DependentUpon>202001070805228_RemoveRequiredWebAdressOnForgnFriends2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\MSSQL\Configuration.cs" />
     <Compile Include="Migrations\PostgreSQL\202001051216062_InitialCreate.cs" />
@@ -266,6 +288,21 @@
     <EmbeddedResource Include="Migrations\MSSQL\202001051450029_AddCountryForeignFriendsColumn.resx">
       <DependentUpon>202001051450029_AddCountryForeignFriendsColumn.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202001061007041_ChangeStringLengthCoutryName.resx">
+      <DependentUpon>202001061007041_ChangeStringLengthCoutryName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202001061008400_ChangeStringLengthCoutryName1.resx">
+      <DependentUpon>202001061008400_ChangeStringLengthCoutryName1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202001070745284_RemoveRequiredWebAdressOnForgnFriends.resx">
+      <DependentUpon>202001070745284_RemoveRequiredWebAdressOnForgnFriends.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202001070758365_RemoveRequiredWebAdressOnForgnFriends1.resx">
+      <DependentUpon>202001070758365_RemoveRequiredWebAdressOnForgnFriends1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202001070805228_RemoveRequiredWebAdressOnForgnFriends2.resx">
+      <DependentUpon>202001070805228_RemoveRequiredWebAdressOnForgnFriends2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\PostgreSQL\202001051216062_InitialCreate.resx">
       <DependentUpon>202001051216062_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
@@ -304,7 +341,9 @@
     <Resource Include="Images\Logo_SocialNetworks\MyWorld_logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="LogicApp\NetLogic\" />
     <Folder Include="ViewModel\SoldierUnits\" />
+    <Folder Include="View\ForeignFriends\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets')" />

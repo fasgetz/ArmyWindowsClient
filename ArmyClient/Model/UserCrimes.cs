@@ -29,8 +29,7 @@ namespace ArmyClient.Model
 
         public bool IsCrime { get; set; }
 
-        // Адрес поста 
-        [Required]
+        // Адрес поста         
         public string WebAddressPost { get; set; }
 
         public virtual SocialNetworkUser SocialNetworkUser { get; set; }
