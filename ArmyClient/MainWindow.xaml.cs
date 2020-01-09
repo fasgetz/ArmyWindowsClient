@@ -33,7 +33,7 @@ namespace ArmyClient
 
             MyNavigation.navigation = myframe.NavigationService;
 
-            MyNavigation.navigation.Content = new MainPage();
+            MyNavigation.navigation.Content = new StartPage();
             //MyNavigation.navigation.Navigate(new AddUserPage());
             //myframe.Navigate(new AddUserPage());
 

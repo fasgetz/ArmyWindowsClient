@@ -128,6 +128,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="LogicApp\Helps\ImageLogic.cs" />
+    <Compile Include="LogicApp\Interfaces\ExtremistMaterials\IExtremistMaterialLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ICitiesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ICountriesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ICrimesLogic.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="LogicApp\Realisation\CitiesLogic.cs" />
     <Compile Include="LogicApp\Realisation\CountriesLogic.cs" />
     <Compile Include="LogicApp\Realisation\CrimesLogic.cs" />
+    <Compile Include="LogicApp\Realisation\ExtremistMaterials\ExtremistMaterialLogic.cs" />
     <Compile Include="LogicApp\Realisation\ForeignFriendsLogic.cs" />
     <Compile Include="LogicApp\Realisation\LogicApp.cs" />
     <Compile Include="LogicApp\Realisation\LogicProviderDB.cs" />
@@ -188,6 +190,8 @@
       <DependentUpon>202001051217133_pg_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\PostgreSQL\Configuration.cs" />
+    <Compile Include="ModelExtremistMaterials\ExtremistMaterialsDB.cs" />
+    <Compile Include="ModelExtremistMaterials\Materials.cs" />
     <Compile Include="Model\ArmyDB.cs" />
     <Compile Include="Model\ArmyDBContext.cs" />
     <Compile Include="Model\City.cs" />
@@ -203,6 +207,7 @@
     <Compile Include="Model\UserCrimesCategory.cs" />
     <Compile Include="Model\Users.cs" />
     <Compile Include="Model\UserSoldierService.cs" />
+    <Compile Include="ViewModel\ExtremistMaterial\DataBase\ExmDataBaseVM.cs" />
     <Compile Include="ViewModel\ForeignFriends\ForeignFriendsVM.cs" />
     <Compile Include="ViewModel\Helpers\DelegateCommand.cs" />
     <Compile Include="ViewModel\Helpers\MainVM.cs" />
@@ -211,6 +216,15 @@
     <Compile Include="ViewModel\UserCrimes\UserCrimesVM.cs" />
     <Compile Include="ViewModel\Users\AboutUserPageVM.cs" />
     <Compile Include="ViewModel\Users\AddUserPageVM.cs" />
+    <Compile Include="View\ExtremistMaterials\DataBase\ExmMatDataBasePage.xaml.cs">
+      <DependentUpon>ExmMatDataBasePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ExtremistMaterials\ExtremistMaterialsMainPage.xaml.cs">
+      <DependentUpon>ExtremistMaterialsMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ExtremistMaterials\Resoults\ResoultExmPage.xaml.cs">
+      <DependentUpon>ResoultExmPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ForeignFriends\ForeignFriendsPage.xaml.cs">
       <DependentUpon>ForeignFriendsPage.xaml</DependentUpon>
     </Compile>
@@ -219,6 +233,9 @@
     </Compile>
     <Compile Include="View\SoldierUnits\AddSoldierUnitPage.xaml.cs">
       <DependentUpon>AddSoldierUnitPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StartPage.xaml.cs">
+      <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserCrimes\CrimeContext.xaml.cs">
       <DependentUpon>CrimeContext.xaml</DependentUpon>
@@ -244,6 +261,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\ExtremistMaterials\DataBase\ExmMatDataBasePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ExtremistMaterials\ExtremistMaterialsMainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ExtremistMaterials\Resoults\ResoultExmPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ForeignFriends\ForeignFriendsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -253,6 +282,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SoldierUnits\AddSoldierUnitPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StartPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -349,7 +382,6 @@
     <Resource Include="Images\Logo_SocialNetworks\MyWorld_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="LogicApp\NetLogic\" />
     <Folder Include="ViewModel\SoldierUnits\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

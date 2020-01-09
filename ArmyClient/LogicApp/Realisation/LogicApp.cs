@@ -1,4 +1,6 @@
 ﻿using ArmyClient.LogicApp.Interfaces;
+using ArmyClient.LogicApp.Interfaces.ExtremistMaterials;
+using ArmyClient.LogicApp.Realisation.ExtremistMaterials;
 using ArmyClient.Model;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ namespace ArmyClient.LogicApp.Realisation
         internal ISocStatusesLogic SocStatusesLogic;
         internal ICrimesLogic CrimesLogic;
         internal IForeignFriendsLogic ForeignFriendsLogic;
+        internal IExtremistMaterialLogic ExtremistMaterialLogic;
 
         internal LogicApp()
         {
@@ -35,6 +38,7 @@ namespace ArmyClient.LogicApp.Realisation
             citiesLogic = new CitiesLogic(provider);
             CrimesLogic = new CrimesLogic(provider);
             ForeignFriendsLogic = new ForeignFriendsLogic(provider);
+            ExtremistMaterialLogic = new ExtremistMaterialLogic();
         }
     }
 }
