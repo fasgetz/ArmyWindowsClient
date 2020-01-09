@@ -51,11 +51,49 @@ namespace ArmyClient.LogicApp.Realisation
         {
             return await Task.Run(() =>
             {
+                using (db = provider.GetProvider())
+                {
+                    try
+                    {
+                        // Отбираем в выборке нужные поля (без изображения), чтобы не нагружать лишний раз
+                        var foreignfriends = (from friend in db.ForeignFriends.Include("Country")
+                                              where friend.SocialNetworkUserID == ID
+                                              select friend).ToList()
+                                             .Select(x => new ForeignFriends() 
+                                                { 
+                                                    Id = x.Id, 
+                                                    Name = x.Name,
+                                                    Family = x.Family,
+                                                    Surname = x.Surname,
+                                                    SocialNetworkUserID = x.SocialNetworkUserID,
+                                                    Country = x.Country
+                                                }).ToList();
+
+                        return foreignfriends;
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                }
+            });
+        }
+
+
+        /// <summary>
+        /// Получить иностранного друга по айди
+        /// </summary>
+        /// <param name="ID">Айди пользователя</param>
+        /// <returns>Иностранный друг</returns>
+        public async Task<ForeignFriends> GetOneForeignFriend(int ID)
+        {
+            return await Task.Run(() =>
+            {
                 try
                 {
                     using (db = provider.GetProvider())
                     {
-                        return db.ForeignFriends.Include("Country").Where(i => i.SocialNetworkUserID == ID).ToList();
+                        return db.ForeignFriends.Include("Country").FirstOrDefault(i => i.Id == ID);
                     }
                 }
                 catch (Exception)

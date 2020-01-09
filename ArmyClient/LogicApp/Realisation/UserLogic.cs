@@ -112,8 +112,7 @@ namespace ArmyClient.LogicApp.Realisation
 
                     //var a = test;
                     var users = (from item in (from vm in db.Users.Include("UserSoldierService").Include("CountryBirth").Include("SocialNetworkUser.UserCrimes").Include("City1.Countries")
-                                               where
-                                                 
+                                               where                                                 
                                                  (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
                                                  (!(string.IsNullOrEmpty(user.Family)) ? vm.Family.Contains(user.Family) : (string.IsNullOrEmpty(vm.Family) || !string.IsNullOrEmpty(vm.Family))) &&
                                                  (!(string.IsNullOrEmpty(user.Surname)) ? vm.Surname.Contains(user.Surname) : (string.IsNullOrEmpty(vm.Surname) || !string.IsNullOrEmpty(vm.Surname))) &&

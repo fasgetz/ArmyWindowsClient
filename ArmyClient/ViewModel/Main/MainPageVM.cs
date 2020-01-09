@@ -511,7 +511,7 @@ namespace ArmyClient.ViewModel.Main
         public MainPageVM()
         {
             // Выделяем память
-            logic = new LogicApp.Realisation.LogicApp();
+            //logic = new LogicApp.Realisation.LogicApp();
             //SelectedType = new SocialNetworkType();
             MySocNetTypes = new ObservableCollection<SocialNetworkUser>();
             user = new Model.Users() { City1 = new City(), City = new City() };

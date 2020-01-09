@@ -1,4 +1,5 @@
 ﻿using ArmyClient.Model;
+using ArmyClient.View.ForeignFriends;
 using ArmyClient.View.UserCrimes;
 using ArmyClient.View.Users;
 using System;
@@ -32,6 +33,11 @@ namespace ArmyClient.ViewModel.Helpers
         public static void GoToCrimes(Model.Users user, SocialNetworkUser selectedSocialNetwork)
         {
             navigation.Navigate(new UserCrimesPage(user, selectedSocialNetwork));
+        }
+
+        public static void GoToForeignFriendPage(Model.ForeignFriends friend)
+        {
+            navigation.Navigate(new ForeignFriendsPage(friend));
         }
     }
 }

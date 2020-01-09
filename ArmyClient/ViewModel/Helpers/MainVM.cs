@@ -13,10 +13,21 @@ namespace ArmyClient.ViewModel.Helpers
         // Логика программы
         protected LogicApp.Realisation.LogicApp logic;
 
+        // Команда перехода на страницу назаад
+        public DelegateCommand GoBackPage
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    MyNavigation.GoBack();
+                });
+            }
+        }
 
         public MainVM()
         {
-
+            logic = new LogicApp.Realisation.LogicApp();
         }
 
         #region Реализация интерфейса INotifyPropertyChanged

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using VkNet.Model;
@@ -165,7 +166,11 @@ namespace ArmyClient.ViewModel.UserCrimes
         // Загрузка иностранных друзей
         private async void LoadFF()
         {
-            ForeignFriends = new ObservableCollection<ForeignFriends>(await logic.ForeignFriendsLogic.GetForeignFriends(selectedSocialNetwork.Id));
+            //ForeignFriends = new ObservableCollection<Model.ForeignFriends>();
+
+            //ForeignFriends.Add(new Model.ForeignFriends() { Id = 1, Name = "An", Family = "set" });
+            //await logic.ForeignFriendsLogic.GetForeignFriends(selectedSocialNetwork.Id);
+            ForeignFriends = new ObservableCollection<Model.ForeignFriends>(await logic.ForeignFriendsLogic.GetForeignFriends(selectedSocialNetwork.Id));
         }
 
         private async void LoadData()
@@ -387,7 +392,7 @@ namespace ArmyClient.ViewModel.UserCrimes
             this.selectedSocialNetwork = selectedSocialNetwork;            
             ImageBytes = null;
             MyCrimesCategory = new ObservableCollection<UserCrimesCategory>();
-            
+
             // Загружаем данные
             LoadData();
             // Загружаем иностранных друзей
@@ -396,6 +401,32 @@ namespace ArmyClient.ViewModel.UserCrimes
 
 
         #region Блок "иностранных друзей"
+
+        private Model.ForeignFriends _SelectedForeignFriend;
+        public Model.ForeignFriends SelectedForeignFriend
+        {
+            get => _SelectedForeignFriend;
+            set
+            {
+                _SelectedForeignFriend = value;
+                OnPropertyChanged("SelectedForeignFriend");
+            }
+        }
+
+        // Команда перехода на страницу иностранного друга
+        public DelegateCommand GoToForeignFriendPage
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (SelectedForeignFriend != null)
+                    {
+                        MyNavigation.GoToForeignFriendPage(SelectedForeignFriend);
+                    }
+                });
+            }
+        }
 
         // Команда по автозагрузке иностранных друзей
         public DelegateCommand autoload
@@ -444,6 +475,9 @@ namespace ArmyClient.ViewModel.UserCrimes
                     // Далее сравниваем. Есть ли необходимость добавления новых друзей и тп.
                     if (ForeignFriends.Count != vkfriends.Count)
                     {
+                        // Веб клиент для загрузки изображений
+                        webclient = new WebClient();
+
                         // Делаем перебор и сравниваем кого нету. Кого нет, тех добавляем
                         foreach (var item in vkfriends)
                         {
@@ -466,7 +500,8 @@ namespace ArmyClient.ViewModel.UserCrimes
                                     Family = item.LastName,
                                     SocialNetworkUserID = selectedSocialNetwork.Id,
                                     BirthDay = date,
-                                    WebAddress = $"https://vk.com/id{item.Id}"
+                                    WebAddress = $"https://vk.com/id{item.Id}",
+                                    Photo = LoadImage(item.Photo400Orig?.AbsoluteUri) // Загружаем фотографию
 
                                 };
 
@@ -493,6 +528,16 @@ namespace ArmyClient.ViewModel.UserCrimes
             });
         }
 
+        WebClient webclient;
+        // Загрузка изображения
+        private byte[] LoadImage(string url)
+        {
+            byte[] imageData = null;
+            if (url != null)
+                imageData = webclient.DownloadData(url);
+
+            return imageData;
+        }
         //private async void AddFF(Model.ForeignFriends friend)
         //{
         //    bool isAdded = await logic.ForeignFriendsLogic.AddForeignFriend(friend);
@@ -512,8 +557,8 @@ namespace ArmyClient.ViewModel.UserCrimes
         }
 
         // Список иностранных друзей из БД
-        private ObservableCollection<ForeignFriends> _ForeignFriends;
-        public ObservableCollection<ForeignFriends> ForeignFriends
+        private ObservableCollection<Model.ForeignFriends> _ForeignFriends;
+        public ObservableCollection<Model.ForeignFriends> ForeignFriends
         {
             get => _ForeignFriends;
             set

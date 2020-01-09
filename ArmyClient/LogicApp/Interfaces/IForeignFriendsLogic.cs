@@ -28,5 +28,13 @@ namespace ArmyClient.LogicApp.Interfaces
         /// <param name="ID">Айди пользователя</param>
         /// <returns>Список иностранных друзей</returns>
         Task<List<ForeignFriends>> GetForeignFriends(int ID);
+
+
+        /// <summary>
+        /// Получить иностранного друга по айди
+        /// </summary>
+        /// <param name="ID">Айди пользователя</param>
+        /// <returns>Иностранный друг</returns>
+        Task<ForeignFriends> GetOneForeignFriend(int ID);
     }
 }
