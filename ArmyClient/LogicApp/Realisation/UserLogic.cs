@@ -206,6 +206,25 @@ namespace ArmyClient.LogicApp.Realisation
             });
         }
 
+        /// <summary>
+        /// Асинхронная версия сохранения пользователя
+        /// </summary>
+        /// <param name="user">Пользователь</param>
+        /// <returns>Возвращает true, если успешно</returns>
+        public async Task<bool> SaveUserAsync(Users user)
+        {
+            return await Task.Run(() =>
+            {
+                using (db = provider.GetProvider())
+                {
+                    db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+
+                    return true;
+                }
+            });
+        }
+
         #endregion
 
 

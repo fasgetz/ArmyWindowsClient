@@ -51,5 +51,13 @@ namespace ArmyClient.LogicApp.Interfaces
 
 
         #endregion
+
+
+        /// <summary>
+        /// Асинхронная версия сохранения пользователя
+        /// </summary>
+        /// <param name="user">Пользователь</param>
+        /// <returns>Возвращает true, если успешно</returns>
+        Task<bool> SaveUserAsync(Users user);
     }
 }

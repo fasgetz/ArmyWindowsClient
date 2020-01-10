@@ -63,12 +63,30 @@ namespace ArmyClient.ViewModel.Users
             }
         }
 
+        // Команда вернуться назад
+        public DelegateCommand SaveUser
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    SaveUserAsync();                    
+                });
+            }
+        }
 
         #endregion
 
         #region Вспомогательные методы
 
+        private async void SaveUserAsync()
+        {
+            bool saved = await logic.userLogic.SaveUserAsync(user);
 
+            // Если сохранение успешно в бд, то перейди на главную странмцу
+            if (saved == true)
+                MyNavigation.GoBack();
+        }
 
         private async void GetUser(int UserID)
         {
