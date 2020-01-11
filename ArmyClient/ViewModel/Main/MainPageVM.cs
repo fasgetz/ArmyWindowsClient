@@ -1,13 +1,16 @@
 ﻿using ArmyClient.LogicApp.Helps;
 using ArmyClient.Model;
 using ArmyClient.ViewModel.Helpers;
+using ArmyVkAPI;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ArmyClient.ViewModel.Main
 {
@@ -162,7 +165,7 @@ namespace ArmyClient.ViewModel.Main
 
                 if (value != null)
                 {
-                    user.CountryBirth = new Countries() { Id = value.Id };
+                    user.CountryResidence_Id = value.Id;
                     LoadResidenceCities(value.Id); // Загружаем города
                 }
                 
@@ -244,7 +247,7 @@ namespace ArmyClient.ViewModel.Main
                 _SelectedCountryBirth = value;
                 if (value != null)
                 {
-                    user.CountryBirth = new Countries() { Id = value.Id };
+                    user.CountryBirth_Id = value.Id;                    
                     LoadBirthCities(value.Id);                    
                 }
                 
@@ -438,7 +441,105 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
+        // Команда парсинга данных из социальной сети
+        public DelegateCommand ParseData
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (SelectedSocialNetwork != null)
+                    {
+                        switch (SelectedSocialNetwork.SocialNetworkId)
+                        {
+                            // Если ВК
+                            case (1):
+                                LoadDataVK();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+            }
+        }
 
+        // Флаг загрузки
+        private bool loading = false;
+
+        private async void LoadDataVK()
+        {
+            if (loading == false)
+            {
+                VkNet.Model.User vk_user = new VkNet.Model.User();
+                await Task.Run(() =>
+                {
+                    loading = true;
+                    MyApiVK api = new MyApiVK();
+                    api.Authorization("89114876557", "Simplepass19");
+
+                    // Получаем айди
+                    int id;
+                    int.TryParse(string.Join("", SelectedSocialNetwork.WebAddress.Where(c => char.IsDigit(c))), out id);
+
+
+                    // Получаем пользователя вк по айди
+                    vk_user = api.UserLogic.GetUser(id);
+
+                    var socialnetworksuser = user.SocialNetworkUser;
+
+                    // Далее присваиваем значения
+                    user = new Model.Users()
+                    {
+                        Name = vk_user.FirstName,
+                        Family = vk_user.LastName,
+                        DateBirth = Convert.ToDateTime(vk_user.BirthDate),
+                        SocialNetworkUser = socialnetworksuser,
+                        IsMonitoring = false
+                    };
+                    
+                    
+
+
+                    // Далее вбиваем страну, если она есть
+                    if (vk_user.Country != null)
+                    {
+                        SelectedCountryBirth = Countries.FirstOrDefault(i => i.Id == vk_user.Country.Id);
+                        SelectedCountryUS = Countries.FirstOrDefault(i => i.Id == vk_user.Country.Id);
+                    }
+
+
+                    ImageBytes = LoadImage(vk_user.PhotoMaxOrig?.AbsoluteUri);
+                    if (ImageBytes != null)
+                        user.Photo = ImageBytes;
+
+                    loading = false;
+                });
+
+                // Далее необходимо вбить города если он есть у пользователя
+                if (vk_user.City != null)
+                {                    
+                    SelectedCityBirth = CitiesBirthCountry.FirstOrDefault(i => i.Name == vk_user.City.Title);
+                    SelectedCityResidence = CitiesResidence.FirstOrDefault(i => i.Name == vk_user.City.Title);
+                }
+            }
+            
+            
+        }
+
+
+        // Загрузка изображения
+        private byte[] LoadImage(string url)
+        {
+            using (var webclient = new WebClient())
+            {
+                byte[] imageData = null;
+                if (url != null)
+                    imageData = webclient.DownloadData(url);
+
+                return imageData;
+            }
+        }
 
         // Команда добавления службы пользователю
         public DelegateCommand AddSoldierService

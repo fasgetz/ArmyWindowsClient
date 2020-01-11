@@ -32,7 +32,7 @@ namespace ArmyClient.ViewModel.Users
                     if (!string.IsNullOrWhiteSpace(WebAddress) && SelectedType != null)
                     {
                         MySocNetTypes.Add(new SocialNetworkUser() { WebAddress = WebAddress, SocialNetworkId = SelectedType.Id, SocialNetworkType = SocialNetworkTypesList.FirstOrDefault(i => i.Id == SelectedType.Id) });
-                        user.SocialNetworkUser.Add(new SocialNetworkUser() { SocialNetworkId = SelectedType.Id, WebAddress = WebAddress });
+                        user.SocialNetworkUser.Add(new SocialNetworkUser() { SocialNetworkId = SelectedType.Id, WebAddress = WebAddress, Opened = true });
                         WebAddress = null;
                         SelectedType = null;
                     }
@@ -66,7 +66,32 @@ namespace ArmyClient.ViewModel.Users
             }
         }
 
+        // Команда добавления службы пользователю
+        public new DelegateCommand AddSoldierService
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    // Если выбрали В/Ч
+                    if (SelectedSoldierUnit != null)
+                    {
+                        UserSoldierService service = new UserSoldierService()
+                        {
+                            IdSoldierUnit = SelectedSoldierUnit.Id,
+                            IdUser = user.Id
+                        };
 
+
+                        user.UserSoldierService.Add(service);
+                        UserSoldierServices.Add(SoldierUnits.Where(i => i.Id == service.IdSoldierUnit).FirstOrDefault());
+                        SoldierUnits.Remove(SoldierUnits.Where(i => i.Id == service.IdSoldierUnit).FirstOrDefault());
+
+                        SelectedSoldierUnit = null;
+                    }
+                });
+            }
+        }
 
         #endregion
 
