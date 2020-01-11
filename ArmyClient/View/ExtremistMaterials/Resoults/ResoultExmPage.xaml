@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       xmlns:local="clr-namespace:ArmyClient.View.ExtremistMaterials.Resoults"
+      xmlns:test="clr-namespace:ArmyClient.Models.ModelExtremistMaterials"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -15,6 +16,7 @@
                 <ResourceDictionary Source="C:\Users\Andrew\Source\Repos\From-ArmyProject\ArmyClient\Styles\AllPageStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -27,11 +29,16 @@
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Text="{Binding material.IdMaterial}" md:HintAssist.Hint="№ материала"  />
+            <TextBox Grid.Column="0" Text="{Binding material.IdMaterial}" md:HintAssist.Hint="№ материала"  />
             <TextBox Text="{Binding material.WebAddress}" md:HintAssist.Hint="Веб адрес" MaxLength="150" Margin="10 0" Grid.Column="1" />
             <Button Command="{Binding AddMaterial}" VerticalAlignment="Bottom" Content="Добавить" Grid.Column="2"/>
         </Grid>
         <DataGrid SelectedItem="{Binding SelectedMaterial}" Margin="0 10 0 0" Grid.Row="1" IsReadOnly="True" ItemsSource="{Binding materials, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" AutoGenerateColumns="False">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="ToolTip" Value="{Binding Materials.Material}" />
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="1*" ToolTipService.ToolTip="{Binding IdMaterial}" Header="№" Binding="{Binding IdMaterial}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                 <DataGridTextColumn Width="7*" Header="Веб Адрес" Binding="{Binding WebAddress}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>

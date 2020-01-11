@@ -15,6 +15,19 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
         #region Свойства
 
+        // Содержимое статьи загрузить
+        private string _tooltiptext;
+        public string tooltiptext
+        {
+            get => _tooltiptext;
+            set
+            {
+                _tooltiptext = value;
+                OnPropertyChanged("tooltiptext");
+            }
+        }
+
+
         private FoundMaterials _SelectedMaterial;
         public FoundMaterials SelectedMaterial
         {
@@ -55,6 +68,18 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
         #region Команды
 
         // Копировать ссылку в буффер обмена
+        public DelegateCommand EnteredMouse
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    MessageBox.Show("mouse is entered");
+                });
+            }
+        }
+
+        // Копировать ссылку в буффер обмена
         public DelegateCommand CopyBuffer
         {
             get
@@ -88,6 +113,9 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
         #region Вспомогательные методы
 
+
+
+
         private async void AddMaterialDB()
         {
             bool added = await Task.Run(() =>
@@ -113,23 +141,34 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
             if (added == true)
             {
-                // Если успешно, то добавь в список и обнули
-                materials.Add(material);
+                // Если успешно, то добавь в UI список и обнули
+                LoadMaterials();
                 material = new FoundMaterials();
             }
 
         }
 
+
+        private async void LoadMaterials()
+        {
+            await Task.Run(() =>
+            {
+                using (var db = new ExmMaterialsDB())
+                {
+                    materials = new ObservableCollection<FoundMaterials>(db.FoundMaterials.Include("Materials").ToList());                    
+                }
+            });
+        }
         #endregion
+
+
+
 
         public ResExmVM()
         {
             material = new FoundMaterials();
 
-            using (var db = new ExmMaterialsDB())
-            {
-                materials = new ObservableCollection<FoundMaterials>(db.FoundMaterials.ToList());
-            }
+            LoadMaterials();
 
         }
     }

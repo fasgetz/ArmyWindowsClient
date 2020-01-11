@@ -27,4 +27,7 @@
     <Style BasedOn="{StaticResource MaterialDesignCheckBox}" TargetType="{x:Type CheckBox}">
         <Setter Property="HorizontalAlignment" Value="Right"/>
     </Style>
+    <Style BasedOn="{StaticResource MaterialDesignToolTip}" TargetType="{x:Type ToolTip}">
+        <!--<Setter Property="MaxWidth" Value="500" />-->
+    </Style>
 </ResourceDictionary>
