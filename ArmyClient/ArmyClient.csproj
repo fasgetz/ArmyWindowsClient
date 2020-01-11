@@ -190,32 +190,34 @@
       <DependentUpon>202001051217133_pg_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\PostgreSQL\Configuration.cs" />
-    <Compile Include="ModelExtremistMaterials\ExtremistMaterialsDB.cs" />
-    <Compile Include="ModelExtremistMaterials\Materials.cs" />
-    <Compile Include="Model\ArmyDB.cs" />
-    <Compile Include="Model\ArmyDBContext.cs" />
-    <Compile Include="Model\City.cs" />
-    <Compile Include="Model\Countries.cs" />
-    <Compile Include="Model\CrimesType.cs" />
-    <Compile Include="Model\ForeignFriends.cs" />
-    <Compile Include="Model\ArmyDB_PG.cs" />
-    <Compile Include="Model\SocialNetworkType.cs" />
-    <Compile Include="Model\SocialNetworkUser.cs" />
-    <Compile Include="Model\SocialStatuses.cs" />
-    <Compile Include="Model\SoldierUnit.cs" />
-    <Compile Include="Model\UserCrimes.cs" />
-    <Compile Include="Model\UserCrimesCategory.cs" />
-    <Compile Include="Model\Users.cs" />
-    <Compile Include="Model\UserSoldierService.cs" />
+    <Compile Include="Models\ModelExtremistMaterials\ExmMaterialsDB.cs" />
+    <Compile Include="Models\ModelExtremistMaterials\FoundMaterials.cs" />
+    <Compile Include="Models\ModelExtremistMaterials\Materials.cs" />
+    <Compile Include="Models\ModelSocialNetworks\ArmyDB.cs" />
+    <Compile Include="Models\ModelSocialNetworks\ArmyDBContext.cs" />
+    <Compile Include="Models\ModelSocialNetworks\City.cs" />
+    <Compile Include="Models\ModelSocialNetworks\Countries.cs" />
+    <Compile Include="Models\ModelSocialNetworks\CrimesType.cs" />
+    <Compile Include="Models\ModelSocialNetworks\ForeignFriends.cs" />
+    <Compile Include="Models\ModelSocialNetworks\ArmyDB_PG.cs" />
+    <Compile Include="Models\ModelSocialNetworks\SocialNetworkType.cs" />
+    <Compile Include="Models\ModelSocialNetworks\SocialNetworkUser.cs" />
+    <Compile Include="Models\ModelSocialNetworks\SocialStatuses.cs" />
+    <Compile Include="Models\ModelSocialNetworks\SoldierUnit.cs" />
+    <Compile Include="Models\ModelSocialNetworks\UserCrimes.cs" />
+    <Compile Include="Models\ModelSocialNetworks\UserCrimesCategory.cs" />
+    <Compile Include="Models\ModelSocialNetworks\Users.cs" />
+    <Compile Include="Models\ModelSocialNetworks\UserSoldierService.cs" />
     <Compile Include="ViewModel\ExtremistMaterial\DataBase\ExmDataBaseVM.cs" />
-    <Compile Include="ViewModel\ForeignFriends\ForeignFriendsVM.cs" />
-    <Compile Include="ViewModel\Helpers\DelegateCommand.cs" />
-    <Compile Include="ViewModel\Helpers\MainVM.cs" />
-    <Compile Include="ViewModel\Helpers\MyNavigation.cs" />
-    <Compile Include="ViewModel\Main\MainPageVM.cs" />
-    <Compile Include="ViewModel\UserCrimes\UserCrimesVM.cs" />
-    <Compile Include="ViewModel\Users\AboutUserPageVM.cs" />
-    <Compile Include="ViewModel\Users\AddUserPageVM.cs" />
+    <Compile Include="ViewModel\ExtremistMaterial\Resoults\ResExmVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\ForeignFriends\ForeignFriendsVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\Helpers\DelegateCommand.cs" />
+    <Compile Include="ViewModel\SocialNetworks\Helpers\MainVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\Helpers\MyNavigation.cs" />
+    <Compile Include="ViewModel\SocialNetworks\Main\MainPageVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\UserCrimes\UserCrimesVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\Users\AboutUserPageVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\Users\AddUserPageVM.cs" />
     <Compile Include="View\ExtremistMaterials\DataBase\ExmMatDataBasePage.xaml.cs">
       <DependentUpon>ExmMatDataBasePage.xaml</DependentUpon>
     </Compile>
@@ -225,28 +227,31 @@
     <Compile Include="View\ExtremistMaterials\Resoults\ResoultExmPage.xaml.cs">
       <DependentUpon>ResoultExmPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ForeignFriends\ForeignFriendsPage.xaml.cs">
+    <Compile Include="View\SocialNetworks\ForeignFriends\ForeignFriendsPage.xaml.cs">
       <DependentUpon>ForeignFriendsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Main\MainPage.xaml.cs">
+    <Compile Include="View\SocialNetworks\Main\SocialNetworksMainPage.xaml.cs">
+      <DependentUpon>SocialNetworksMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialNetworks\UsersDataBase\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SoldierUnits\AddSoldierUnitPage.xaml.cs">
+    <Compile Include="View\SocialNetworks\SoldierUnits\AddSoldierUnitPage.xaml.cs">
       <DependentUpon>AddSoldierUnitPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserCrimes\CrimeContext.xaml.cs">
+    <Compile Include="View\SocialNetworks\UserCrimes\CrimeContext.xaml.cs">
       <DependentUpon>CrimeContext.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserCrimes\UserCrimesPage.xaml.cs">
+    <Compile Include="View\SocialNetworks\UserCrimes\UserCrimesPage.xaml.cs">
       <DependentUpon>UserCrimesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Users\AboutUserPage.xaml.cs">
+    <Compile Include="View\SocialNetworks\Users\AboutUserPage.xaml.cs">
       <DependentUpon>AboutUserPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Users\AddUserPage.xaml.cs">
+    <Compile Include="View\SocialNetworks\Users\AddUserPage.xaml.cs">
       <DependentUpon>AddUserPage.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -261,6 +266,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles\AllPageStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ExtremistMaterials\DataBase\ExmMatDataBasePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -273,15 +282,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ForeignFriends\ForeignFriendsPage.xaml">
+    <Page Include="View\SocialNetworks\ForeignFriends\ForeignFriendsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Main\MainPage.xaml">
+    <Page Include="View\SocialNetworks\Main\SocialNetworksMainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SoldierUnits\AddSoldierUnitPage.xaml">
+    <Page Include="View\SocialNetworks\UsersDataBase\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialNetworks\SoldierUnits\AddSoldierUnitPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -289,19 +302,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserCrimes\CrimeContext.xaml">
+    <Page Include="View\SocialNetworks\UserCrimes\CrimeContext.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserCrimes\UserCrimesPage.xaml">
+    <Page Include="View\SocialNetworks\UserCrimes\UserCrimesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Users\AboutUserPage.xaml">
+    <Page Include="View\SocialNetworks\Users\AboutUserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Users\AddUserPage.xaml">
+    <Page Include="View\SocialNetworks\Users\AddUserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -382,7 +395,9 @@
     <Resource Include="Images\Logo_SocialNetworks\MyWorld_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModel\SoldierUnits\" />
+    <Folder Include="ViewModel\SocialNetworks\SoldierUnits\" />
+    <Folder Include="ViewModel\SocialNetworks\VK\" />
+    <Folder Include="View\SocialNetworks\VK\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets')" />

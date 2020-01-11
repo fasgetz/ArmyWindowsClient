@@ -63,12 +63,19 @@ namespace ArmyClient.LogicApp.Realisation
         {            
             return await Task.Run(() =>
             {
-                using (db = provider.GetProvider())
+                try
                 {
-                    db.Users.Add(user);
-                    db.SaveChanges();
+                    using (db = provider.GetProvider())
+                    {
+                        db.Users.Add(user);
+                        db.SaveChanges();
 
-                    return true;
+                        return true;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
             });
         }

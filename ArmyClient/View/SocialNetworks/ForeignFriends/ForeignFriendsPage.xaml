@@ -84,8 +84,8 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="7*"/>
             </Grid.ColumnDefinitions>
-            <Label Height="40" VerticalContentAlignment="Bottom" VerticalAlignment="Top" Content="WebAddress"/>
-            <TextBox VerticalAlignment="Top" Text="{Binding friend.WebAddress}" IsReadOnly="True"/>
+            <Label Height="40" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" Content="WebAddress"/>
+            <TextBox VerticalAlignment="Bottom" Text="{Binding friend.WebAddress}" IsReadOnly="True"/>
         </Grid>
     </Grid>
 </Page>

@@ -1,8 +1,5 @@
-﻿using ArmyClient.ModelExtremistMaterials;
-using System;
+﻿using ArmyClient.Models.ModelExtremistMaterials;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ArmyClient.LogicApp.Interfaces.ExtremistMaterials

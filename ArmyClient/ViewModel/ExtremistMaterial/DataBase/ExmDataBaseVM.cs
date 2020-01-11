@@ -1,13 +1,8 @@
-﻿using ArmyClient.ModelExtremistMaterials;
+﻿using ArmyClient.Models.ModelExtremistMaterials;
 using ArmyClient.ViewModel.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Data;
 
 namespace ArmyClient.ViewModel.ExtremistMaterial.DataBase

@@ -1,6 +1,4 @@
-﻿using ArmyClient.View.ExtremistMaterials;
-using ArmyClient.View.Main;
-using ArmyClient.View.SocialNetworks.Main;
+﻿using ArmyClient.View.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,24 +14,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ArmyClient.View
+namespace ArmyClient.View.SocialNetworks.Main
 {
     /// <summary>
-    /// Логика взаимодействия для StartPage.xaml
+    /// Логика взаимодействия для SocialNetworksMainPage.xaml
     /// </summary>
-    public partial class StartPage : Page
+    public partial class SocialNetworksMainPage : Page
     {
-        public StartPage()
+        public SocialNetworksMainPage()
         {
             InitializeComponent();
 
             Frame tabFrame = new Frame();
-            tabFrame.Content = new SocialNetworksMainPage();
-            plan.Content = tabFrame;
+            tabFrame.Content = new MainPage();
+            dbTabItem.Content = tabFrame;
 
-            tabFrame = new Frame();
-            tabFrame.Content = new ExtremistMaterialsMainPage();
-            em.Content = tabFrame;
+            //tabFrame = new Frame();
+            //tabFrame.Content = new ResoultExmPage();
+            //resTabItem.Content = tabFrame;
         }
     }
 }

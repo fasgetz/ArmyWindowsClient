@@ -1,16 +1,15 @@
 ﻿using ArmyClient.LogicApp.Interfaces.ExtremistMaterials;
-using ArmyClient.ModelExtremistMaterials;
+using ArmyClient.Models.ModelExtremistMaterials;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ArmyClient.LogicApp.Realisation.ExtremistMaterials
 {
     class ExtremistMaterialLogic : IExtremistMaterialLogic
     {
-        ExtremistMaterialsDB db;
+        ExmMaterialsDB db;
 
         public async Task<List<Materials>> GetMaterialsAll(string name = null)
         {
@@ -18,7 +17,7 @@ namespace ArmyClient.LogicApp.Realisation.ExtremistMaterials
             {
                 try
                 {
-                    using (db = new ExtremistMaterialsDB())
+                    using (db = new ExmMaterialsDB())
                     {
                         return db.Materials.ToList();
                     }
