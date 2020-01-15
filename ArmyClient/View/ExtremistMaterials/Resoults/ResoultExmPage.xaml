@@ -5,23 +5,27 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       xmlns:local="clr-namespace:ArmyClient.View.ExtremistMaterials.Resoults"
+      xmlns:converter="clr-namespace:ArmyClient.ConvertersValues.DateTimeConverters"
       xmlns:test="clr-namespace:ArmyClient.Models.ModelExtremistMaterials"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       Title="ResoultExmPage">
     <Page.Resources>
+        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="C:\Users\Andrew\Source\Repos\From-ArmyProject\ArmyClient\Styles\AllPageStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converter:DateTimeToDateConverter x:Key="myDateConverter"/>
         </ResourceDictionary>
-
+        
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
         <Grid Margin="10 0" Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -29,7 +33,15 @@
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Text="{Binding material.IdMaterial}" md:HintAssist.Hint="№ материала"  />
+            <TextBox Grid.Column="0"  md:HintAssist.Hint="№ статьи" >
+                <TextBox.Text>
+                    <Binding Path="material.IdMaterial">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
             <TextBox Text="{Binding material.WebAddress}" md:HintAssist.Hint="Веб адрес" MaxLength="150" Margin="10 0" Grid.Column="1" />
             <Button Command="{Binding AddMaterial}" VerticalAlignment="Bottom" Content="Добавить" Grid.Column="2"/>
         </Grid>
@@ -42,7 +54,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Width="1*" ToolTipService.ToolTip="{Binding IdMaterial}" Header="№" Binding="{Binding IdMaterial}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                 <DataGridTextColumn Width="7*" Header="Веб Адрес" Binding="{Binding WebAddress}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
-                <DataGridTextColumn Width="2*" Header="Дата добавления" Binding="{Binding DateOfEntry}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
+                <DataGridTextColumn Width="2*" Header="Дата добавления в БД" Binding="{Binding DateOfEntry, Converter={StaticResource myDateConverter}}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseRightButtonUp">
@@ -50,5 +62,19 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </DataGrid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox SelectedItem="{Binding selectedFilter}" md:HintAssist.Hint="Тип поиска" Margin="0" ItemsSource="{Binding filter}" DisplayMemberPath="Name"/>
+            <TextBox Grid.Column="1" Text="{Binding text, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" md:HintAssist.Hint="Введите текст поиска" Margin="0 0 0 4" Grid.Row="1">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="KeyUp">
+                        <i:InvokeCommandAction Command="{Binding SearchText}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+        </Grid>
     </Grid>
 </Page>

@@ -499,10 +499,10 @@ namespace ArmyClient.ViewModel.UserCrimes
                                     Name = item.FirstName,
                                     Family = item.LastName,
                                     SocialNetworkUserID = selectedSocialNetwork.Id,
-                                    BirthDay = date,
+                                    BirthDay = date,                                    
                                     WebAddress = $"https://vk.com/id{item.Id}",
                                     Photo = LoadImage(item.Photo400Orig?.AbsoluteUri) // Загружаем фотографию
-
+                                    
                                 };
 
                                 // Добавляем друга

@@ -1,0 +1,16 @@
+﻿<Window x:Class="ArmyClient.View.SocialNetworks._HelpWindows.LoadImgWebWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArmyClient.View.SocialNetworks._HelpWindows"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Загрузка изображения с WebAddress" Height="150" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <StackPanel VerticalAlignment="Center">
+            <TextBox md:HintAssist.Hint="Web Address" Text="{Binding webAddress}" FontSize="18" Margin="50 0"/>
+            <Button Command="{Binding LoadImgWeb}" Margin="50 5" Content="Загрузить"/>
+        </StackPanel>
+    </Grid>
+</Window>

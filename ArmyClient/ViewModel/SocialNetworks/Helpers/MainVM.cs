@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArmyClient.ViewModel.SocialNetworks.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Windows.Navigation;
 
 namespace ArmyClient.ViewModel.Helpers
 {
-    internal class MainVM : INotifyPropertyChanged
+    internal class MainVM : RealisationVM
     {
         // Логика программы
         protected LogicApp.Realisation.LogicApp logic;
@@ -30,14 +31,5 @@ namespace ArmyClient.ViewModel.Helpers
             logic = new LogicApp.Realisation.LogicApp();
         }
 
-        #region Реализация интерфейса INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }

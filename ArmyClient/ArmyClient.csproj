@@ -127,6 +127,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConvertersValues\DateTimeConverters\DateTimeToDateConverter.cs" />
     <Compile Include="LogicApp\Helps\ImageLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ExtremistMaterials\IExtremistMaterialLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ICitiesLogic.cs" />
@@ -181,6 +182,15 @@
       <DependentUpon>202001070805228_RemoveRequiredWebAdressOnForgnFriends2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\MSSQL\Configuration.cs" />
+    <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141847426_Start.cs" />
+    <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141847426_Start.Designer.cs">
+      <DependentUpon>202001141847426_Start.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141848360_AddUniqueOnWebAddressProperty.cs" />
+    <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141848360_AddUniqueOnWebAddressProperty.Designer.cs">
+      <DependentUpon>202001141848360_AddUniqueOnWebAddressProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\ExtremistMaterials\Configuration.cs" />
     <Compile Include="Migrations\PostgreSQL\202001051216062_InitialCreate.cs" />
     <Compile Include="Migrations\PostgreSQL\202001051216062_InitialCreate.designer.cs">
       <DependentUpon>202001051216062_InitialCreate.cs</DependentUpon>
@@ -214,10 +224,12 @@
     <Compile Include="ViewModel\SocialNetworks\Helpers\DelegateCommand.cs" />
     <Compile Include="ViewModel\SocialNetworks\Helpers\MainVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Helpers\MyNavigation.cs" />
-    <Compile Include="ViewModel\SocialNetworks\Main\MainPageVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\Helpers\RealisationVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\UsersDataBase\MainPageVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\UserCrimes\UserCrimesVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Users\AboutUserPageVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Users\AddUserPageVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\_HelpWindows\LoadImgWebWindowVM.cs" />
     <Compile Include="View\ExtremistMaterials\DataBase\ExmMatDataBasePage.xaml.cs">
       <DependentUpon>ExmMatDataBasePage.xaml</DependentUpon>
     </Compile>
@@ -238,6 +250,9 @@
     </Compile>
     <Compile Include="View\SocialNetworks\SoldierUnits\AddSoldierUnitPage.xaml.cs">
       <DependentUpon>AddSoldierUnitPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialNetworks\_HelpWindows\LoadImgWebWindow.xaml.cs">
+      <DependentUpon>LoadImgWebWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
@@ -295,6 +310,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SocialNetworks\SoldierUnits\AddSoldierUnitPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialNetworks\_HelpWindows\LoadImgWebWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -356,6 +375,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\MSSQL\202001070805228_RemoveRequiredWebAdressOnForgnFriends2.resx">
       <DependentUpon>202001070805228_RemoveRequiredWebAdressOnForgnFriends2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\ExtremistMaterials\202001141847426_Start.resx">
+      <DependentUpon>202001141847426_Start.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\ExtremistMaterials\202001141848360_AddUniqueOnWebAddressProperty.resx">
+      <DependentUpon>202001141848360_AddUniqueOnWebAddressProperty.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\PostgreSQL\202001051216062_InitialCreate.resx">
       <DependentUpon>202001051216062_InitialCreate.cs</DependentUpon>

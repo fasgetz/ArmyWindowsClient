@@ -1,4 +1,5 @@
-﻿using ArmyClient.ViewModel.Users;
+﻿using ArmyClient.ViewModel.Main;
+using ArmyClient.ViewModel.SocialNetworks._HelpWindows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,27 +12,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ArmyClient.View.Users
+namespace ArmyClient.View.SocialNetworks._HelpWindows
 {
     /// <summary>
-    /// Логика взаимодействия для AddUserPage.xaml
+    /// Логика взаимодействия для LoadImgWebWindow.xaml
     /// </summary>
-    public partial class AddUserPage : Page
+    public partial class LoadImgWebWindow : Window
     {
-        AddUserPageVM vm;
-
-        public AddUserPage()
+        internal LoadImgWebWindow(MainPageVM vm)
         {
             InitializeComponent();
-            
-            vm = new AddUserPageVM(true);
-            DataContext = vm;
+
+            DataContext = new LoadImgWebWindowVM(this, vm);
         }
-
-
-
     }
 }

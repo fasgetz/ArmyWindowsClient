@@ -1,19 +1,76 @@
 ﻿using ArmyClient.Models.ModelExtremistMaterials;
+using ArmyClient.View.ExtremistMaterials;
 using ArmyClient.ViewModel.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 
 namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 {
+
+    #region Микро класс фильтрации
+
+    class TypeFilter
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    #endregion
+
+
     class ResExmVM : MainVM
     {
 
         #region Свойства
+
+        #region Фильтр
+
+        // Выбранный фильтр
+        private TypeFilter _selectedFilter;
+        public TypeFilter selectedFilter
+        {
+            get => _selectedFilter;
+            set
+            {
+                _selectedFilter = value;
+                text = string.Empty;
+                OnPropertyChanged("selectedFilter");
+            }
+        }
+
+        // Строка поиска
+        private string _text;
+        public string text
+        {
+            get => _text;
+            set
+            {
+                _text = value;
+                OnPropertyChanged("text");
+            }
+        }
+
+        // Фильтр для поиска
+        ObservableCollection<TypeFilter> _filter;
+        public ObservableCollection<TypeFilter> filter
+        {
+            get => _filter;
+            set
+            {
+                _filter = value;
+                OnPropertyChanged("filter");
+            }
+        }
+
+        #endregion
+
 
         // Содержимое статьи загрузить
         private string _tooltiptext;
@@ -67,14 +124,37 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
         #region Команды
 
-        // Копировать ссылку в буффер обмена
-        public DelegateCommand EnteredMouse
+        // Команда по поиску
+        public DelegateCommand SearchText
         {
             get
             {
                 return new DelegateCommand(obj =>
                 {
-                    MessageBox.Show("mouse is entered");
+                    if (selectedFilter != null && text != null)
+                    {
+                        ICollectionView cv = CollectionViewSource.GetDefaultView(materials);
+
+                        cv.Filter = o =>
+                        {
+                            FoundMaterials material = o as FoundMaterials;
+                            switch (selectedFilter.Id)
+                            {
+                                // По номеру статьи
+                                case (1):
+                                    return (material.IdMaterial.ToString().StartsWith(text));
+                                // По веб адресу
+                                case (2):
+                                    return (material.WebAddress.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1);
+                                // По дате добавления
+                                case (3):
+                                    return (material.DateOfEntry.ToString().StartsWith(text));
+                                default:
+                                    return false;
+                            }
+                            
+                        };
+                    }
                 });
             }
         }
@@ -88,7 +168,6 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
                 {
                     if (SelectedMaterial != null)
                         Clipboard.SetText($"{SelectedMaterial.WebAddress}");
-
                 });
             }
         }
@@ -104,7 +183,6 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
                     // Добавляем в бд
                     AddMaterialDB();
-
                 });
             }
         }
@@ -132,7 +210,7 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
                     }
                     catch (System.Data.Entity.Infrastructure.DbUpdateException)
                     {
-                        MessageBox.Show("Введите правильный № экстремисткого материала!");
+                        MessageBox.Show("Такой веб адрес уже есть в базе данных!");
 
                         return false;
                     }
@@ -169,7 +247,12 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
             material = new FoundMaterials();
 
             LoadMaterials();
-
+            filter = new ObservableCollection<TypeFilter>()
+            {
+                new TypeFilter() { Id = 1, Name = "№ статьи" },
+                new TypeFilter() { Id = 2, Name = "Веб адрес" },
+                new TypeFilter() { Id = 3, Name = "Дата добавления" }
+            };
         }
     }
 }

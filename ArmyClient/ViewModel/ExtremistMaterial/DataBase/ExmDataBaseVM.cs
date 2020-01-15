@@ -37,7 +37,7 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.DataBase
 
         #region Команды
 
-        // Команда по удалению изображения
+        // Команда по поиску
         public DelegateCommand SearchText
         {
             get

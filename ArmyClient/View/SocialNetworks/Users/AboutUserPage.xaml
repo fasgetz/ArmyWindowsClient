@@ -55,7 +55,13 @@
                     <Button Command="{Binding GoBack}" Margin="10 10 0 0" Content="Назад" VerticalAlignment="Top"/>
                 </Grid>
                 <Button Margin="0 10 0 0" Background="White" Grid.Column="1" Command="{Binding AddImage}" Height="Auto" >
-                    <Image MouseRightButtonDown="img_MouseRightButtonDown" Source="{Binding ImageBytes}" Stretch="Uniform"/>
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Скачать web" Command="{Binding LoadImgWeb}"/>
+                            <MenuItem Command="{Binding RemoveImage}" Header="Удалить"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                    <Image Source="{Binding ImageBytes}" Stretch="Uniform"/>
                 </Button>
                 <DockPanel Margin="5 10 5 5" Grid.Column="2">
                     <Label FontSize="18" Content="Социальные сети" DockPanel.Dock="Top"/>

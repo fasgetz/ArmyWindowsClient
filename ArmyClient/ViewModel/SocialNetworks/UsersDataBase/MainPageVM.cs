@@ -1,5 +1,6 @@
 ﻿using ArmyClient.LogicApp.Helps;
 using ArmyClient.Model;
+using ArmyClient.View.SocialNetworks._HelpWindows;
 using ArmyClient.ViewModel.Helpers;
 using ArmyVkAPI;
 using Microsoft.Win32;
@@ -383,6 +384,22 @@ namespace ArmyClient.ViewModel.Main
 
         #region Команды
 
+        // Команда по загрузке изображения
+        public DelegateCommand LoadImgWeb
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    new LoadImgWebWindow(this).ShowDialog();
+                    
+                    //Crimes.Add(new Model.UserCrimes() { Id = 123 });
+
+                });
+            }
+        }
+
+
         // Команда по удалению изображения
         public DelegateCommand RemoveImage
         {
@@ -529,15 +546,23 @@ namespace ArmyClient.ViewModel.Main
 
 
         // Загрузка изображения
-        private byte[] LoadImage(string url)
+        internal byte[] LoadImage(string url)
         {
             using (var webclient = new WebClient())
             {
-                byte[] imageData = null;
-                if (url != null)
-                    imageData = webclient.DownloadData(url);
+                try
+                {
+                    byte[] imageData = null;
+                    if (url != null)
+                        imageData = webclient.DownloadData(url);
 
-                return imageData;
+                    return imageData;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Ошибка загрузки");
+                    return null;
+                }
             }
         }
 
