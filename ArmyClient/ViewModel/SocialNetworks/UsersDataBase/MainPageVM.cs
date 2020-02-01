@@ -19,6 +19,18 @@ namespace ArmyClient.ViewModel.Main
     {
         #region Свойства        
 
+        // Кнопка поиска юзера
+        private bool _SearchUserButtonEnabled = true;
+        public bool SearchUserButtonEnabled
+        {
+            get => _SearchUserButtonEnabled;
+            set
+            {
+                _SearchUserButtonEnabled = value;
+                OnPropertyChanged("SearchUserButtonEnabled");
+            }
+        }
+
         private ObservableCollection<Model.SoldierUnit> _UserSoldierServices;
         public ObservableCollection<Model.SoldierUnit> UserSoldierServices
         {
@@ -627,7 +639,9 @@ namespace ArmyClient.ViewModel.Main
             {
                 return new DelegateCommand(obj =>
                 {
+                    //SearchUserButtonEnabled = false;
                     LoadUsers();
+                    //SearchUserButtonEnabled = true;
                 });
             }
         }
@@ -683,7 +697,10 @@ namespace ArmyClient.ViewModel.Main
 
         private async void LoadUsers()
         {
+            SearchUserButtonEnabled = false;
             users = await logic.userLogic.GetUsersAsync(user, vk, instagram, facebook, odnoklassniki);
+
+            SearchUserButtonEnabled = true;
         }
 
 

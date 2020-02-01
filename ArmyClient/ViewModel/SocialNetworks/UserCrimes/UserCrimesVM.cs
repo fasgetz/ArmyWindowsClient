@@ -319,8 +319,16 @@ namespace ArmyClient.ViewModel.UserCrimes
             {
                 return new DelegateCommand(obj =>
                 {
-                    ImageBytes = null;
-                    Crime.Photo = ImageBytes;
+                    try
+                    {
+                        ImageBytes = null;
+                        Crime.Photo = ImageBytes;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
                 });
             }
         }

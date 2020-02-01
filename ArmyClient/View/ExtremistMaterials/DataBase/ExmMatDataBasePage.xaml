@@ -51,7 +51,7 @@
                 <DataGridTextColumn Width="9*" Header="Материал" Binding="{Binding Material}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox Text="{Binding searchtext, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" md:HintAssist.Hint="Введите название"  VerticalContentAlignment="Bottom" Margin="0 0" Grid.Row="1">
+        <TextBox IsEnabled="{Binding enabledSearchBox}" Text="{Binding searchtext, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" md:HintAssist.Hint="Введите название"  VerticalContentAlignment="Bottom" Margin="0 0" Grid.Row="1">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="KeyUp">
                     <i:InvokeCommandAction Command="{Binding SearchText}" />

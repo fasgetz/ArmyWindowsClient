@@ -229,6 +229,7 @@
     <Compile Include="ViewModel\SocialNetworks\UserCrimes\UserCrimesVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Users\AboutUserPageVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Users\AddUserPageVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\VK\VK_SocialNetworksVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\_HelpWindows\LoadImgWebWindowVM.cs" />
     <Compile Include="View\ExtremistMaterials\DataBase\ExmMatDataBasePage.xaml.cs">
       <DependentUpon>ExmMatDataBasePage.xaml</DependentUpon>
@@ -250,6 +251,9 @@
     </Compile>
     <Compile Include="View\SocialNetworks\SoldierUnits\AddSoldierUnitPage.xaml.cs">
       <DependentUpon>AddSoldierUnitPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialNetworks\VK\VK_SocialNetworks.xaml.cs">
+      <DependentUpon>VK_SocialNetworks.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SocialNetworks\_HelpWindows\LoadImgWebWindow.xaml.cs">
       <DependentUpon>LoadImgWebWindow.xaml</DependentUpon>
@@ -310,6 +314,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SocialNetworks\SoldierUnits\AddSoldierUnitPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialNetworks\VK\VK_SocialNetworks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -421,8 +429,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModel\SocialNetworks\SoldierUnits\" />
-    <Folder Include="ViewModel\SocialNetworks\VK\" />
-    <Folder Include="View\SocialNetworks\VK\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.0.0\build\MaterialDesignThemes.targets')" />

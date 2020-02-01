@@ -1,4 +1,5 @@
 ﻿using ArmyClient.View.Main;
+using ArmyClient.View.SocialNetworks.VK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +30,11 @@ namespace ArmyClient.View.SocialNetworks.Main
             tabFrame.Content = new MainPage();
             dbTabItem.Content = tabFrame;
 
-            //tabFrame = new Frame();
-            //tabFrame.Content = new ResoultExmPage();
-            //resTabItem.Content = tabFrame;
+
+            // Добавить страницу для работы с ВК
+            tabFrame = new Frame();
+            tabFrame.Content = new VK_SocialNetworks();
+            vkTabItem.Content = tabFrame;
         }
     }
 }

@@ -3,6 +3,7 @@ using ArmyClient.ViewModel.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace ArmyClient.ViewModel.ExtremistMaterial.DataBase
@@ -10,6 +11,18 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.DataBase
     class ExmDataBaseVM : MainVM
     {
         #region Свойства
+
+        private bool _enabledSearchBox;
+        public bool enabledSearchBox
+        {
+            get => _enabledSearchBox;
+            set
+            {
+                _enabledSearchBox = value;
+                OnPropertyChanged("enabledSearchBox");
+            }
+        }
+
 
         private string _searchtext;
         public string searchtext
@@ -64,7 +77,12 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.DataBase
 
         private async void LoadData()
         {
-            materials = new ObservableCollection<Materials>(await logic.ExtremistMaterialLogic.GetMaterialsAll());
+            await Task.Run(() =>
+            {
+                materials = new ObservableCollection<Materials>(logic.ExtremistMaterialLogic.GetMaterialsAll().Result);
+            });
+
+            enabledSearchBox = true;
         }
 
 

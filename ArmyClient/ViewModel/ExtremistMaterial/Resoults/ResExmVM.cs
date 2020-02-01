@@ -253,6 +253,9 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
                 new TypeFilter() { Id = 2, Name = "Веб адрес" },
                 new TypeFilter() { Id = 3, Name = "Дата добавления" }
             };
+
+
+            ICollection<TypeFilter> list = new ObservableCollection<TypeFilter>();
         }
     }
 }
