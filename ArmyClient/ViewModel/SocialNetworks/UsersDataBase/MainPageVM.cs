@@ -42,7 +42,6 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
-
         private Model.Users _SelectedUser;
         public Model.Users SelectedUser
         {
@@ -167,7 +166,21 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
-        // Выбранная страна проживания
+        #region Секция Военной службы
+
+        // Города выбранной страны в воинских частях
+        private ObservableCollection<City> _CitiesUS;
+        public ObservableCollection<City> CitiesUS
+        {
+            get => _CitiesUS;
+            set
+            {
+                _CitiesUS = value;
+                OnPropertyChanged("CitiesUS");
+            }
+        }
+
+        // Выбранная страна воинской части
         private Countries _SelectedCountryUS;
         public Countries SelectedCountryUS
         {
@@ -179,16 +192,54 @@ namespace ArmyClient.ViewModel.Main
                 if (value != null)
                 {
                     user.CountryResidence_Id = value.Id;
-                    LoadResidenceCities(value.Id); // Загружаем города
+                    LoadUsCities(value.Id); // Загружаем города страны
+                    LoadUnitsCountry(value.Id); // Загружаем В/Ч страны
                 }
-                
+
 
                 //user.City1.CountryId = value.Id;
 
-                // Загружаем В/Ч страны
-                LoadUnitsCountry(value.Id);
+
 
                 OnPropertyChanged("SelectedCountryUS");
+            }
+        }
+
+        // Выбранный город проживания
+        private City _SelectedCityUS;
+        public City SelectedCityUS
+        {
+            get => _SelectedCityUS;
+            set
+            {
+                _SelectedCityUS = value;
+
+                if (value != null)
+                    LoadUnitsCity(value.Id);
+
+
+                OnPropertyChanged("SelectedCityUS");
+            }
+        }
+
+        #endregion
+
+        // Выбранная страна проживания
+        private Countries _SelectedCountryResidence;
+        public Countries SelectedCountryResidence
+        {
+            get => _SelectedCountryResidence;
+            set
+            {
+                _SelectedCountryResidence = value;
+
+                if (value != null)
+                {
+                    user.CountryResidence_Id = value.Id;
+                    LoadResidenceCities(value.Id); // Загружаем города
+                }
+
+                OnPropertyChanged("SelectedCountryResidence");
             }
         }
 
@@ -373,9 +424,8 @@ namespace ArmyClient.ViewModel.Main
                 else
                     user.UserSoldierService = new List<UserSoldierService>()
                     {
-                        new UserSoldierService(){ IdSoldierUnit = value.Id}                    
+                        new UserSoldierService(){ IdSoldierUnit = value.Id, IdUser = user.Id }                    
                     };
-
 
                 OnPropertyChanged("SelectedSoldierUnit");
             }
@@ -534,7 +584,7 @@ namespace ArmyClient.ViewModel.Main
                     if (vk_user.Country != null)
                     {
                         SelectedCountryBirth = Countries.FirstOrDefault(i => i.Id == vk_user.Country.Id);
-                        SelectedCountryUS = Countries.FirstOrDefault(i => i.Id == vk_user.Country.Id);
+                        SelectedCountryResidence = Countries.FirstOrDefault(i => i.Id == vk_user.Country.Id);
                     }
 
 
@@ -547,7 +597,8 @@ namespace ArmyClient.ViewModel.Main
 
                 // Далее необходимо вбить города если он есть у пользователя
                 if (vk_user.City != null)
-                {                    
+                {
+
                     SelectedCityBirth = CitiesBirthCountry.FirstOrDefault(i => i.Name == vk_user.City.Title);
                     SelectedCityResidence = CitiesResidence.FirstOrDefault(i => i.Name == vk_user.City.Title);
                 }
@@ -595,7 +646,6 @@ namespace ArmyClient.ViewModel.Main
                         //service.IdSoldierUnit = SelectedSoldierUnit.Id;
                         //service.IdUser = user.Id;
                         //service.SoldierUnit = SelectedSoldierUnit;
-
                         user.UserSoldierService.Add(service);
                         UserSoldierServices.Add(SoldierUnits.Where(i => i.Id == service.IdSoldierUnit).FirstOrDefault());
                         SoldierUnits.Remove(SoldierUnits.Where(i => i.Id == service.IdSoldierUnit).FirstOrDefault());
@@ -693,6 +743,12 @@ namespace ArmyClient.ViewModel.Main
         protected async void LoadResidenceCities(byte idCountry)
         {
             CitiesResidence = new ObservableCollection<City>(await logic.citiesLogic.GetCities(idCountry));
+        }
+
+        // Загрузка городов В/Ч
+        protected async void LoadUsCities(byte idCountry)
+        {
+            CitiesUS = new ObservableCollection<City>(await logic.citiesLogic.GetCities(idCountry));
         }
 
         private async void LoadUsers()

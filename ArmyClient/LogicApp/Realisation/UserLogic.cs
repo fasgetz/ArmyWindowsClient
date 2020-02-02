@@ -98,7 +98,7 @@ namespace ArmyClient.LogicApp.Realisation
 
                     //var test = users.ToList();
                     short? IdSoldUnit = 0;
-                    if (user.UserSoldierService.FirstOrDefault() != null)
+                    if (user.UserSoldierService != null && user.UserSoldierService.Count != 0)
                         IdSoldUnit = user.UserSoldierService.FirstOrDefault().IdSoldierUnit;
 
 
@@ -215,9 +215,58 @@ namespace ArmyClient.LogicApp.Realisation
         {
             return await Task.Run(() =>
             {
+
                 using (db = provider.GetProvider())
                 {
+                    // Обновляем юзера
                     db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+
+                    // Обновляем юзера
+                    //db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+
+
+                    // Сохраняем
+                    db.SaveChanges();
+                }
+
+                using (db = provider.GetProvider())
+                {
+                    // Обновляем
+                    
+
+                    // Проходимся по вч пользователя
+                    var us_list = db.UserSoldierService.Where(i => i.IdUser == user.Id).ToList(); // В/Ч пользователя
+
+                    // Добавить вч, если нет
+                    if (us_list.Count() != user.UserSoldierService.Count())
+                        // Проходимся циклично и проверяем, есть ли вч в бд. Если нету, то добавляем
+                        foreach (var item in user.UserSoldierService)
+                        {
+                            // Есть ли в/ч в бд
+                            var us = us_list.FirstOrDefault(i => i.Id == item.Id);
+
+                            // Если вч нету, то добавить
+                            if (us == null)
+                                db.UserSoldierService.Add(item);
+
+                        }
+                    // Иначе обновить вч
+                    else
+                    {
+                        // обновляем циклично
+                        foreach (var item in us_list)
+                        {
+                            var us = user.UserSoldierService.FirstOrDefault();
+
+                            item.IdSoldierUnit = us.IdSoldierUnit;
+                        }
+
+                        //db.Entry(user).Collection(i => i.UserSoldierService).EntityEntry.State = System.Data.Entity.EntityState.Modified;
+
+                    }
+
+
+                    // Сохраняем
                     db.SaveChanges();
 
                     return true;

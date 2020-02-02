@@ -70,7 +70,7 @@ namespace ArmyClient.ViewModel.Users
             {
                 return new DelegateCommand(obj =>
                 {
-                    SaveUserAsync();                    
+                    SaveUserAsync();
                 });
             }
         }

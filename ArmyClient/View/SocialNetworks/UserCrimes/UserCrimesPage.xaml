@@ -103,7 +103,7 @@
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top">
                         <Label Content="{Binding selectedSocialNetwork.SocialNetworkType.Name}"/>
-                        <TextBox Margin="0" materialDesign:HintAssist.Hint="Web Адрес поста" Text="{Binding Crime.WebAddressPost}"/>
+                        <TextBox Margin="0" materialDesign:HintAssist.Hint="Web Адрес поста" MaxLength="200" Text="{Binding Crime.WebAddressPost}"/>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Top">
                         <Grid>

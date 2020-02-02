@@ -62,13 +62,15 @@
                 </Expander>
                 <Expander Header="Место проживания">
                     <StackPanel>
-                        <ComboBox SelectedItem="{Binding SelectedCountryUS}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" md:HintAssist.Hint="Страна проживания" />
+                        <ComboBox SelectedItem="{Binding SelectedCountryResidence}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" md:HintAssist.Hint="Страна проживания" />
                         <ComboBox ItemsSource="{Binding CitiesResidence}" SelectedItem="{Binding SelectedCityResidence}"  DisplayMemberPath="Name" md:HintAssist.Hint="Город проживания" />
                         <TextBox Text="{Binding user.AddressResidence}" md:HintAssist.Hint="Адрес"/>
                     </StackPanel>
                 </Expander>
                 <Expander Header="Военная служба">
                     <StackPanel>
+                        <ComboBox SelectedItem="{Binding SelectedCountryUS}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" md:HintAssist.Hint="Страна" />
+                        <ComboBox SelectedItem="{Binding SelectedCityUS}" ItemsSource="{Binding CitiesUS}"  DisplayMemberPath="Name" md:HintAssist.Hint="Город" />
                         <ComboBox ItemsSource="{Binding SoldierUnits}" SelectedItem="{Binding SelectedSoldierUnit}"  DisplayMemberPath="Name" md:HintAssist.Hint="Воинская часть" />
                     </StackPanel>
                 </Expander>
