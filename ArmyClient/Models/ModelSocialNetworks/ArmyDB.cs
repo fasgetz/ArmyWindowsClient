@@ -19,8 +19,6 @@ namespace ArmyClient.Model
                 .WithOptional(e => e.City)
                 .HasForeignKey(e => e.CityBirth_Id);
 
-
-
             modelBuilder.Entity<City>()
                 .HasMany(e => e.Users1)
                 .WithOptional(e => e.City1)
@@ -68,6 +66,13 @@ namespace ArmyClient.Model
                 .WithOptional(e => e.SocialNetworkUser)
                 .HasForeignKey(e => e.IdSocialNetworkUser)
                 .WillCascadeOnDelete();
+
+            // тут
+            modelBuilder.Entity<SocialNetworkUser>()
+                .HasMany(e => e.SocialNetworkUserSessions)
+                .WithRequired(e => e.SocialNetworkUser)
+                .HasForeignKey(e => e.IdSocialNetworkUser)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<SocialStatuses>()
                 .HasMany(e => e.Users)

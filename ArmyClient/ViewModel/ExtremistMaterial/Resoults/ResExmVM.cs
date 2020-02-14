@@ -1,6 +1,8 @@
-﻿using ArmyClient.Models.ModelExtremistMaterials;
+﻿using ArmyClient.LogicApp.Helps;
+using ArmyClient.Models.ModelExtremistMaterials;
 using ArmyClient.View.ExtremistMaterials;
 using ArmyClient.ViewModel.Helpers;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,6 +33,18 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
         #region Свойства
 
         #region Фильтр
+
+        private byte[] _Image;
+        public byte[] Image
+        {
+            get => _Image;
+            set
+            {
+                _Image = value;
+                OnPropertyChanged("Image");
+            }
+        }
+
 
         // Выбранный фильтр
         private TypeFilter _selectedFilter;
@@ -123,6 +137,44 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
         #endregion
 
         #region Команды
+
+        // Удалить изображение
+        public DelegateCommand RemoveImage
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (material.ScreenShot != null)
+                    {
+                        material.ScreenShot = null;
+                        Image = null;
+                    }
+                        
+                });
+            }
+        }
+        // Добавить
+        public DelegateCommand AddImage
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    OpenFileDialog openFileDialog = new OpenFileDialog();
+                    openFileDialog.Filter = "Файлы изображений (*.jpg, *.png)|*.jpg;*.png";
+
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        string FilePath = openFileDialog.FileName; // Путь файла изображения
+
+                        material.ScreenShot = ImageLogic.GetImageBinary(FilePath); // Изображение в бинарном формате                        
+                        Image = material.ScreenShot;
+                    }
+                });
+            }
+        }
+
 
         // Команда по поиску
         public DelegateCommand SearchText
@@ -222,6 +274,7 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
                 // Если успешно, то добавь в UI список и обнули
                 LoadMaterials();
                 material = new FoundMaterials();
+                Image = null;
             }
 
         }

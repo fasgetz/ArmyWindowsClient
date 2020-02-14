@@ -13,10 +13,18 @@ namespace ArmyClient.ConvertersValues.DateTimeConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (parameter != null && parameter.ToString() == "RU")
-                return ((DateTime)value).ToString("MM-dd-yyyy");
+            try
+            {
+                if (parameter != null && parameter.ToString() == "RU")
+                    return ((DateTime)value).ToString("MM-dd-yyyy");
 
-            return ((DateTime)value).ToString("dd.MM.yyyy");
+                return ((DateTime)value).ToString("dd.MM.yyyy");
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

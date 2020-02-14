@@ -4,6 +4,7 @@ namespace ArmyClient.Model
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using ArmyClient.Models.ModelSocialNetworks;
 
     public partial class ArmyDBContext : DbContext
     {
@@ -13,6 +14,7 @@ namespace ArmyClient.Model
             
         }
 
+        public virtual DbSet<SocialNetworkSessions> Sessions { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Countries> Countries { get; set; }
         public virtual DbSet<CrimesType> CrimesType { get; set; }

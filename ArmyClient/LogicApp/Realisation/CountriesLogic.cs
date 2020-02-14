@@ -30,7 +30,7 @@ namespace ArmyClient.LogicApp.Realisation
                 {
                     using (db = provider.GetProvider())
                     {
-                        return db.Countries.ToList();
+                        return db.Countries.Take(5).ToList();
                     }
                 }
                 catch (Exception)

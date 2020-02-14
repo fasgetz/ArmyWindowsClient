@@ -242,6 +242,21 @@ namespace ArmyClient.ViewModel.UserCrimes
 
         #region Команды
 
+        // Копировать ссылку в буффер обмена
+        public DelegateCommand copyAddressOnBuffer
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (selectedSocialNetwork != null)
+                        Clipboard.SetText($"{selectedSocialNetwork.WebAddress}");
+                    //if (SelectedMaterial != null)
+                    //    Clipboard.SetText($"{Crime..WebAddress}");
+                });
+            }
+        }
+
         // Команда по удалению категории из списка
         public DelegateCommand RemoveCrimesCategory
         {
@@ -464,75 +479,82 @@ namespace ArmyClient.ViewModel.UserCrimes
         {
             await Task.Run(() =>
             {
-                enabledLoadButton = false;
-                var vkfriends = new List<User>();
+                try
+                {
+                    enabledLoadButton = false;
+                    var vkfriends = new List<User>();
 
-                // Нужно выбрать только цифры из адреса вк
-                int UserID = 0;
-                int.TryParse(string.Join("", selectedSocialNetwork.WebAddress.Where(c => char.IsDigit(c))), out UserID);
+                    // Нужно выбрать только цифры из адреса вк
+                    int UserID = 0;
+                    int.TryParse(string.Join("", selectedSocialNetwork.WebAddress.Where(c => char.IsDigit(c))), out UserID);
 
-                // Если айди юзера указан, то загрузи
-                if (UserID != 0)
-                {                    
-                    api = new MyApiVK();
-                    api.Authorization("89114876557", "Simplepass19");
-
-                    // Сформировали список друзей
-                    vkfriends = api.UserLogic.GetForeignFriends(UserID).ToList();
-
-                    // Далее сравниваем. Есть ли необходимость добавления новых друзей и тп.
-                    if (ForeignFriends.Count != vkfriends.Count)
+                    // Если айди юзера указан, то загрузи
+                    if (UserID != 0)
                     {
-                        // Веб клиент для загрузки изображений
-                        webclient = new WebClient();
+                        api = new MyApiVK();
+                        api.Authorization("89114876557", "Simplepass19");
 
-                        // Делаем перебор и сравниваем кого нету. Кого нет, тех добавляем
-                        foreach (var item in vkfriends)
+                        // Сформировали список друзей
+                        vkfriends = api.UserLogic.GetForeignFriends(UserID).ToList();
+
+                        // Далее сравниваем. Есть ли необходимость добавления новых друзей и тп.
+                        if (ForeignFriends.Count != vkfriends.Count)
                         {
-                            var friend = ForeignFriends.Where(i => i.WebAddress == $"https://vk.com/id{item.Id}").FirstOrDefault();
+                            // Веб клиент для загрузки изображений
+                            webclient = new WebClient();
 
-                            // Если друга не нашлось, то необходимо добавить в базу данных
-                            if (friend == null)
+                            // Делаем перебор и сравниваем кого нету. Кого нет, тех добавляем
+                            foreach (var item in vkfriends)
                             {
-                                // Дату рождения парсим
-                                DateTime date;
+                                var friend = ForeignFriends.Where(i => i.WebAddress == $"https://vk.com/id{item.Id}").FirstOrDefault();
 
-                                DateTime.TryParse(item.BirthDate, out date);
-
-
-                                // Добавляем друга
-                                friend = new Model.ForeignFriends()
+                                // Если друга не нашлось, то необходимо добавить в базу данных
+                                if (friend == null)
                                 {
-                                    CountryId = (byte)item.Country?.Id,
-                                    Name = item.FirstName,
-                                    Family = item.LastName,
-                                    SocialNetworkUserID = selectedSocialNetwork.Id,
-                                    BirthDay = date,                                    
-                                    WebAddress = $"https://vk.com/id{item.Id}",
-                                    Photo = LoadImage(item.Photo400Orig?.AbsoluteUri) // Загружаем фотографию
-                                    
-                                };
+                                    // Дату рождения парсим
+                                    DateTime date;
 
-                                // Добавляем друга
-                                logic.ForeignFriendsLogic.AddForeignFriend(friend);
+                                    DateTime.TryParse(item.BirthDate, out date);
+
+
+                                    // Добавляем друга
+                                    friend = new Model.ForeignFriends()
+                                    {
+                                        CountryId = (byte)item.Country?.Id,
+                                        Name = item.FirstName,
+                                        Family = item.LastName,
+                                        SocialNetworkUserID = selectedSocialNetwork.Id,
+                                        BirthDay = date,
+                                        WebAddress = $"https://vk.com/id{item.Id}",
+                                        Photo = LoadImage(item.Photo400Orig?.AbsoluteUri) // Загружаем фотографию
+
+                                    };
+
+                                    // Добавляем друга
+                                    logic.ForeignFriendsLogic.AddForeignFriend(friend);
+                                }
                             }
+
+
+                            // Загружаем иностранных друзей после добавления
+                            LoadFF();
+                        }
+                        else
+                        {
+                            enabledLoadButton = false;
+                            MessageBox.Show("все уже загружены");
+                            return;
                         }
 
-
-                        // Загружаем иностранных друзей после добавления
-                        LoadFF();
                     }
-                    else
-                    {
-                        enabledLoadButton = false;
-                        MessageBox.Show("все уже загружены");
-                        return;
-                    }
-                        
-                }                
 
-                
-                enabledLoadButton = true;
+
+                    enabledLoadButton = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             });
         }
 

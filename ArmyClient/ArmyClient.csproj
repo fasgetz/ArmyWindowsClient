@@ -181,6 +181,14 @@
     <Compile Include="Migrations\MSSQL\202001070805228_RemoveRequiredWebAdressOnForgnFriends2.Designer.cs">
       <DependentUpon>202001070805228_RemoveRequiredWebAdressOnForgnFriends2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\MSSQL\202002050309373_AddedSessions2.cs" />
+    <Compile Include="Migrations\MSSQL\202002050309373_AddedSessions2.Designer.cs">
+      <DependentUpon>202002050309373_AddedSessions2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202002050320456_AddedSessions3.cs" />
+    <Compile Include="Migrations\MSSQL\202002050320456_AddedSessions3.Designer.cs">
+      <DependentUpon>202002050320456_AddedSessions3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\MSSQL\Configuration.cs" />
     <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141847426_Start.cs" />
     <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141847426_Start.Designer.cs">
@@ -189,6 +197,10 @@
     <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141848360_AddUniqueOnWebAddressProperty.cs" />
     <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141848360_AddUniqueOnWebAddressProperty.Designer.cs">
       <DependentUpon>202001141848360_AddUniqueOnWebAddressProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\ExtremistMaterials\202002142247391_AddedScreenShotAndDateOfLoading.cs" />
+    <Compile Include="Migrations\MSSQL\ExtremistMaterials\202002142247391_AddedScreenShotAndDateOfLoading.Designer.cs">
+      <DependentUpon>202002142247391_AddedScreenShotAndDateOfLoading.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\MSSQL\ExtremistMaterials\Configuration.cs" />
     <Compile Include="Migrations\PostgreSQL\202001051216062_InitialCreate.cs" />
@@ -210,6 +222,7 @@
     <Compile Include="Models\ModelSocialNetworks\CrimesType.cs" />
     <Compile Include="Models\ModelSocialNetworks\ForeignFriends.cs" />
     <Compile Include="Models\ModelSocialNetworks\ArmyDB_PG.cs" />
+    <Compile Include="Models\ModelSocialNetworks\SocialNetworkSessions.cs" />
     <Compile Include="Models\ModelSocialNetworks\SocialNetworkType.cs" />
     <Compile Include="Models\ModelSocialNetworks\SocialNetworkUser.cs" />
     <Compile Include="Models\ModelSocialNetworks\SocialStatuses.cs" />
@@ -384,11 +397,20 @@
     <EmbeddedResource Include="Migrations\MSSQL\202001070805228_RemoveRequiredWebAdressOnForgnFriends2.resx">
       <DependentUpon>202001070805228_RemoveRequiredWebAdressOnForgnFriends2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202002050309373_AddedSessions2.resx">
+      <DependentUpon>202002050309373_AddedSessions2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202002050320456_AddedSessions3.resx">
+      <DependentUpon>202002050320456_AddedSessions3.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\MSSQL\ExtremistMaterials\202001141847426_Start.resx">
       <DependentUpon>202001141847426_Start.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\MSSQL\ExtremistMaterials\202001141848360_AddUniqueOnWebAddressProperty.resx">
       <DependentUpon>202001141848360_AddUniqueOnWebAddressProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\ExtremistMaterials\202002142247391_AddedScreenShotAndDateOfLoading.resx">
+      <DependentUpon>202002142247391_AddedScreenShotAndDateOfLoading.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\PostgreSQL\202001051216062_InitialCreate.resx">
       <DependentUpon>202001051216062_InitialCreate.cs</DependentUpon>

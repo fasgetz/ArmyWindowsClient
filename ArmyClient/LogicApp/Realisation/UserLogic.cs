@@ -218,59 +218,42 @@ namespace ArmyClient.LogicApp.Realisation
 
                 using (db = provider.GetProvider())
                 {
-                    // Обновляем юзера
-                    db.Entry(user).State = System.Data.Entity.EntityState.Modified;
-
-                    // Обновляем юзера
+                    //user.UserSoldierService.ToList().ForEach(i => db.Entry(i).State = System.Data.Entity.EntityState.Modified);
+                    //// Модифицируем
                     //db.Entry(user).State = System.Data.Entity.EntityState.Modified;
 
 
-                    // Сохраняем
-                    db.SaveChanges();
-                }
 
-                using (db = provider.GetProvider())
-                {
-                    // Обновляем
-                    
+                    //// Модифицируем
 
-                    // Проходимся по вч пользователя
-                    var us_list = db.UserSoldierService.Where(i => i.IdUser == user.Id).ToList(); // В/Ч пользователя
+                    //user.UserSoldierService.ToList().ForEach(i => db.Entry(i).State = System.Data.Entity.EntityState.Modified);
 
-                    // Добавить вч, если нет
-                    if (us_list.Count() != user.UserSoldierService.Count())
-                        // Проходимся циклично и проверяем, есть ли вч в бд. Если нету, то добавляем
-                        foreach (var item in user.UserSoldierService)
-                        {
-                            // Есть ли в/ч в бд
-                            var us = us_list.FirstOrDefault(i => i.Id == item.Id);
-
-                            // Если вч нету, то добавить
-                            if (us == null)
-                                db.UserSoldierService.Add(item);
-
-                        }
-                    // Иначе обновить вч
-                    else
+                    user.UserSoldierService.ToList().ForEach(i =>
                     {
-                        // обновляем циклично
-                        foreach (var item in us_list)
+                        if (i.Id == 0)
+                            db.Entry(i).State = System.Data.Entity.EntityState.Added;
+                        else
                         {
-                            var us = user.UserSoldierService.FirstOrDefault();
-
-                            item.IdSoldierUnit = us.IdSoldierUnit;
+                            // Ищем в бд
+                            var us = db.UserSoldierService.Find(i.Id);
+                            
+                            if (us != null)
+                                us.IdSoldierUnit = i.IdSoldierUnit;
                         }
+                            
+                    });
 
-                        //db.Entry(user).Collection(i => i.UserSoldierService).EntityEntry.State = System.Data.Entity.EntityState.Modified;
-
-                    }
-
+                    var myuser = db.Users.Find(user.Id);
+                    db.Entry(myuser).CurrentValues.SetValues(user);
 
                     // Сохраняем
                     db.SaveChanges();
-
-                    return true;
                 }
+
+
+                return true;
+
+                //}
             });
         }
 

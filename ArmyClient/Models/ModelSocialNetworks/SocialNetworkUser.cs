@@ -1,5 +1,6 @@
 namespace ArmyClient.Model
 {
+    using ArmyClient.Models.ModelSocialNetworks;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -25,6 +26,7 @@ namespace ArmyClient.Model
         {
             ForeignFriends = new HashSet<ForeignFriends>();
             UserCrimes = new HashSet<UserCrimes>();
+            SocialNetworkUserSessions = new HashSet<SocialNetworkSessions>();
         }
 
         public int Id { get; set; }
@@ -38,6 +40,12 @@ namespace ArmyClient.Model
         public string WebAddress { get; set; }
 
         public bool Opened { get; set; }
+
+        public bool? isChecked { get; set; } // Свойство которое указывает, необходимо ли чекать онлайн пользователя
+
+        // Список сессий пользователя
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SocialNetworkSessions> SocialNetworkUserSessions { get; set; }
 
         public string Description { get; set; }
 

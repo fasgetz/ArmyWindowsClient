@@ -17,6 +17,17 @@ namespace ArmyClient.ViewModel.SocialNetworks.VK
 
         #region Свойства
 
+        private int _mytext;
+        public int mytext
+        {
+            get => _mytext;
+            set
+            {
+                _mytext = value;
+                OnPropertyChanged("mytext");
+            }
+        }
+
         private bool _enabled;
         public bool enabled
         {
@@ -76,13 +87,13 @@ namespace ArmyClient.ViewModel.SocialNetworks.VK
 
                 // Апи
                 ArmyVkAPI.MyApiVK api = new ArmyVkAPI.MyApiVK();
-                api.Authorization("89114876557", "Simplepass19");
+                var auth = api.Authorization("89114876557", "Simplepass19");
 
 
 
 
  
-                var users = api.UserLogic.GetFriendsUser(191240039);
+                var users = api.UserLogic.GetFriendsUser(mytext);
 
                 // Использовать многопоточную версию
                 Parallel.For(0, users.Length / 10, (int i) =>

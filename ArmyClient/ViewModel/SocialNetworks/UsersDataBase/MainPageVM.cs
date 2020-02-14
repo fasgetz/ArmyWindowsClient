@@ -123,6 +123,7 @@ namespace ArmyClient.ViewModel.Main
             {
                 _SelectedSocStatus = value;
                 user.SocialStatusID = value.IdStatus;
+                user.SocialStatuses = value;
                 OnPropertyChanged("SelectedSocStatus");
             }
         }
@@ -411,7 +412,7 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
-        private SoldierUnit _SelectedSoldierUnit;
+        protected SoldierUnit _SelectedSoldierUnit;
         public SoldierUnit SelectedSoldierUnit
         {
             get => _SelectedSoldierUnit;
@@ -420,12 +421,31 @@ namespace ArmyClient.ViewModel.Main
                 _SelectedSoldierUnit = value;
 
                 if (value == null)
+                {
                     user.UserSoldierService = null;
+                    return;
+                }
                 else
+                    user.UserSoldierService = new List<UserSoldierService>();
+
+                // Запоминаем старое значение
+                if (user.UserSoldierService.Count != 0 && user.UserSoldierService != null)
+                {
+                    var us = user.UserSoldierService.FirstOrDefault();
+
                     user.UserSoldierService = new List<UserSoldierService>()
-                    {
-                        new UserSoldierService(){ IdSoldierUnit = value.Id, IdUser = user.Id }                    
-                    };
+                        {
+                            new UserSoldierService(){ Id = us.Id, IdSoldierUnit = value.Id, IdUser = user.Id }
+                        };
+                }
+                else
+                {
+                    user.UserSoldierService = new List<UserSoldierService>()
+                            {
+                                new UserSoldierService(){ IdSoldierUnit = value.Id, IdUser = user.Id }
+                            };
+                }
+
 
                 OnPropertyChanged("SelectedSoldierUnit");
             }
@@ -550,58 +570,76 @@ namespace ArmyClient.ViewModel.Main
         {
             if (loading == false)
             {
-                VkNet.Model.User vk_user = new VkNet.Model.User();
-                await Task.Run(() =>
+                try
                 {
-                    loading = true;
-                    MyApiVK api = new MyApiVK();
-                    api.Authorization("89114876557", "Simplepass19");
 
-                    // Получаем айди
-                    int id;
-                    int.TryParse(string.Join("", SelectedSocialNetwork.WebAddress.Where(c => char.IsDigit(c))), out id);
-
-
-                    // Получаем пользователя вк по айди
-                    vk_user = api.UserLogic.GetUser(id);
-
-                    var socialnetworksuser = user.SocialNetworkUser;
-
-                    // Далее присваиваем значения
-                    user = new Model.Users()
+                    VkNet.Model.User vk_user = new VkNet.Model.User();
+                    await Task.Run(() =>
                     {
-                        Name = vk_user.FirstName,
-                        Family = vk_user.LastName,
-                        DateBirth = Convert.ToDateTime(vk_user.BirthDate),
-                        SocialNetworkUser = socialnetworksuser,
-                        IsMonitoring = false
-                    };
-                    
-                    
+                        loading = true;
+                        MyApiVK api = new MyApiVK();
+                        api.Authorization("89114876557", "Simplepass19");
+
+                        // Получаем айди
+                        int id;
+                        int.TryParse(string.Join("", SelectedSocialNetwork.WebAddress.Where(c => char.IsDigit(c))), out id);
+
+                        // Если айди == 0, то не удалось спарсить айди с адреса и надо выдать экзепшен
+                        if (id == 0)
+                            throw new Exception("Введите айди пользователя ВК!");
 
 
-                    // Далее вбиваем страну, если она есть
-                    if (vk_user.Country != null)
+                        // Получаем пользователя вк по айди
+                        vk_user = api.UserLogic.GetUser(id);
+
+                        var socialnetworksuser = user.SocialNetworkUser;
+
+                        // Далее присваиваем значения
+                        user = new Model.Users()
+                        {
+                            Name = vk_user.FirstName,
+                            Family = vk_user.LastName,
+                            DateBirth = Convert.ToDateTime(vk_user.BirthDate),
+                            SocialNetworkUser = socialnetworksuser,
+                            IsMonitoring = false
+                        };
+
+
+
+
+                        // Далее вбиваем страну, если она есть
+                        if (vk_user.Country != null)
+                        {
+                            SelectedCountryBirth = Countries.FirstOrDefault(i => i.Id == vk_user.Country.Id);
+                            SelectedCountryResidence = Countries.FirstOrDefault(i => i.Id == vk_user.Country.Id);
+                        }
+
+
+                        ImageBytes = LoadImage(vk_user.PhotoMaxOrig?.AbsoluteUri);
+                        if (ImageBytes != null)
+                            user.Photo = ImageBytes;
+
+                    });
+
+                    // Далее необходимо вбить города если он есть у пользователя
+                    if (vk_user.City != null)
                     {
-                        SelectedCountryBirth = Countries.FirstOrDefault(i => i.Id == vk_user.Country.Id);
-                        SelectedCountryResidence = Countries.FirstOrDefault(i => i.Id == vk_user.Country.Id);
+
+                        SelectedCityBirth = CitiesBirthCountry.FirstOrDefault(i => i.Name == vk_user.City.Title);
+                        SelectedCityResidence = CitiesResidence.FirstOrDefault(i => i.Name == vk_user.City.Title);
                     }
-
-
-                    ImageBytes = LoadImage(vk_user.PhotoMaxOrig?.AbsoluteUri);
-                    if (ImageBytes != null)
-                        user.Photo = ImageBytes;
-
-                    loading = false;
-                });
-
-                // Далее необходимо вбить города если он есть у пользователя
-                if (vk_user.City != null)
-                {
-
-                    SelectedCityBirth = CitiesBirthCountry.FirstOrDefault(i => i.Name == vk_user.City.Title);
-                    SelectedCityResidence = CitiesResidence.FirstOrDefault(i => i.Name == vk_user.City.Title);
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    
+                }
+                finally
+                {
+                    loading = false;
+                }
+
+
             }
             
             
@@ -641,7 +679,8 @@ namespace ArmyClient.ViewModel.Main
                         UserSoldierService service = new UserSoldierService()
                         {
                             IdSoldierUnit = SelectedSoldierUnit.Id,
-                            IdUser = user.Id
+                            IdUser = user.Id,
+                            Id = SelectedSoldierUnit.Id
                         };
                         //service.IdSoldierUnit = SelectedSoldierUnit.Id;
                         //service.IdUser = user.Id;

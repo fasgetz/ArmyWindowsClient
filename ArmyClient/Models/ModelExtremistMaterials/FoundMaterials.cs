@@ -19,6 +19,12 @@ namespace ArmyClient.Models.ModelExtremistMaterials
 
         public DateTime? DateOfEntry { get; set; }
 
+        // Скриншот изображения
+        public byte[] ScreenShot { get; set; }
+
+        // Дата загрузки изображения
+        public DateTime? DateOfLoading { get; set; }
+
         public virtual Materials Materials { get; set; }
 
 

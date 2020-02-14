@@ -13,6 +13,38 @@ namespace ArmyClient.ViewModel.Users
 {
     class AboutUserPageVM : MainPageVM
     {
+
+        #region Свойства
+
+        public new SoldierUnit SelectedSoldierUnit
+        {
+            get => _SelectedSoldierUnit;
+            set
+            {
+                
+
+
+                if (_SelectedSoldierUnit != null)
+                {
+                    // Ищем у юзера эту вч
+                    var unit = user.UserSoldierService.FirstOrDefault(i => i.IdSoldierUnit == _SelectedSoldierUnit.Id);
+
+                    if (unit != null)
+                    {
+                        unit.IdSoldierUnit = value.Id;
+                    }
+                }
+                
+
+
+                var a = user;
+
+                _SelectedSoldierUnit = value;
+                OnPropertyChanged("SelectedSoldierUnit");
+            }
+        }
+        #endregion
+
         #region Секция команд
 
         // Команда по добавлению соц. сети пользователю
@@ -95,6 +127,7 @@ namespace ArmyClient.ViewModel.Users
 
             MySocNetTypes = new System.Collections.ObjectModel.ObservableCollection<SocialNetworkUser>(user.SocialNetworkUser);
             //Soldi = new System.Collections.ObjectModel.ObservableCollection<SoldierUnit>(user.UserSoldierService)
+            SelectedSoldierUnit = user.UserSoldierService.FirstOrDefault().SoldierUnit;
         }
 
         /// <summary>
