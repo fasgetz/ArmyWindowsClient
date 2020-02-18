@@ -81,6 +81,7 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.DataBase
             {
                 materials = new ObservableCollection<Materials>(logic.ExtremistMaterialLogic.GetMaterialsAll().Result);
             });
+            
 
             enabledSearchBox = true;
         }
@@ -91,6 +92,8 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.DataBase
         public ExmDataBaseVM()
         {
             LoadData();
+
+            //LoadData();
         }
     }
 }

@@ -11,6 +11,11 @@ namespace ArmyClient.LogicApp.Realisation.ExtremistMaterials
     {
         ExmMaterialsDB db;
 
+        public Task<List<Materials>> GetFoundedMaterials(DateTime startEntryDate, DateTime endEntreDate)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<Materials>> GetMaterialsAll(string name = null)
         {
             return await Task.Run(() =>

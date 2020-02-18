@@ -33,8 +33,9 @@ namespace ArmyClient.View.ExtremistMaterials
             tabFrame = new Frame();
             tabFrame.Content = new ResoultExmPage();
             resTabItem.Content = tabFrame;
-        }
 
+        }
+        
 
     }
 }

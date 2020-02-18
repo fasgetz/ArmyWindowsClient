@@ -88,6 +88,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard1.1\System.Memory.dll</HintPath>
     </Reference>
@@ -202,6 +203,10 @@
     <Compile Include="Migrations\MSSQL\ExtremistMaterials\202002142247391_AddedScreenShotAndDateOfLoading.Designer.cs">
       <DependentUpon>202002142247391_AddedScreenShotAndDateOfLoading.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\MSSQL\ExtremistMaterials\202002150129550_tested.cs" />
+    <Compile Include="Migrations\MSSQL\ExtremistMaterials\202002150129550_tested.Designer.cs">
+      <DependentUpon>202002150129550_tested.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\MSSQL\ExtremistMaterials\Configuration.cs" />
     <Compile Include="Migrations\PostgreSQL\202001051216062_InitialCreate.cs" />
     <Compile Include="Migrations\PostgreSQL\202001051216062_InitialCreate.designer.cs">
@@ -214,6 +219,7 @@
     <Compile Include="Migrations\PostgreSQL\Configuration.cs" />
     <Compile Include="Models\ModelExtremistMaterials\ExmMaterialsDB.cs" />
     <Compile Include="Models\ModelExtremistMaterials\FoundMaterials.cs" />
+    <Compile Include="Models\ModelExtremistMaterials\LoadingNotImages.cs" />
     <Compile Include="Models\ModelExtremistMaterials\Materials.cs" />
     <Compile Include="Models\ModelSocialNetworks\ArmyDB.cs" />
     <Compile Include="Models\ModelSocialNetworks\ArmyDBContext.cs" />
@@ -264,6 +270,12 @@
     </Compile>
     <Compile Include="View\SocialNetworks\SoldierUnits\AddSoldierUnitPage.xaml.cs">
       <DependentUpon>AddSoldierUnitPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialNetworks\VK\VK_MainPage.xaml.cs">
+      <DependentUpon>VK_MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialNetworks\VK\VK_SearchUser.xaml.cs">
+      <DependentUpon>VK_SearchUser.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SocialNetworks\VK\VK_SocialNetworks.xaml.cs">
       <DependentUpon>VK_SocialNetworks.xaml</DependentUpon>
@@ -327,6 +339,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SocialNetworks\SoldierUnits\AddSoldierUnitPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialNetworks\VK\VK_MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialNetworks\VK\VK_SearchUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -411,6 +431,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\MSSQL\ExtremistMaterials\202002142247391_AddedScreenShotAndDateOfLoading.resx">
       <DependentUpon>202002142247391_AddedScreenShotAndDateOfLoading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\ExtremistMaterials\202002150129550_tested.resx">
+      <DependentUpon>202002150129550_tested.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\PostgreSQL\202001051216062_InitialCreate.resx">
       <DependentUpon>202001051216062_InitialCreate.cs</DependentUpon>

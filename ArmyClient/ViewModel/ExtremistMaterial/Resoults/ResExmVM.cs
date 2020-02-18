@@ -1,17 +1,17 @@
 ﻿using ArmyClient.LogicApp.Helps;
 using ArmyClient.Models.ModelExtremistMaterials;
-using ArmyClient.View.ExtremistMaterials;
 using ArmyClient.ViewModel.Helpers;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 {
@@ -99,8 +99,8 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
         }
 
 
-        private FoundMaterials _SelectedMaterial;
-        public FoundMaterials SelectedMaterial
+        private LoadingNotImages _SelectedMaterial;
+        public LoadingNotImages SelectedMaterial
         {
             get => _SelectedMaterial;
             set
@@ -211,6 +211,39 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
             }
         }
 
+        // Добавить изображение с буфера
+        public DelegateCommand AddOnBufer
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (Clipboard.ContainsImage() == true)
+                    {
+                        var image = Clipboard.GetImage();
+
+                        var imgbytes = ImageToByte(image);
+
+                        material.ScreenShot = imgbytes;
+                        Image = imgbytes;
+                    }
+
+                });
+            }
+        }
+
+        public Byte[] ImageToByte(BitmapSource source)
+        {
+            var encoder = new System.Windows.Media.Imaging.PngBitmapEncoder();
+            var frame = System.Windows.Media.Imaging.BitmapFrame.Create(source);
+            encoder.Frames.Add(frame);
+            var stream = new MemoryStream();
+
+            encoder.Save(stream);
+            return stream.ToArray();
+        }
+
+
         // Копировать ссылку в буффер обмена
         public DelegateCommand CopyBuffer
         {
@@ -239,12 +272,21 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
             }
         }
 
+        // Загрузка данных
+        public DelegateCommand LoadData
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    LoadMaterials();
+                });
+            }
+        }
+
         #endregion
 
         #region Вспомогательные методы
-
-
-
 
         private async void AddMaterialDB()
         {
@@ -254,6 +296,8 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
                 {
                     try
                     {
+                        material.DateOfEntry = DateTime.Now;
+
                         db.FoundMaterials.Add(material);
                         db.SaveChanges();
 
@@ -279,14 +323,33 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
         }
 
-
         private async void LoadMaterials()
         {
             await Task.Run(() =>
             {
                 using (var db = new ExmMaterialsDB())
                 {
-                    materials = new ObservableCollection<FoundMaterials>(db.FoundMaterials.Include("Materials").ToList());                    
+
+                    var query = (from item in (from i in db.FoundMaterials.Include("Materials")
+                                               select new
+                                               {
+                                                   WebAddress = i.WebAddress,
+                                                   IdMaterial = i.IdMaterial,
+                                                   DateOfEntry = i.DateOfEntry,
+                                                   DateOfLoading = i.DateOfLoading,
+                                                   Materials = i.Materials
+                                               }).ToList()
+                                 select new FoundMaterials()
+                                 {
+                                     WebAddress = item.WebAddress,
+                                     IdMaterial = item.IdMaterial,
+                                     DateOfEntry = item.DateOfEntry,
+                                     DateOfLoading = item.DateOfLoading,
+                                     Materials = item.Materials
+                                 });
+
+
+                    materials = new ObservableCollection<FoundMaterials>(query.ToList());                    
                 }
             });
         }
@@ -299,7 +362,7 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
         {
             material = new FoundMaterials();
 
-            LoadMaterials();
+            
             filter = new ObservableCollection<TypeFilter>()
             {
                 new TypeFilter() { Id = 1, Name = "№ статьи" },

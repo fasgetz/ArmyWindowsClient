@@ -14,6 +14,7 @@ namespace ArmyClient.Models.ModelExtremistMaterials
 
         public virtual DbSet<FoundMaterials> FoundMaterials { get; set; }
         public virtual DbSet<Materials> Materials { get; set; }
+        public virtual DbSet<LoadingNotImages> LoadingNotImages { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

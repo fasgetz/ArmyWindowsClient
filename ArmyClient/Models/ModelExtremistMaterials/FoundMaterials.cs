@@ -2,31 +2,12 @@ namespace ArmyClient.Models.ModelExtremistMaterials
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class FoundMaterials : IDataErrorInfo
+    public partial class FoundMaterials
     {
-        public int Id { get; set; }
-
-        public int IdMaterial { get; set; }
-
-        [StringLength(150)]
-        [Index(IsUnique = true)]
-        public string WebAddress { get; set; }
-
-        public DateTime? DateOfEntry { get; set; }
-
-        // Скриншот изображения
-        public byte[] ScreenShot { get; set; }
-
-        // Дата загрузки изображения
-        public DateTime? DateOfLoading { get; set; }
-
-        public virtual Materials Materials { get; set; }
-
 
         #region Дополнительные свойства валидации
 
@@ -59,5 +40,20 @@ namespace ArmyClient.Models.ModelExtremistMaterials
         }
 
         #endregion
+
+        public int Id { get; set; }
+
+        public int IdMaterial { get; set; }
+
+        [StringLength(150)]
+        public string WebAddress { get; set; }
+
+        public DateTime? DateOfEntry { get; set; }
+
+        public byte[] ScreenShot { get; set; }
+
+        public DateTime? DateOfLoading { get; set; }
+
+        public virtual Materials Materials { get; set; }
     }
 }

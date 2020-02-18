@@ -22,6 +22,5 @@ namespace ArmyClient.Models.ModelExtremistMaterials
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FoundMaterials> FoundMaterials { get; set; }
 
-
     }
 }
