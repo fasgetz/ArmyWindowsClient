@@ -38,6 +38,7 @@
             <TabItem x:Name="SearchUserItem" Header="Поиск"/>
             <TabItem x:Name="UnitSoldierItem" Header="Воинские части"/>
             <TabItem x:Name="ForeignFriendsItem" Header="Иностранные друзья"/>
+            <TabItem x:Name="OnlineUsersItem" Header="Онлайн мониторинг"/>
         </TabControl>
     </Grid>
 </Page>

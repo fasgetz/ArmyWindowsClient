@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ArmyControls">
+      <HintPath>..\..\ArmyControls\ArmyControls\bin\Debug\ArmyControls.dll</HintPath>
+    </Reference>
     <Reference Include="ArmyVkAPI">
       <HintPath>..\..\ArmyApiVK\ArmyVkAPI\ArmyVkAPI\bin\Debug\ArmyVkAPI.dll</HintPath>
     </Reference>
@@ -248,6 +251,7 @@
     <Compile Include="ViewModel\SocialNetworks\UserCrimes\UserCrimesVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Users\AboutUserPageVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Users\AddUserPageVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\VK\VK_MainVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\VK\VK_SocialNetworksVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\_HelpWindows\LoadImgWebWindowVM.cs" />
     <Compile Include="View\ExtremistMaterials\DataBase\ExmMatDataBasePage.xaml.cs">

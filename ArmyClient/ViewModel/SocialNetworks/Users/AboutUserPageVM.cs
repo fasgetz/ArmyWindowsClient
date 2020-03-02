@@ -34,6 +34,10 @@ namespace ArmyClient.ViewModel.Users
                         unit.IdSoldierUnit = value.Id;
                     }
                 }
+                else if (user.UserSoldierService.Count == 0)
+                {
+                    user.UserSoldierService.Add(new UserSoldierService() { IdSoldierUnit = value.Id });
+                }
                 
 
 
@@ -127,7 +131,9 @@ namespace ArmyClient.ViewModel.Users
 
             MySocNetTypes = new System.Collections.ObjectModel.ObservableCollection<SocialNetworkUser>(user.SocialNetworkUser);
             //Soldi = new System.Collections.ObjectModel.ObservableCollection<SoldierUnit>(user.UserSoldierService)
-            SelectedSoldierUnit = user.UserSoldierService.FirstOrDefault().SoldierUnit;
+
+            if (user.UserSoldierService.FirstOrDefault() != null)
+                SelectedSoldierUnit = user.UserSoldierService.FirstOrDefault().SoldierUnit;
         }
 
         /// <summary>

@@ -60,6 +60,12 @@
                         <ComboBox md:HintAssist.Hint="Год рождения"/>
                     </StackPanel>
                 </Expander>
+                <Expander Header="Регион">
+                    <StackPanel>
+                        <ComboBox md:HintAssist.Hint="Страна"/>
+                        <ComboBox md:HintAssist.Hint="Город"/>
+                    </StackPanel>
+                </Expander>
                 <Button Content="Найти" Margin="25 10"/>
             </StackPanel>
         </Grid>

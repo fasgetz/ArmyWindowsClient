@@ -12,7 +12,7 @@ using VkNet.Model;
 
 namespace ArmyClient.ViewModel.SocialNetworks.VK
 {
-    class VK_SocialNetworksVM : MainVM
+    class VK_SocialNetworksVM : VK_MainVM
     {
 
         #region Свойства
@@ -86,12 +86,6 @@ namespace ArmyClient.ViewModel.SocialNetworks.VK
                 enabled = false;
 
                 // Апи
-                ArmyVkAPI.MyApiVK api = new ArmyVkAPI.MyApiVK();
-                var auth = api.Authorization("89114876557", "Simplepass19");
-
-
-
-
  
                 var users = api.UserLogic.GetFriendsUser(mytext);
 

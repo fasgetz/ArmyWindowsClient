@@ -230,8 +230,13 @@ namespace ArmyClient.LogicApp.Realisation
 
                     user.UserSoldierService.ToList().ForEach(i =>
                     {
+                        // Если нету в бд то добавить
                         if (i.Id == 0)
-                            db.Entry(i).State = System.Data.Entity.EntityState.Added;
+                        {
+                            db.UserSoldierService.Add(new UserSoldierService() { IdUser = user.Id, IdSoldierUnit = i.IdSoldierUnit });
+                            
+                        }
+                            
                         else
                         {
                             // Ищем в бд

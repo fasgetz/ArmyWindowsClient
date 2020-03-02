@@ -4,18 +4,25 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ArmyClient.View.Users"
+      xmlns:controls="clr-namespace:ArmyControls;assembly=ArmyControls"
       mc:Ignorable="d" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:my="clr-namespace:ArmyClient.ViewModel.Users"
       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       Title="AddUserPage">
     <Page.Resources>
-        <Style BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}" TargetType="ComboBox">
+        <Style x:Key="mycb" BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}" TargetType="ComboBox">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="10 0 0 5"/>
             <Setter Property="Margin" Value="50 0"/>
             <Setter Property="Grid.Column" Value="1"/>
         </Style>
+
+        <Style BasedOn="{StaticResource mycb}" TargetType="{x:Type controls:MyComboBox}" />
+        <Style BasedOn="{StaticResource mycb}" TargetType="{x:Type ComboBox}"/>
+        
+
         <Style BasedOn="{StaticResource MaterialDesignLabel}"
            TargetType="{x:Type Label}">
             <Setter Property="Grid.Column" Value="0"/>
@@ -62,190 +69,205 @@
                     </Button.ContextMenu>
                     <Image Source="{Binding ImageBytes}" Stretch="Uniform"/>
                 </Button>
-                <DockPanel Margin="5 10 5 5" Grid.Column="2">
-                    <Label FontSize="18" Content="Социальные сети" DockPanel.Dock="Top"/>
-                    <Grid DockPanel.Dock="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="8*"/>
-                            <ColumnDefinition Width="2*"/>
-                        </Grid.ColumnDefinitions>
-                        <ComboBox Grid.Column="0" Margin="0 0 0 2"  ItemsSource="{Binding SocialNetworkTypesList}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedType}"/>
-                        <TextBox VerticalContentAlignment="Bottom" MaxLength="100" Margin="10 0 10 2" Grid.Column="1" Text="{Binding WebAddress, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Button Grid.Column="2" Content="+" Command="{Binding AddSocNetType}"/>
-                    </Grid>
-
-                    <ListView SelectedItem="{Binding SelectedSocialNetwork}" ItemsSource="{Binding MySocNetTypes, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="GetSocialName">
-                        <ListView.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Скачать данные" Command="{Binding ParseData}"/>
-                                <MenuItem Header="Удалить" Command="{Binding RemoveSocNetType}"/>
-                            </ContextMenu>
-                        </ListView.ContextMenu>
-                    </ListView>
-                </DockPanel>
+                
             </Grid>
 
             <ScrollViewer Margin="0 5 0 0" Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                 <StackPanel  Margin="0">
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Имя"/>
-                            <TextBox Text="{Binding user.Name}" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label  Content="Фамилия"/>
-                            <TextBox Text="{Binding user.Family}" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label  Content="Отчество"/>
-                            <TextBox Text="{Binding user.Surname}" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label  Content="Дата рождения"/>
-                            <DatePicker SelectedDate="{Binding user.DateBirth}" Padding="5 0 0 0" FontSize="16" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Grid.Column="1" Margin="50 0"/>
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label  Content="Родная страна"/>
-                            <ComboBox Margin="50 0" Grid.Column="1" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountryBirth}" DisplayMemberPath="Name" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Родной город"/>
-                            <ComboBox ItemsSource="{Binding CitiesBirthCountry}" SelectedItem="{Binding SelectedCityBirth}"  DisplayMemberPath="Name"  />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label  Content="Страна проживания"/>
-                            <ComboBox SelectedItem="{Binding SelectedCountryUS}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label  Content="Город проживания"/>
-                            <ComboBox ItemsSource="{Binding CitiesResidence}" SelectedItem="{Binding SelectedCityResidence}"  DisplayMemberPath="Name" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label  Content="Адрес проживания"/>
-                            <TextBox Text="{Binding user.AddressResidence}" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Социальный статус"/>
-                            <ComboBox ItemsSource="{Binding SocStatuses}" Grid.Column="1" Margin="50 0" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSocStatus}"/>
-                        </Grid>
-                    </StackPanel>
-                    <DockPanel>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="8*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="14*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label VerticalAlignment="Center" Grid.Row="0" Content="Воинская часть"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1" Margin="70 0 0 0" ItemsSource="{Binding SoldierUnits}" SelectedItem="{Binding SelectedSoldierUnit}" DisplayMemberPath="Name" />
-                            <Button Command="{Binding AddSoldierService}" Grid.Column="2" Content="+" Margin="5" VerticalAlignment="Center"/>
-                            <DockPanel Margin="50 5" Grid.Row="1"  Grid.ColumnSpan="3">
-                                <ListView ItemsSource="{Binding UserSoldierServices}" DisplayMemberPath="GetSU" />
-                            </DockPanel>
-                        </Grid>
-                    </DockPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label  Content="Email"/>
-                            <TextBox Text="{Binding user.email}" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label  Content="Телефон"/>
-                            <TextBox Text="{Binding user.phone}" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel Margin="0 0 50 0">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Установить наблюдение" />
-                            <CheckBox IsChecked="{Binding user.IsMonitoring}" Grid.Column="1" HorizontalAlignment="Right" ToolTip="Нажмите, чтобы установить необходимость наблюдения">
-                                <CheckBox.LayoutTransform>
-                                    <ScaleTransform ScaleX="2" ScaleY="2" />
-                                </CheckBox.LayoutTransform>
-                            </CheckBox>
-                        </Grid>
-                    </StackPanel>
-                    <DockPanel>
-                        <Label/>
-                        <TextBox 
+                    <Expander Header="Основная информация">
+                        <StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Имя"/>
+                                    <TextBox Text="{Binding user.Name}" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Фамилия"/>
+                                    <TextBox Text="{Binding user.Family}" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Отчество"/>
+                                    <TextBox Text="{Binding user.Surname}" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Дата рождения"/>
+                                    <DatePicker SelectedDate="{Binding user.DateBirth}" Padding="5 0 0 0" FontSize="16" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Grid.Column="1" Margin="50 0"/>
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Родная страна"/>
+                                    <controls:MyComboBox Margin="50 0" Grid.Column="1" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountryBirth}" DisplayMemberPath="Name" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Родной город"/>
+                                    <controls:MyComboBox ItemsSource="{Binding CitiesBirthCountry}" SelectedItem="{Binding SelectedCityBirth}"  DisplayMemberPath="Name"  />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Страна проживания"/>
+                                    <controls:MyComboBox SelectedItem="{Binding SelectedCountryUS}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Город проживания"/>
+                                    <controls:MyComboBox ItemsSource="{Binding CitiesResidence}" SelectedItem="{Binding SelectedCityResidence}"  DisplayMemberPath="Name" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Адрес проживания"/>
+                                    <TextBox Text="{Binding user.AddressResidence}" />
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Социальные сети">
+                        <StackPanel>
+                            <ComboBox Margin="50 5" materialDesign:HintAssist.Hint="Выберите социальную сеть" ItemsSource="{Binding SocialNetworkTypesList}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedType}"/>
+                            <TextBox Margin="50 5" materialDesign:HintAssist.Hint="Веб адрес" MaxLength="100" Text="{Binding WebAddress, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ComboBox materialDesign:HintAssist.Hint="Тип профиля" ItemsSource="{Binding Source={my:Enumeration {x:Type my:Status}}}" 
+    DisplayMemberPath="Description" 
+    SelectedValue="{Binding CurrentStatus}"  
+    SelectedValuePath="Value"/>
+                            <Grid Margin="50 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="1"  Content="+" Command="{Binding AddSocNetType}"/>
+                            </Grid>
+                            
+                            
+                            <ListView Margin="50 0" SelectedItem="{Binding SelectedSocialNetwork}" ItemsSource="{Binding MySocNetTypes, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="GetSocialName">
+                                <ListView.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Скачать данные" Command="{Binding ParseData}"/>
+                                        <MenuItem Header="Удалить" Command="{Binding RemoveSocNetType}"/>
+                                    </ContextMenu>
+                                </ListView.ContextMenu>
+                            </ListView>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Воинская служба">
+                        <DockPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="8*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="14*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label VerticalAlignment="Center" Grid.Row="0" Content="Воинская часть"/>
+                                <controls:MyComboBox Grid.Row="0" Grid.Column="1" Margin="70 0 0 0" ItemsSource="{Binding SoldierUnits}" SelectedItem="{Binding SelectedSoldierUnit}" DisplayMemberPath="Name" />
+                                <Button Command="{Binding AddSoldierService}" Grid.Column="2" Content="+" Margin="5" VerticalAlignment="Center"/>
+                                <DockPanel Margin="50 5" Grid.Row="1"  Grid.ColumnSpan="3">
+                                    <ListView ItemsSource="{Binding UserSoldierServices}" DisplayMemberPath="GetSU" />
+                                </DockPanel>
+                            </Grid>
+                        </DockPanel>
+                    </Expander>
+                    <Expander Header="Дополнительно">
+                        <StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Email"/>
+                                    <TextBox Text="{Binding user.email}" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="Телефон"/>
+                                    <TextBox Text="{Binding user.phone}" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Социальный статус"/>
+                                    <controls:MyComboBox ItemsSource="{Binding SocStatuses}" Grid.Column="1" Margin="50 0" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSocStatus}"/>
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Margin="0 0 50 0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="8*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Установить наблюдение" />
+                                    <CheckBox IsChecked="{Binding user.IsMonitoring}" Grid.Column="1" HorizontalAlignment="Right" ToolTip="Нажмите, чтобы установить необходимость наблюдения">
+                                        <CheckBox.LayoutTransform>
+                                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                                        </CheckBox.LayoutTransform>
+                                    </CheckBox>
+                                </Grid>
+                            </StackPanel>
+                            <DockPanel>
+                                <Label/>
+                                <TextBox 
                             Text="{Binding user.Characteristic}"
-                        Height="200"
+                        
                             DockPanel.Dock="Top"
                             Margin="50 10"
                     MaxLength="1000"
@@ -259,7 +281,9 @@
                     Padding="0, 0, 20, 0"
                     materialDesign:HintAssist.Hint="Характеристика"
                     />
-                    </DockPanel>
+                            </DockPanel>
+                        </StackPanel>
+                    </Expander>
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>

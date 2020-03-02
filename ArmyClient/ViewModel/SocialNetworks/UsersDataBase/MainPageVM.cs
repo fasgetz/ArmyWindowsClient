@@ -182,7 +182,7 @@ namespace ArmyClient.ViewModel.Main
         }
 
         // Выбранная страна воинской части
-        private Countries _SelectedCountryUS;
+        protected Countries _SelectedCountryUS;
         public Countries SelectedCountryUS
         {
             get => _SelectedCountryUS;
@@ -786,7 +786,7 @@ namespace ArmyClient.ViewModel.Main
 
         // Загрузка городов В/Ч
         protected async void LoadUsCities(byte idCountry)
-        {
+        {            
             CitiesUS = new ObservableCollection<City>(await logic.citiesLogic.GetCities(idCountry));
         }
 
