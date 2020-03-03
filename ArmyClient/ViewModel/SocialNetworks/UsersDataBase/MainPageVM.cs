@@ -794,12 +794,22 @@ namespace ArmyClient.ViewModel.Main
 
         #region Блок выделения итемов
 
+        private bool _EnabledContextMenu = true;
+        public bool EnabledContextMenu
+        {
+            get => _EnabledContextMenu;
+            set
+            {
+                _EnabledContextMenu = value;
+                OnPropertyChanged("EnabledContextMenu");
+            }
+        }
+
         private async void _test()
         {
             if (SelectedItems.Count != 0)
             {
-
-
+                EnabledContextMenu = false;
 
                 foreach (var item in SelectedItems)
                 {
@@ -814,7 +824,7 @@ namespace ArmyClient.ViewModel.Main
                     WordLogic.CreateUserReport(userdata);
                 }
 
-                
+                EnabledContextMenu = true;
             }
         }
         public DelegateCommand test
@@ -856,7 +866,7 @@ namespace ArmyClient.ViewModel.Main
             user = new Model.Users() { City1 = new City(), City = new City() };
             user.IsMonitoring = false;
             UserSoldierServices = new ObservableCollection<SoldierUnit>();
-            SelectedItems = new ObservableCollection<object>();
+            SelectedItems = new ObservableCollection<object>();  
 
             // Загружаем данные с БД
             LoadData();

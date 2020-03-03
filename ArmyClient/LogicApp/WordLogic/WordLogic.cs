@@ -17,18 +17,29 @@ namespace ArmyClient.LogicApp.WordLogic
             // Создаём объект документа
             Word.Document doc = null;
 
-
             // Создаём объект приложения
             Word.Application app = new Word.Application();
 
+           
             try
             {
                 string FileSource = @"C:\\Users\Andrew\Desktop\Общие данные\Радюкевич Андрей Сергеевич\Шаблоны WORD\";
-                // Путь до шаблона документа
-                string source = FileSource += "UserReport.docx";
 
+                // Путь до шаблона документа
+                string source = FileSource + "UserReport.docx";
 
                 // !!!!!!!!!!!!!!!!!!!!! Остановился на том, чтобы сделать отдельный каталог (папку) каждому юзеру
+
+
+                FileSource += $"{user.Family} {user.Name}";
+
+                DirectoryInfo dirInfo = new DirectoryInfo(FileSource);
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+
+
 
 
 
@@ -176,9 +187,11 @@ namespace ArmyClient.LogicApp.WordLogic
                     }
 
                     // Выходим и закрываем
-                    OneDoc.SaveAs2($@"C:\\Users\Andrew\Desktop\Общие данные\Радюкевич Андрей Сергеевич\Шаблоны WORD\{user.Family} {user.Name} - список военных фотографий.docx");
+                    OneDoc.SaveAs2($@"{FileSource}\{user.Family} {user.Name} - список военных фотографий.docx");
                     OneDoc.Close();
+                    OneDoc = null;
                     OneWord.Quit();
+                    OneWord = null;
                 }
 
 
@@ -239,25 +252,29 @@ namespace ArmyClient.LogicApp.WordLogic
                     }
 
                     // Выходим и закрываем
-                    OneDoc.SaveAs2($@"C:\\Users\Andrew\Desktop\Общие данные\Радюкевич Андрей Сергеевич\Шаблоны WORD\{user.Family} {user.Name} - список иностранных друзей.docx");
+                    OneDoc.SaveAs2($@"{FileSource}\{user.Family} {user.Name} - список иностранных друзей.docx");
                     OneDoc.Close();
+                    OneDoc = null;
                     OneWord.Quit();
+                    OneWord = null;
                 }
 
 
 
                 // Сохраняем
-                doc.SaveAs2($@"C:\\Users\Andrew\Desktop\Общие данные\Радюкевич Андрей Сергеевич\Шаблоны WORD\{user.Family} {user.Name}.docx");
+                doc.SaveAs2($@"{FileSource}\{user.Family} {user.Name}.docx");
                 // Закрываем документ
                 doc.Close();
                 doc = null;
+                app = null;
             }
             catch (Exception ex)
             {
                 // Если произошла ошибка, то
                 // закрываем документ и выводим информацию
                 doc.Close();
-                doc = null;                
+                doc = null;
+                app = null;
             }
         }
     }

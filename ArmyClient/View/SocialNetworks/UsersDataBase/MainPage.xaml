@@ -214,7 +214,7 @@
                         <local:DataGridSelectedItemsBlendBehavior SelectedItems="{Binding SelectedItems}" />
                     </i:Interaction.Behaviors>
                     <DataGrid.ContextMenu>
-                        <ContextMenu>
+                        <ContextMenu IsEnabled="{Binding EnabledContextMenu}">
                             <MenuItem Header="Создать отчет" Command="{Binding test}"/>
                         </ContextMenu>
                     </DataGrid.ContextMenu>
