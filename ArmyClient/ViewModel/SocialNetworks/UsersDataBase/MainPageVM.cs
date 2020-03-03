@@ -1,4 +1,5 @@
 ﻿using ArmyClient.LogicApp.Helps;
+using ArmyClient.LogicApp.WordLogic;
 using ArmyClient.Model;
 using ArmyClient.View.SocialNetworks._HelpWindows;
 using ArmyClient.ViewModel.Helpers;
@@ -12,9 +13,63 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interactivity;
 
 namespace ArmyClient.ViewModel.Main
 {
+    public class DataGridSelectedItemsBlendBehavior : Behavior<DataGrid>
+    {
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register("SelectedItems", typeof(IList<object>),
+            typeof(DataGridSelectedItemsBlendBehavior),
+            new FrameworkPropertyMetadata(null)
+            {
+                BindsTwoWayByDefault = true
+            });
+
+        public IList<object> SelectedItems
+        {
+            get
+            {
+                return (IList<object>)GetValue(SelectedItemProperty);
+            }
+            set
+            {
+                SetValue(SelectedItemProperty, value);
+            }
+        }
+
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            this.AssociatedObject.SelectionChanged += OnSelectionChanged;
+        }
+
+        protected override void OnDetaching()
+        {
+            base.OnDetaching();
+            if (this.AssociatedObject != null)
+                this.AssociatedObject.SelectionChanged -= OnSelectionChanged;
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems != null && e.AddedItems.Count > 0 && this.SelectedItems != null)
+            {
+                foreach (object obj in e.AddedItems)
+                    this.SelectedItems.Add(obj);
+            }
+
+            if (e.RemovedItems != null && e.RemovedItems.Count > 0 && this.SelectedItems != null)
+            {
+                foreach (object obj in e.RemovedItems)
+                    this.SelectedItems.Remove(obj);
+            }
+        }
+    }
+
+
     class MainPageVM : MainVM
     {
         #region Свойства        
@@ -737,6 +792,61 @@ namespace ArmyClient.ViewModel.Main
 
         #endregion
 
+        #region Блок выделения итемов
+
+        private async void _test()
+        {
+            if (SelectedItems.Count != 0)
+            {
+
+
+
+                foreach (var item in SelectedItems)
+                {
+                    // Получаем выделенных юзеров
+                    var user = (Model.Users)item;
+
+
+                    // получаем юзера c бд
+                    var userdata = await logic.userLogic.GetUserAsync(user.Id);
+
+                    // Далее формируем отчет
+                    WordLogic.CreateUserReport(userdata);
+                }
+
+                
+            }
+        }
+        public DelegateCommand test
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+
+                    _test();
+
+                });
+            }
+        }
+
+        private ObservableCollection<object> _selectedItems;
+        //source property:
+        public ObservableCollection<object> SelectedItems
+        {
+            get
+            {
+                return _selectedItems;
+            }
+            set
+            {
+                _selectedItems = value;
+            }
+        }
+
+        #endregion
+
+
         public MainPageVM()
         {
             // Выделяем память
@@ -746,6 +856,7 @@ namespace ArmyClient.ViewModel.Main
             user = new Model.Users() { City1 = new City(), City = new City() };
             user.IsMonitoring = false;
             UserSoldierServices = new ObservableCollection<SoldierUnit>();
+            SelectedItems = new ObservableCollection<object>();
 
             // Загружаем данные с БД
             LoadData();

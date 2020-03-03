@@ -9,6 +9,7 @@ using System.Windows.Navigation;
 
 namespace ArmyClient.ViewModel.Helpers
 {
+
     internal class MainVM : RealisationVM
     {
         // Логика программы

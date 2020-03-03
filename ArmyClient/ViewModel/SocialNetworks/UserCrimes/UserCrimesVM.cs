@@ -479,77 +479,81 @@ namespace ArmyClient.ViewModel.UserCrimes
         {
             await Task.Run(() =>
             {
-                try
+
+                enabledLoadButton = false;
+                var vkfriends = new List<User>();
+
+                // Нужно выбрать только цифры из адреса вк
+                int UserID = 0;
+                int.TryParse(string.Join("", selectedSocialNetwork.WebAddress.Where(c => char.IsDigit(c))), out UserID);
+
+                // Если айди юзера указан, то загрузи
+                if (UserID != 0)
                 {
-                    enabledLoadButton = false;
-                    var vkfriends = new List<User>();
+                    api = new MyApiVK();
+                    //api.Authorization("89114876557", "Simplepass19");
+                    api.Authorization("89629007965", "andrey06122SASISA");
 
-                    // Нужно выбрать только цифры из адреса вк
-                    int UserID = 0;
-                    int.TryParse(string.Join("", selectedSocialNetwork.WebAddress.Where(c => char.IsDigit(c))), out UserID);
+                    // Сформировали список друзей
+                    vkfriends = api.UserLogic.GetForeignFriends(UserID).ToList();
 
-                    // Если айди юзера указан, то загрузи
-                    if (UserID != 0)
+                    // Далее сравниваем. Есть ли необходимость добавления новых друзей и тп.
+                    if (ForeignFriends.Count != vkfriends.Count)
                     {
-                        api = new MyApiVK();
-                        api.Authorization("89114876557", "Simplepass19");
+                        // Веб клиент для загрузки изображений
+                        webclient = new WebClient();
 
-                        // Сформировали список друзей
-                        vkfriends = api.UserLogic.GetForeignFriends(UserID).ToList();
-
-                        // Далее сравниваем. Есть ли необходимость добавления новых друзей и тп.
-                        if (ForeignFriends.Count != vkfriends.Count)
+                        // Делаем перебор и сравниваем кого нету. Кого нет, тех добавляем
+                        foreach (var item in vkfriends)
                         {
-                            // Веб клиент для загрузки изображений
-                            webclient = new WebClient();
+                            var friend = ForeignFriends.Where(i => i.WebAddress == $"https://vk.com/id{item.Id}").FirstOrDefault();
 
-                            // Делаем перебор и сравниваем кого нету. Кого нет, тех добавляем
-                            foreach (var item in vkfriends)
+                            // Если друга не нашлось, то необходимо добавить в базу данных
+                            if (friend == null)
                             {
-                                var friend = ForeignFriends.Where(i => i.WebAddress == $"https://vk.com/id{item.Id}").FirstOrDefault();
+                                // Дату рождения парсим
+                                DateTime date;
 
-                                // Если друга не нашлось, то необходимо добавить в базу данных
-                                if (friend == null)
+                                DateTime.TryParse(item.BirthDate, out date);
+
+
+                                // Добавляем друга
+                                friend = new Model.ForeignFriends()
                                 {
-                                    // Дату рождения парсим
-                                    DateTime date;
+                                    CountryId = (byte)item.Country?.Id,
+                                    Name = item.FirstName,
+                                    Family = item.LastName,
+                                    SocialNetworkUserID = selectedSocialNetwork.Id,
+                                    BirthDay = date,
+                                    WebAddress = $"https://vk.com/id{item.Id}",
+                                    Photo = LoadImage(item.Photo400Orig?.AbsoluteUri) // Загружаем фотографию
 
-                                    DateTime.TryParse(item.BirthDate, out date);
+                                };
 
-
-                                    // Добавляем друга
-                                    friend = new Model.ForeignFriends()
-                                    {
-                                        CountryId = (byte)item.Country?.Id,
-                                        Name = item.FirstName,
-                                        Family = item.LastName,
-                                        SocialNetworkUserID = selectedSocialNetwork.Id,
-                                        BirthDay = date,
-                                        WebAddress = $"https://vk.com/id{item.Id}",
-                                        Photo = LoadImage(item.Photo400Orig?.AbsoluteUri) // Загружаем фотографию
-
-                                    };
-
-                                    // Добавляем друга
-                                    logic.ForeignFriendsLogic.AddForeignFriend(friend);
-                                }
+                                // Добавляем друга
+                                logic.ForeignFriendsLogic.AddForeignFriend(friend);
                             }
-
-
-                            // Загружаем иностранных друзей после добавления
-                            LoadFF();
-                        }
-                        else
-                        {
-                            enabledLoadButton = false;
-                            MessageBox.Show("все уже загружены");
-                            return;
                         }
 
+
+                        // Загружаем иностранных друзей после добавления
+                        LoadFF();
+                    }
+                    else
+                    {
+                        enabledLoadButton = false;
+                        MessageBox.Show("все уже загружены");
+                        return;
                     }
 
+                }
 
-                    enabledLoadButton = true;
+
+                enabledLoadButton = true;
+
+                try
+                {
+                    
                 }
                 catch (Exception ex)
                 {

@@ -204,12 +204,20 @@
                     <Label Grid.Column="1" FontSize="22" Content="Список пользователей"/>
                     <Button Command="{Binding GoToAddUserPage}" Grid.Column="2" Content="+" FontSize="18" VerticalContentAlignment="Top"/>
                 </Grid>
-                <DataGrid SelectedItem="{Binding SelectedUser}" ItemsSource="{Binding users}" Background="White" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid xmlns:local="clr-namespace:ArmyClient.ViewModel.Main" SelectedItem="{Binding SelectedUser}" ItemsSource="{Binding users}" Background="White" AutoGenerateColumns="False" IsReadOnly="True">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
                             <i:InvokeCommandAction Command="{Binding GoToAboutUserPage}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
+                    <i:Interaction.Behaviors>
+                        <local:DataGridSelectedItemsBlendBehavior SelectedItems="{Binding SelectedItems}" />
+                    </i:Interaction.Behaviors>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Создать отчет" Command="{Binding test}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="5*" Header="ФИО" Binding="{Binding GetFIO}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                         <DataGridTextColumn Width="4*" Header="Страна, город" Binding="{Binding GetCountryCity}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
