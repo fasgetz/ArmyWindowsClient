@@ -1,5 +1,6 @@
 ﻿using ArmyClient.LogicApp.Helps;
 using ArmyClient.Model;
+using ArmyClient.View.SocialNetworks.UserCrimes;
 using ArmyClient.ViewModel.Helpers;
 using ArmyClient.ViewModel.Users;
 using ArmyVkAPI;
@@ -7,10 +8,12 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using VkNet.Model;
 
 namespace ArmyClient.ViewModel.UserCrimes
@@ -18,6 +21,43 @@ namespace ArmyClient.ViewModel.UserCrimes
 
     class UserCrimesVM : AboutUserPageVM
     {
+
+        #region Буфер
+
+        public Byte[] ImageToByte(BitmapSource source)
+        {
+            var encoder = new System.Windows.Media.Imaging.PngBitmapEncoder();
+            var frame = System.Windows.Media.Imaging.BitmapFrame.Create(source);
+            encoder.Frames.Add(frame);
+            var stream = new MemoryStream();
+
+            encoder.Save(stream);
+            return stream.ToArray();
+        }
+
+        // Добавить изображение с буфера
+        public DelegateCommand AddOnBufer
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (Clipboard.ContainsImage() == true && Crime != null)
+                    {
+                        var image = Clipboard.GetImage();
+
+                        var imgbytes = ImageToByte(image);
+
+                        Crime.Photo = imgbytes;
+                        ImageBytes = imgbytes;
+                    }
+
+                });
+            }
+        }
+
+        #endregion
+
 
         #region Свойства
 
@@ -170,7 +210,15 @@ namespace ArmyClient.ViewModel.UserCrimes
 
             //ForeignFriends.Add(new Model.ForeignFriends() { Id = 1, Name = "An", Family = "set" });
             //await logic.ForeignFriendsLogic.GetForeignFriends(selectedSocialNetwork.Id);
-            ForeignFriends = new ObservableCollection<Model.ForeignFriends>(await logic.ForeignFriendsLogic.GetForeignFriends(selectedSocialNetwork.Id));
+            try
+            {
+                ForeignFriends = new ObservableCollection<Model.ForeignFriends>(await logic.ForeignFriendsLogic.GetForeignFriends(selectedSocialNetwork.Id));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private async void LoadData()
@@ -451,6 +499,21 @@ namespace ArmyClient.ViewModel.UserCrimes
             }
         }
 
+
+        // Команда по добавлению иностранного друга
+        public DelegateCommand AddForeignFriend
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    if (new AddForeignFriendWindow(selectedSocialNetwork.Id).ShowDialog() == true)
+                        LoadFF();
+                });
+            }
+        }
+
+
         // Команда по автозагрузке иностранных друзей
         public DelegateCommand autoload
         {
@@ -464,7 +527,15 @@ namespace ArmyClient.ViewModel.UserCrimes
                     {
                         // Если ВК
                         case (1):
-                            LoadForeignFriendsVK();
+                            try
+                            {
+                                LoadForeignFriendsVK();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+                            
                             break;
                         default:
                             // Отключить кнопку загрузки, т.к. нет соответствующей социальной сети
@@ -494,8 +565,16 @@ namespace ArmyClient.ViewModel.UserCrimes
                     //api.Authorization("89114876557", "Simplepass19");
                     api.Authorization("89629007965", "andrey06122SASISA");
 
-                    // Сформировали список друзей
-                    vkfriends = api.UserLogic.GetForeignFriends(UserID).ToList();
+                    try
+                    {
+                        // Сформировали список друзей
+                        vkfriends = api.UserLogic.GetForeignFriends(UserID).ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
 
                     // Далее сравниваем. Есть ли необходимость добавления новых друзей и тп.
                     if (ForeignFriends.Count != vkfriends.Count)
@@ -551,14 +630,6 @@ namespace ArmyClient.ViewModel.UserCrimes
 
                 enabledLoadButton = true;
 
-                try
-                {
-                    
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
             });
         }
 

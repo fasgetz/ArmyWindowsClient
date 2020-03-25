@@ -271,6 +271,9 @@
     <Compile Include="View\SocialNetworks\Main\SocialNetworksMainPage.xaml.cs">
       <DependentUpon>SocialNetworksMainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SocialNetworks\UserCrimes\AddForeignFriendWindow.xaml.cs">
+      <DependentUpon>AddForeignFriendWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SocialNetworks\UsersDataBase\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -337,6 +340,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SocialNetworks\Main\SocialNetworksMainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialNetworks\UserCrimes\AddForeignFriendWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

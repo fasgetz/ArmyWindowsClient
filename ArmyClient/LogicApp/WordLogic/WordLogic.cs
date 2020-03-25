@@ -99,7 +99,7 @@ namespace ArmyClient.LogicApp.WordLogic
                     {
                         foreach (var item in user.SocialNetworkUser)
                         {
-                            characteristic += $" Зарегистрирован в социальной сети {item.SocialNetworkType.Name}, адрес {item.WebAddress};";
+                            characteristic += $" Зарегистрирован(а) в социальной сети {item.SocialNetworkType.Name}, адрес {item.WebAddress};";
 
 
                             var crimes = db.UserCrimes.Where(i => (int)i.IdSocialNetworkUser == item.Id);

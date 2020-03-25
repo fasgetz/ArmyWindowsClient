@@ -18,7 +18,6 @@ namespace ArmyClient.Model
 
         #endregion
 
-
         public int Id { get; set; }
 
         public int SocialNetworkUserID { get; set; }
