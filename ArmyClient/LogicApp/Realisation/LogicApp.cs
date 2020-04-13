@@ -21,6 +21,7 @@ namespace ArmyClient.LogicApp.Realisation
         internal ICrimesLogic CrimesLogic;
         internal IForeignFriendsLogic ForeignFriendsLogic;
         internal IExtremistMaterialLogic ExtremistMaterialLogic;
+        internal IGroupsLogic GroupLogic;
 
         internal LogicApp()
         {
@@ -39,6 +40,7 @@ namespace ArmyClient.LogicApp.Realisation
             CrimesLogic = new CrimesLogic(provider);
             ForeignFriendsLogic = new ForeignFriendsLogic(provider);
             ExtremistMaterialLogic = new ExtremistMaterialLogic();
+            GroupLogic = new GroupsLogic(provider);
         }
     }
 }

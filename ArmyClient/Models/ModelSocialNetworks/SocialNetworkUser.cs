@@ -25,6 +25,7 @@ namespace ArmyClient.Model
         public SocialNetworkUser()
         {
             ForeignFriends = new HashSet<ForeignFriends>();
+            Groups = new HashSet<SocialNetworkGroup>();
             UserCrimes = new HashSet<UserCrimes>();
             SocialNetworkUserSessions = new HashSet<SocialNetworkSessions>();
         }
@@ -51,6 +52,7 @@ namespace ArmyClient.Model
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ForeignFriends> ForeignFriends { get; set; }
+        public virtual ICollection<SocialNetworkGroup> Groups { get; set; }
 
         public virtual SocialNetworkType SocialNetworkType { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using ArmyClient.ViewModel.Helpers;
+﻿using ArmyClient.LogicApp.VK;
+using ArmyClient.ViewModel.Helpers;
 using ArmyClient.ViewModel.SocialNetworks.Helpers;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace ArmyClient.ViewModel.SocialNetworks.VK
             {
                 return new DelegateCommand(obj =>
                 {
-                    testd();
+                    testd();                    
                 });
             }
         }
@@ -87,7 +88,7 @@ namespace ArmyClient.ViewModel.SocialNetworks.VK
 
                 // Апи
  
-                var users = api.UserLogic.GetFriendsUser(mytext);
+                var users = VkLogic.MyApi.UserLogic.GetFriendsUser(mytext);
 
                 // Использовать многопоточную версию
                 Parallel.For(0, users.Length / 10, (int i) =>
@@ -97,7 +98,7 @@ namespace ArmyClient.ViewModel.SocialNetworks.VK
                         try
                         {
                             // Получаем юзера
-                            var resoult = api.UserLogic.UserHasUnitSoldier(users[s]);
+                            var resoult = VkLogic.MyApi.UserLogic.UserHasUnitSoldier(users[s]);
 
                             if (resoult == false)
                             {

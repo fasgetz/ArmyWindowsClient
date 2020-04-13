@@ -138,6 +138,7 @@
     <Compile Include="LogicApp\Interfaces\ICountriesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ICrimesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\IForeignFriendsLogic.cs" />
+    <Compile Include="LogicApp\Interfaces\IGroupsLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ISocialNetworksLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ISocStatusesLogic.cs" />
     <Compile Include="LogicApp\Interfaces\ISoldierUnitsLogic.cs" />
@@ -147,12 +148,14 @@
     <Compile Include="LogicApp\Realisation\CrimesLogic.cs" />
     <Compile Include="LogicApp\Realisation\ExtremistMaterials\ExtremistMaterialLogic.cs" />
     <Compile Include="LogicApp\Realisation\ForeignFriendsLogic.cs" />
+    <Compile Include="LogicApp\Realisation\GroupsLogic.cs" />
     <Compile Include="LogicApp\Realisation\LogicApp.cs" />
     <Compile Include="LogicApp\Realisation\LogicProviderDB.cs" />
     <Compile Include="LogicApp\Realisation\SocialNetworksLogic.cs" />
     <Compile Include="LogicApp\Realisation\SocStatusesLogic.cs" />
     <Compile Include="LogicApp\Realisation\SoldierUnitsLogic.cs" />
     <Compile Include="LogicApp\Realisation\UserLogic.cs" />
+    <Compile Include="LogicApp\VK\VkLogic.cs" />
     <Compile Include="LogicApp\WordLogic\ILogicWord.cs" />
     <Compile Include="LogicApp\WordLogic\WordLogic.cs" />
     <Compile Include="Migrations\MSSQL\202001051413569_StartMigrations.cs" />
@@ -195,6 +198,22 @@
     <Compile Include="Migrations\MSSQL\202002050320456_AddedSessions3.Designer.cs">
       <DependentUpon>202002050320456_AddedSessions3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\MSSQL\202004080438156_Testing.cs" />
+    <Compile Include="Migrations\MSSQL\202004080438156_Testing.Designer.cs">
+      <DependentUpon>202004080438156_Testing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202004080450572_AddGroups.cs" />
+    <Compile Include="Migrations\MSSQL\202004080450572_AddGroups.Designer.cs">
+      <DependentUpon>202004080450572_AddGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202004080521037_EditGroupsDescription.cs" />
+    <Compile Include="Migrations\MSSQL\202004080521037_EditGroupsDescription.Designer.cs">
+      <DependentUpon>202004080521037_EditGroupsDescription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MSSQL\202004080653055_EditGroupsMembersCount.cs" />
+    <Compile Include="Migrations\MSSQL\202004080653055_EditGroupsMembersCount.Designer.cs">
+      <DependentUpon>202004080653055_EditGroupsMembersCount.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\MSSQL\Configuration.cs" />
     <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141847426_Start.cs" />
     <Compile Include="Migrations\MSSQL\ExtremistMaterials\202001141847426_Start.Designer.cs">
@@ -233,6 +252,7 @@
     <Compile Include="Models\ModelSocialNetworks\CrimesType.cs" />
     <Compile Include="Models\ModelSocialNetworks\ForeignFriends.cs" />
     <Compile Include="Models\ModelSocialNetworks\ArmyDB_PG.cs" />
+    <Compile Include="Models\ModelSocialNetworks\SocialNetworkGroup.cs" />
     <Compile Include="Models\ModelSocialNetworks\SocialNetworkSessions.cs" />
     <Compile Include="Models\ModelSocialNetworks\SocialNetworkType.cs" />
     <Compile Include="Models\ModelSocialNetworks\SocialNetworkUser.cs" />
@@ -244,11 +264,14 @@
     <Compile Include="Models\ModelSocialNetworks\UserSoldierService.cs" />
     <Compile Include="ViewModel\ExtremistMaterial\DataBase\ExmDataBaseVM.cs" />
     <Compile Include="ViewModel\ExtremistMaterial\Resoults\ResExmVM.cs" />
+    <Compile Include="ViewModel\Settings\SettingsVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\ForeignFriends\ForeignFriendsVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Helpers\DelegateCommand.cs" />
     <Compile Include="ViewModel\SocialNetworks\Helpers\MainVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Helpers\MyNavigation.cs" />
     <Compile Include="ViewModel\SocialNetworks\Helpers\RealisationVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\UserCrimes\Tabs\ForeignFriendsTabVM.cs" />
+    <Compile Include="ViewModel\SocialNetworks\UserCrimes\Tabs\GroupsTabVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\UsersDataBase\MainPageVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\UserCrimes\UserCrimesVM.cs" />
     <Compile Include="ViewModel\SocialNetworks\Users\AboutUserPageVM.cs" />
@@ -265,6 +288,9 @@
     <Compile Include="View\ExtremistMaterials\Resoults\ResoultExmPage.xaml.cs">
       <DependentUpon>ResoultExmPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SocialNetworks\ForeignFriends\ForeignFriendsPage.xaml.cs">
       <DependentUpon>ForeignFriendsPage.xaml</DependentUpon>
     </Compile>
@@ -273,6 +299,12 @@
     </Compile>
     <Compile Include="View\SocialNetworks\UserCrimes\AddForeignFriendWindow.xaml.cs">
       <DependentUpon>AddForeignFriendWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialNetworks\UserCrimes\Tabs\ForeignFriendsTab.xaml.cs">
+      <DependentUpon>ForeignFriendsTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SocialNetworks\UserCrimes\Tabs\GroupsTabs.xaml.cs">
+      <DependentUpon>GroupsTabs.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SocialNetworks\UsersDataBase\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -335,6 +367,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Settings\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\SocialNetworks\ForeignFriends\ForeignFriendsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -344,6 +380,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SocialNetworks\UserCrimes\AddForeignFriendWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialNetworks\UserCrimes\Tabs\ForeignFriendsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SocialNetworks\UserCrimes\Tabs\GroupsTabs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -435,6 +479,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\MSSQL\202002050320456_AddedSessions3.resx">
       <DependentUpon>202002050320456_AddedSessions3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202004080438156_Testing.resx">
+      <DependentUpon>202004080438156_Testing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202004080450572_AddGroups.resx">
+      <DependentUpon>202004080450572_AddGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202004080521037_EditGroupsDescription.resx">
+      <DependentUpon>202004080521037_EditGroupsDescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MSSQL\202004080653055_EditGroupsMembersCount.resx">
+      <DependentUpon>202004080653055_EditGroupsMembersCount.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\MSSQL\ExtremistMaterials\202001141847426_Start.resx">
       <DependentUpon>202001141847426_Start.cs</DependentUpon>

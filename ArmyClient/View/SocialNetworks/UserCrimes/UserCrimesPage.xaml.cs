@@ -1,4 +1,5 @@
 ﻿using ArmyClient.Model;
+using ArmyClient.View.SocialNetworks.UserCrimes.Tabs;
 using ArmyClient.ViewModel.UserCrimes;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,18 @@ namespace ArmyClient.View.UserCrimes
         {
             InitializeComponent();
             DataContext = new UserCrimesVM(user, selectedSocialNetwork);
+
+            Frame tabFrame = new Frame();
+            tabFrame.Content = new ForeignFriendsTab(selectedSocialNetwork);
+            friends.Content = tabFrame;
+
+            tabFrame = new Frame();
+            tabFrame.Content = new GroupsTabs(selectedSocialNetwork);
+            groups.Content = tabFrame;
+
+            //tabFrame = new Frame();
+            //tabFrame.Content = new SettingsView();
+            //settings.Content = tabFrame;
         }
 
     }

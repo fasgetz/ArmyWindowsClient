@@ -36,6 +36,7 @@
             </TabControl.Resources>
             <TabItem x:Name="plan" Header="Социальные сети"/>
             <TabItem x:Name="em" Header="Экстремистские материалы"/>
+            <TabItem x:Name="settings" Header="Настройки"/>
         </TabControl>
     </Grid>
 </Page>

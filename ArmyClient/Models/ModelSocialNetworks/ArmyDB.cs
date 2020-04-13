@@ -74,6 +74,13 @@ namespace ArmyClient.Model
                 .HasForeignKey(e => e.IdSocialNetworkUser)
                 .WillCascadeOnDelete(false);
 
+            // Добавляем связь для групп
+            modelBuilder.Entity<SocialNetworkUser>()
+                .HasMany(e => e.Groups)
+                .WithRequired(e => e.SocialNetworkUser)
+                .HasForeignKey(e => e.SocialNetworkUserID)
+                .WillCascadeOnDelete(true);
+
             modelBuilder.Entity<SocialStatuses>()
                 .HasMany(e => e.Users)
                 .WithOptional(e => e.SocialStatuses)

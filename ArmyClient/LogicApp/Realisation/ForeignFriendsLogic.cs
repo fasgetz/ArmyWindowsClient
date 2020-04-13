@@ -66,7 +66,8 @@ namespace ArmyClient.LogicApp.Realisation
                                                     Family = x.Family,
                                                     Surname = x.Surname,
                                                     SocialNetworkUserID = x.SocialNetworkUserID,
-                                                    Country = x.Country
+                                                    Country = x.Country,
+                                                    WebAddress = x.WebAddress
                                                 }).ToList();
 
                         return foreignfriends;

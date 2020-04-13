@@ -1,0 +1,67 @@
+﻿<Page x:Class="ArmyClient.View.SocialNetworks.UserCrimes.Tabs.GroupsTabs"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ArmyClient.View.SocialNetworks.UserCrimes.Tabs"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Title="GroupsTabs">
+    <Page.Resources>
+        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="DGC_NumericColumnStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}" TargetType="ComboBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10 0 0 5"/>
+            <Setter Property="Margin" Value="25 0"/>
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignLabel}"
+           TargetType="{x:Type Label}">
+            <Setter Property="Grid.Column" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}"
+           TargetType="{x:Type TextBox}">
+            <Setter Property="MaxLength" Value="30"/>
+            <Setter Property="Padding" Value="5 0 0 0"/>
+            <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="25 0"/>
+        </Style>
+        <Style BasedOn="{StaticResource MaterialDesignCheckBox}" TargetType="{x:Type CheckBox}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Label VerticalAlignment="Center" Content="Сообщества"/>
+            <Button Grid.Column="1" Content="+" IsEnabled="False" Command="{Binding AddForeignFriend}"/>
+        </Grid>
+        <Border Margin="0 5" BorderBrush="Black" BorderThickness="0.7" Grid.Row="1">
+            <DataGrid ItemsSource="{Binding groups}" Background="White" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="6*" Header="Название" Binding="{Binding Name}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
+                    <DataGridTextColumn Width="6*" Header="Адрес" Binding="{Binding GroupAddress}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
+                    <DataGridTextColumn Width="3*" Header="Кол-во" Binding="{Binding MembersCount}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        <Button IsEnabled="{Binding enabledLoadButton}" Command="{Binding autoload}" Grid.Row="2" Content="Авто загрузка"/>
+    </Grid>
+</Page>

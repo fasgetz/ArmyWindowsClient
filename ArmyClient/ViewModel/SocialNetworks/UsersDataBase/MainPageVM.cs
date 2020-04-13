@@ -1,4 +1,5 @@
 ﻿using ArmyClient.LogicApp.Helps;
+using ArmyClient.LogicApp.VK;
 using ArmyClient.LogicApp.WordLogic;
 using ArmyClient.Model;
 using ArmyClient.View.SocialNetworks._HelpWindows;
@@ -632,9 +633,8 @@ namespace ArmyClient.ViewModel.Main
                     await Task.Run(() =>
                     {
                         loading = true;
-                        MyApiVK api = new MyApiVK();
-                        api.Authorization("89114876557", "Simplepass19");
 
+                        
                         // Получаем айди
                         int id;
                         int.TryParse(string.Join("", SelectedSocialNetwork.WebAddress.Where(c => char.IsDigit(c))), out id);
@@ -645,7 +645,7 @@ namespace ArmyClient.ViewModel.Main
 
 
                         // Получаем пользователя вк по айди
-                        vk_user = api.UserLogic.GetUser(id);
+                        vk_user = VkLogic.MyApi.UserLogic.GetUser(id);
 
                         var socialnetworksuser = user.SocialNetworkUser;
 

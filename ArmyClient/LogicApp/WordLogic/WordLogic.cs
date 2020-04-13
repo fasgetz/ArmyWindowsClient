@@ -232,7 +232,13 @@ namespace ArmyClient.LogicApp.WordLogic
 
 
                         // Добавить страну
-                        info += $", {item.Country.Name}. Зарегистрирован(а) в социальной сети Вконтакте, адрес: {item.WebAddress}.";
+                        info += $", {item.Country.Name}. Зарегистрирован(а) в социальной сети";
+                        if (item.WebAddress.Contains("vk"))
+                            info += " Вконтакте";
+                        else
+                            info += " Одноклассники";
+
+                        info += $", адрес: {item.WebAddress}.";
 
                         OneWord.ActiveDocument.Characters.Last.Select();
                         OneWord.Selection.Collapse();

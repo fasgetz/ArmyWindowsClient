@@ -1,5 +1,7 @@
-﻿using ArmyClient.View.ExtremistMaterials;
+﻿using ArmyClient.LogicApp.VK;
+using ArmyClient.View.ExtremistMaterials;
 using ArmyClient.View.Main;
+using ArmyClient.View.Settings;
 using ArmyClient.View.SocialNetworks.Main;
 using System;
 using System.Collections.Generic;
@@ -27,13 +29,25 @@ namespace ArmyClient.View
         {
             InitializeComponent();
 
-            Frame tabFrame = new Frame();
-            tabFrame.Content = new SocialNetworksMainPage();
-            plan.Content = tabFrame;
+            //Frame tabFrame = new Frame();
+            //tabFrame.Content = new SocialNetworksMainPage();
+            //plan.Content = tabFrame;
+
+            //tabFrame = new Frame();
+            //tabFrame.Content = new ExtremistMaterialsMainPage();
+            //em.Content = tabFrame;
+
+            var tabFrame = new Frame();
+            tabFrame.Content = new SettingsView();
+            settings.Content = tabFrame;
 
             tabFrame = new Frame();
             tabFrame.Content = new ExtremistMaterialsMainPage();
             em.Content = tabFrame;
+
+            tabFrame = new Frame();
+            tabFrame.Content = new SocialNetworksMainPage();
+            plan.Content = tabFrame;
         }
     }
 }
