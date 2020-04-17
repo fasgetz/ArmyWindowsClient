@@ -80,6 +80,12 @@ namespace ArmyClient.Model
                 .WithRequired(e => e.SocialNetworkUser)
                 .HasForeignKey(e => e.SocialNetworkUserID)
                 .WillCascadeOnDelete(true);
+            // Добавляем связь для аудио
+            modelBuilder.Entity<SocialNetworkUser>()
+                .HasMany(e => e.Audious)
+                .WithRequired(e => e.SocialNetworkUser)
+                .HasForeignKey(e => e.SocialNetworkUserID)
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<SocialStatuses>()
                 .HasMany(e => e.Users)

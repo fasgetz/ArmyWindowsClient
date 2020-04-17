@@ -36,9 +36,9 @@ namespace ArmyClient.View.UserCrimes
             tabFrame.Content = new GroupsTabs(selectedSocialNetwork);
             groups.Content = tabFrame;
 
-            //tabFrame = new Frame();
-            //tabFrame.Content = new SettingsView();
-            //settings.Content = tabFrame;
+            tabFrame = new Frame();
+            tabFrame.Content = new AudiousTab(selectedSocialNetwork);
+            audious.Content = tabFrame;
         }
 
     }

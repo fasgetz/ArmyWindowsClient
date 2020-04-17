@@ -70,7 +70,7 @@
         <StackPanel Grid.Row="1">
             <TextBox x:Name="name" Margin="25 5" md:HintAssist.Hint="Введите имя"/>
             <TextBox x:Name="family" Margin="25 5" md:HintAssist.Hint="Введите фамилию"/>
-            <TextBox x:Name="webAddress" Margin="25 5" md:HintAssist.Hint="Введите веб-адрес"/>
+            <TextBox x:Name="webAddress" Margin="25 5" MaxLength="100" md:HintAssist.Hint="Введите веб-адрес"/>
             <DatePicker x:Name="dateBirth" Margin="25 5" md:HintAssist.Hint="Дата рождения" FontSize="16"/>
             <controls:MyComboBox DisplayMemberPath="Name" x:Name="country" Margin="25 5" md:HintAssist.Hint="Выберите страну"/>
             <Button Content="Добавить" Margin="25 5" Click="Button_Click"/>

@@ -14,6 +14,7 @@ namespace ArmyClient.Model
             
         }
 
+        public virtual DbSet<SocialNetworkAudio> SocialNetworkUserAudios { get; set; }
         public virtual DbSet<SocialNetworkGroup> SocialNetworkUserGroups { get; set; }
         public virtual DbSet<SocialNetworkSessions> Sessions { get; set; }
         public virtual DbSet<City> City { get; set; }

@@ -28,6 +28,7 @@ namespace ArmyClient.Model
             Groups = new HashSet<SocialNetworkGroup>();
             UserCrimes = new HashSet<UserCrimes>();
             SocialNetworkUserSessions = new HashSet<SocialNetworkSessions>();
+            Audious = new HashSet<SocialNetworkAudio>();
         }
 
         public int Id { get; set; }
@@ -53,6 +54,7 @@ namespace ArmyClient.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ForeignFriends> ForeignFriends { get; set; }
         public virtual ICollection<SocialNetworkGroup> Groups { get; set; }
+        public virtual ICollection<SocialNetworkAudio> Audious { get; set; }
 
         public virtual SocialNetworkType SocialNetworkType { get; set; }
 
