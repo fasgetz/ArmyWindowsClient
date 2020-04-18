@@ -99,13 +99,15 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
         }
 
 
-        private LoadingNotImages _SelectedMaterial;
-        public LoadingNotImages SelectedMaterial
+        private FoundMaterials _SelectedMaterial;
+        public FoundMaterials SelectedMaterial
         {
             get => _SelectedMaterial;
             set
             {
                 _SelectedMaterial = value;
+                if (value.ScreenShot != null)
+                    Image = value.ScreenShot;
                 OnPropertyChanged("SelectedMaterial");
             }
         }
@@ -337,7 +339,8 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
                                                    IdMaterial = i.IdMaterial,
                                                    DateOfEntry = i.DateOfEntry,
                                                    DateOfLoading = i.DateOfLoading,
-                                                   Materials = i.Materials
+                                                   Materials = i.Materials,
+                                                   Image = i.ScreenShot
                                                }).ToList()
                                  select new FoundMaterials()
                                  {
@@ -345,7 +348,8 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
                                      IdMaterial = item.IdMaterial,
                                      DateOfEntry = item.DateOfEntry,
                                      DateOfLoading = item.DateOfLoading,
-                                     Materials = item.Materials
+                                     Materials = item.Materials,
+                                     ScreenShot = item.Image
                                  });
 
 

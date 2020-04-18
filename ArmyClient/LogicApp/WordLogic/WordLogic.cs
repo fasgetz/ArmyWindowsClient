@@ -23,7 +23,7 @@ namespace ArmyClient.LogicApp.WordLogic
            
             try
             {
-                string FileSource = @"C:\\Users\Andrew\Desktop\Общие данные\Радюкевич Андрей Сергеевич\Шаблоны WORD\";
+                string FileSource = @"C:\\Users\Andrew\Desktop\Шаблоны WORD\";
 
                 // Путь до шаблона документа
                 string source = FileSource + "UserReport.docx";
@@ -235,6 +235,8 @@ namespace ArmyClient.LogicApp.WordLogic
                         info += $", {item.Country.Name}. Зарегистрирован(а) в социальной сети";
                         if (item.WebAddress.Contains("vk"))
                             info += " Вконтакте";
+                        else if (item.WebAddress.Contains("facebook"))
+                            info += " Фейсбук";
                         else
                             info += " Одноклассники";
 

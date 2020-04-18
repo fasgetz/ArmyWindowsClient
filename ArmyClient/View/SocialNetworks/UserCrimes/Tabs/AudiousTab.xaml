@@ -56,7 +56,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="4*" Header="Автор" Binding="{Binding ArtistName}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                     <DataGridTextColumn Width="6*" Header="Название" Binding="{Binding AudioName}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
-                    <DataGridTextColumn Width="3*" Header="Дата добавления" Binding="{Binding DateAddedSocNetw}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
+                    <DataGridTextColumn Width="3*" Header="Дата добавления" Binding="{Binding DateAddedSocNetw, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
