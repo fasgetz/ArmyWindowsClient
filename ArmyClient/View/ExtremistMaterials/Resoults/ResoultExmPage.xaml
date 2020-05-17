@@ -27,6 +27,7 @@
             <RowDefinition MinHeight="40" Height="auto"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
         <Grid>
             <StackPanel Visibility="Visible">
@@ -101,6 +102,10 @@
             </DataGrid>
         </Grid>
         <Grid Grid.Row="2">
+            <ProgressBar Value="{Binding valueBar}" Maximum="{Binding maxBar}" Height="30" Margin="20 0"/>
+            <Label Content="{Binding tested}"/>
+        </Grid>
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="8*"/>

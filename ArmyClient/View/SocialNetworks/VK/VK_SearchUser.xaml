@@ -50,24 +50,27 @@
             
         </Grid>
         <Grid  Grid.Column="1">
-            <StackPanel>
-                <TextBox md:HintAssist.Hint="Имя"/>
-                <TextBox md:HintAssist.Hint="Фамилия"/>
-                <Expander Header="Дополнительно">
-                    <StackPanel>
-                        <ComboBox md:HintAssist.Hint="День рождения"/>
-                        <ComboBox md:HintAssist.Hint="Месяц рождения"/>
-                        <ComboBox md:HintAssist.Hint="Год рождения"/>
-                    </StackPanel>
-                </Expander>
-                <Expander Header="Регион">
-                    <StackPanel>
-                        <ComboBox md:HintAssist.Hint="Страна"/>
-                        <ComboBox md:HintAssist.Hint="Город"/>
-                    </StackPanel>
-                </Expander>
-                <Button Content="Найти" Margin="25 10"/>
-            </StackPanel>
+            <Border BorderBrush="Black" BorderThickness="0.3 0 0 0">
+                <StackPanel>
+                    <TextBox md:HintAssist.Hint="Имя"/>
+                    <TextBox md:HintAssist.Hint="Фамилия"/>
+                    <Expander Header="Дополнительно">
+                        <StackPanel>
+                            <ComboBox md:HintAssist.Hint="День рождения"/>
+                            <ComboBox md:HintAssist.Hint="Месяц рождения"/>
+                            <ComboBox md:HintAssist.Hint="Год рождения"/>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Регион">
+                        <StackPanel>
+                            <ComboBox md:HintAssist.Hint="Страна"/>
+                            <ComboBox md:HintAssist.Hint="Город"/>
+                        </StackPanel>
+                    </Expander>
+                    <Button Content="Найти" Margin="25 10"/>
+                </StackPanel>
+            </Border>
+            
         </Grid>
     </Grid>
 </Page>

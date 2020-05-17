@@ -23,6 +23,10 @@ namespace ArmyClient.View.SocialNetworks.VK
         public VK_MainPage()
         {
             InitializeComponent();
+
+            Frame tabFrame = new Frame();
+            tabFrame.Content = new VK_SearchUser();
+            SearchUserItem.Content = tabFrame;
         }
     }
 }

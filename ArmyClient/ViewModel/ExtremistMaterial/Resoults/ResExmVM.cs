@@ -2,6 +2,7 @@
 using ArmyClient.Models.ModelExtremistMaterials;
 using ArmyClient.ViewModel.Helpers;
 using Microsoft.Win32;
+using ProgressBarDB;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +17,9 @@ using System.Windows.Media.Imaging;
 namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 {
 
+
+
+
     #region Микро класс фильтрации
 
     class TypeFilter
@@ -29,6 +33,89 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
     class ResExmVM : MainVM
     {
+        ExmMaterialsDB db;
+        #region ProgressBar
+
+        private int _valueBar;
+        public int valueBar
+        {
+            get => _valueBar;
+            set
+            {
+                _valueBar = value;
+                OnPropertyChanged("valueBar");
+            }
+        }
+
+        private int _maxBar;
+        public int maxBar
+        {
+            get => _maxBar;
+            set
+            {
+                _maxBar = value;
+                OnPropertyChanged("maxBar");
+            }
+        }
+        
+        MyProgressBar bar;
+
+        private string _tested;
+        public string tested
+        {
+            set
+            {
+                _tested = value;
+                OnPropertyChanged("tested");
+            }
+            get => _tested;
+        }
+
+        IOrderedQueryable<FoundMaterials> query;
+
+        private async void LoadMaterials()
+        {
+
+            await Task.Run(() =>
+            {                
+                App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                {
+                    db = new ExmMaterialsDB();
+                    // Устанавливаем максимальное количество элементов
+                    bar = new MyProgressBar(db.FoundMaterials.Count());
+                    maxBar = bar.maxProgressBar;
+                    bar.WorkMethod += Bar_WorkMethod;
+                    bar.WorkCompleted += Bar_WorkCompleted;
+
+
+                    tested = $"{bar.valueProgressBar} / {bar.maxProgressBar}";
+                    query = db.FoundMaterials.OrderBy(i => i.Id);
+                    materials = new ObservableCollection<FoundMaterials>();
+
+                    bar.StartMethod();
+                });
+
+            });
+        }
+
+        private void Bar_WorkCompleted()
+        {
+            db = null;
+        }
+
+        private void Bar_WorkMethod(int iteration)
+        {
+            App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+            {
+                tested = $"{bar.valueProgressBar + 1} / {bar.maxProgressBar}";
+                valueBar = bar.valueProgressBar;
+                materials.Add(query.Skip(iteration).Take(1).FirstOrDefault());
+            });
+            //materials.Add(query.Skip(iteration).Take(1).FirstOrDefault());
+        }
+
+
+        #endregion
 
         #region Свойства
 
@@ -106,7 +193,7 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
             set
             {
                 _SelectedMaterial = value;
-                if (value.ScreenShot != null)
+                if (value != null && value.ScreenShot != null)
                     Image = value.ScreenShot;
                 OnPropertyChanged("SelectedMaterial");
             }
@@ -325,38 +412,8 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
         }
 
-        private async void LoadMaterials()
-        {
-            await Task.Run(() =>
-            {
-                using (var db = new ExmMaterialsDB())
-                {
-
-                    var query = (from item in (from i in db.FoundMaterials.Include("Materials")
-                                               select new
-                                               {
-                                                   WebAddress = i.WebAddress,
-                                                   IdMaterial = i.IdMaterial,
-                                                   DateOfEntry = i.DateOfEntry,
-                                                   DateOfLoading = i.DateOfLoading,
-                                                   Materials = i.Materials,
-                                                   Image = i.ScreenShot
-                                               }).ToList()
-                                 select new FoundMaterials()
-                                 {
-                                     WebAddress = item.WebAddress,
-                                     IdMaterial = item.IdMaterial,
-                                     DateOfEntry = item.DateOfEntry,
-                                     DateOfLoading = item.DateOfLoading,
-                                     Materials = item.Materials,
-                                     ScreenShot = item.Image
-                                 });
 
 
-                    materials = new ObservableCollection<FoundMaterials>(query.ToList());                    
-                }
-            });
-        }
         #endregion
 
 
@@ -364,8 +421,7 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
         public ResExmVM()
         {
-            material = new FoundMaterials();
-
+            material = new FoundMaterials();            
             
             filter = new ObservableCollection<TypeFilter>()
             {

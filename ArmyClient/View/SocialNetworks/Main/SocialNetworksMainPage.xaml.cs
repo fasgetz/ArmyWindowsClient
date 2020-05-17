@@ -33,7 +33,7 @@ namespace ArmyClient.View.SocialNetworks.Main
 
             // Добавить страницу для работы с ВК
             tabFrame = new Frame();
-            tabFrame.Content = new VK_SocialNetworks();
+            tabFrame.Content = new VK_MainPage();
             vkTabItem.Content = tabFrame;
         }
     }
