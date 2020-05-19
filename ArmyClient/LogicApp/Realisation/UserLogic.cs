@@ -1,5 +1,6 @@
 ﻿using ArmyClient.LogicApp.Interfaces;
 using ArmyClient.Model;
+using ArmyClient.View._Models.SocialNetworks.UsersDataBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,17 @@ namespace ArmyClient.LogicApp.Realisation
     internal class UserLogic : IUsersLogic
     {
 
+
         LogicProviderDB provider;
         ArmyDBContext db;
+        IOrderedQueryable<UsersData> usersQuery;
 
         public UserLogic(LogicProviderDB provider)
         {
             this.provider = provider;
         }
+
+
 
         #region Синхронные версии методов
 
@@ -81,6 +86,61 @@ namespace ArmyClient.LogicApp.Realisation
         }
 
         
+
+        public async Task<IOrderedQueryable<UsersData>> GetUsersQueryAsync(Users user, bool vk = false, bool instagram = false, bool facebook = false, bool odnoklassniki = false)
+        {
+            return await Task.Run(() =>
+            {
+            db = provider.GetProvider();
+
+            short? IdSoldUnit = 0;
+            if (user.UserSoldierService != null && user.UserSoldierService.Count != 0)
+                IdSoldUnit = user.UserSoldierService.FirstOrDefault().IdSoldierUnit;
+
+
+            short? countryBirth = 0;
+            if (user.CountryBirth != null)
+                countryBirth = user.CountryBirth.Id;
+
+            short? countryResidence = 0;
+            if (user.CountryResidence != null)
+                countryResidence = user.CountryResidence.Id;
+
+
+
+
+                usersQuery = db.Users.Where(i =>
+                (string.IsNullOrEmpty(user.Name) ? true : i.Name.Contains(user.Name)) &&
+                (string.IsNullOrEmpty(user.Family) ? true : i.Family.Contains(user.Family)) &&
+                (string.IsNullOrEmpty(user.Surname) ? true : i.Surname.Contains(user.Surname)) &&
+                // Дата рождения
+                (user.DateBirth.HasValue ? i.DateBirth.Value == user.DateBirth.Value : true) &&
+
+                // Воинская часть    
+                (IdSoldUnit != 0 ? i.UserSoldierService.FirstOrDefault(s => s.IdUser == i.Id).IdSoldierUnit == IdSoldUnit : true)
+
+
+                ).Select(
+                    i => new UsersData
+                    { 
+                        Name = i.Name, 
+                        Id = i.Id, 
+                        Surname = i.Surname,
+                        Family = i.Family,
+                        UserSoldierService = i.UserSoldierService,
+                        SocialNetworkUser = i.SocialNetworkUser,
+                        City1 = i.City1,
+                        CountryResidence = i.CountryResidence
+                    })
+
+                .OrderBy(i => i.Id);
+
+                return usersQuery;
+            });
+
+        }
+
+
         /// <summary>
         /// Метод получения пользователей
         /// </summary>
@@ -110,7 +170,6 @@ namespace ArmyClient.LogicApp.Realisation
                     if (user.CountryResidence != null)
                         countryResidence = user.CountryResidence.Id;
 
-                    //var a = test;
                     var users = (from item in (from vm in db.Users.Include("UserSoldierService").Include("CountryBirth").Include("SocialNetworkUser.UserCrimes").Include("City1.Countries")
                                                where                                                 
                                                  (!(string.IsNullOrEmpty(user.Name)) ? vm.Name.Contains(user.Name) : !string.IsNullOrEmpty(vm.Name)) &&
@@ -261,6 +320,8 @@ namespace ArmyClient.LogicApp.Realisation
                 //}
             });
         }
+
+
 
         #endregion
 

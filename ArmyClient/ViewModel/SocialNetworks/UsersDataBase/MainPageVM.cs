@@ -2,16 +2,17 @@
 using ArmyClient.LogicApp.VK;
 using ArmyClient.LogicApp.WordLogic;
 using ArmyClient.Model;
+using ArmyClient.View._Models.SocialNetworks.UsersDataBase;
 using ArmyClient.View.SocialNetworks._HelpWindows;
 using ArmyClient.ViewModel.Helpers;
-using ArmyVkAPI;
+using ArmyClient.ViewModel.SocialNetworks.Helpers;
 using Microsoft.Win32;
+using ProgressBarDB;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -71,8 +72,71 @@ namespace ArmyClient.ViewModel.Main
     }
 
 
-    class MainPageVM : MainVM
+    class MainPageVM : ProgressBarVM
     {
+
+        #region ProgressBar
+
+        IOrderedQueryable<UsersData> query; // Запрос
+
+        private async void LoadUsers()
+        {
+
+            query = await logic.userLogic.GetUsersQueryAsync(user, vk, instagram, facebook, odnoklassniki);
+
+            await Task.Run(() =>
+            {               
+
+                App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                {
+                    SearchUserButtonEnabled = false;
+                    // Запрос
+                    users = new ObservableCollection<UsersData>();
+
+                    // Устанавливаем максимальное количество элементов
+                    bar = new MyProgressBar(query.Count());
+                    maxBar = bar.maxProgressBar - 1;
+                    bar.WorkMethod += Bar_WorkMethod;
+                    bar.WorkCompleted += Bar_WorkCompleted;
+
+
+                    messageBar = $"{bar.valueProgressBar} / {bar.maxProgressBar}";
+
+
+                    
+
+                    bar.StartMethod();
+
+                    
+                });
+
+            });
+
+            
+
+            
+        }
+
+        private void Bar_WorkCompleted()
+        {
+            logic = new LogicApp.Realisation.LogicApp();
+            SearchUserButtonEnabled = true;
+        }
+
+        private void Bar_WorkMethod(int iteration)
+        {
+            App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+            {
+                messageBar = $"{bar.valueProgressBar + 1} / {bar.maxProgressBar}";
+                valueBar = bar.valueProgressBar;
+                users.Add(query.Skip(iteration).Take(1).FirstOrDefault());
+            });
+        }
+
+
+
+        #endregion
+
         #region Свойства        
 
         // Кнопка поиска юзера
@@ -98,8 +162,8 @@ namespace ArmyClient.ViewModel.Main
             }
         }
 
-        private Model.Users _SelectedUser;
-        public Model.Users SelectedUser
+        private UsersData _SelectedUser;
+        public UsersData SelectedUser
         {
             get => _SelectedUser;
             set
@@ -158,8 +222,8 @@ namespace ArmyClient.ViewModel.Main
         #endregion
 
 
-        private List<Model.Users> _users;
-        public List<Model.Users> users
+        private ObservableCollection<UsersData> _users;
+        public ObservableCollection<UsersData> users
         {
             get => _users;
             set
@@ -866,7 +930,8 @@ namespace ArmyClient.ViewModel.Main
             user = new Model.Users() { City1 = new City(), City = new City() };
             user.IsMonitoring = false;
             UserSoldierServices = new ObservableCollection<SoldierUnit>();
-            SelectedItems = new ObservableCollection<object>();  
+            SelectedItems = new ObservableCollection<object>();
+
 
             // Загружаем данные с БД
             LoadData();
@@ -879,6 +944,7 @@ namespace ArmyClient.ViewModel.Main
             instagram = true;
             facebook = true;
             odnoklassniki = true;
+
         }
 
         /// <summary>
@@ -911,13 +977,7 @@ namespace ArmyClient.ViewModel.Main
             CitiesUS = new ObservableCollection<City>(await logic.citiesLogic.GetCities(idCountry));
         }
 
-        private async void LoadUsers()
-        {
-            SearchUserButtonEnabled = false;
-            users = await logic.userLogic.GetUsersAsync(user, vk, instagram, facebook, odnoklassniki);
 
-            SearchUserButtonEnabled = true;
-        }
 
 
         // Вспомогательный метод для загрузки данных

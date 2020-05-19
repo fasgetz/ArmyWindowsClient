@@ -276,7 +276,7 @@ namespace ArmyClient.LogicApp.WordLogic
                 doc = null;
                 app = null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Если произошла ошибка, то
                 // закрываем документ и выводим информацию

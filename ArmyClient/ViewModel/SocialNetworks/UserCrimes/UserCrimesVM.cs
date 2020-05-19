@@ -61,8 +61,7 @@ namespace ArmyClient.ViewModel.UserCrimes
 
         #region Свойства
 
-        // Апи для работы с ВК
-        private MyApiVK api;
+
 
         // Выбранный крайм в списке
         private UserCrimesCategory _SelectedCrimeOnLV;

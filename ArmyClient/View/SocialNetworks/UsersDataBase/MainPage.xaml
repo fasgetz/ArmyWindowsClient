@@ -194,7 +194,12 @@
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Column="1">
-            <DockPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
                 <Grid DockPanel.Dock="Top">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
@@ -204,7 +209,8 @@
                     <Label Grid.Column="1" FontSize="22" Content="Список пользователей"/>
                     <Button Command="{Binding GoToAddUserPage}" Grid.Column="2" Content="+" FontSize="18" VerticalContentAlignment="Top"/>
                 </Grid>
-                <DataGrid xmlns:local="clr-namespace:ArmyClient.ViewModel.Main" SelectedItem="{Binding SelectedUser}" ItemsSource="{Binding users}" Background="White" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid EnableColumnVirtualization="True" EnableRowVirtualization="True"
+   VirtualizingPanel.IsVirtualizingWhenGrouping="True" Grid.Row="1" xmlns:local="clr-namespace:ArmyClient.ViewModel.Main" SelectedItem="{Binding SelectedUser}" ItemsSource="{Binding users}" Background="White" AutoGenerateColumns="False" IsReadOnly="True">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
                             <i:InvokeCommandAction Command="{Binding GoToAboutUserPage}" />
@@ -225,7 +231,11 @@
                         <DataGridTextColumn Width="3*" Header="Фотографий" Binding="{Binding CrimesCount}" ElementStyle="{StaticResource DGC_NumericColumnStyle}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-            </DockPanel>
+                <Grid Grid.Row="2">
+                    <ProgressBar Value="{Binding valueBar}" Maximum="{Binding maxBar}" VerticalAlignment="Bottom" Height="30" Margin="20 10"/>
+                    <Label Content="{Binding messageBar}" FontSize="30" Foreground="White" />
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

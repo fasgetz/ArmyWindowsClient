@@ -103,7 +103,7 @@
         </Grid>
         <Grid Grid.Row="2">
             <ProgressBar Value="{Binding valueBar}" Maximum="{Binding maxBar}" Height="30" Margin="20 0"/>
-            <Label Content="{Binding tested}"/>
+            <Label VerticalContentAlignment="Center" Content="{Binding messageBar}"/>
         </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>

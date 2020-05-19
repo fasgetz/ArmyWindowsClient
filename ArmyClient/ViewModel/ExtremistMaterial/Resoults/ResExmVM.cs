@@ -1,6 +1,7 @@
 ﻿using ArmyClient.LogicApp.Helps;
 using ArmyClient.Models.ModelExtremistMaterials;
 using ArmyClient.ViewModel.Helpers;
+using ArmyClient.ViewModel.SocialNetworks.Helpers;
 using Microsoft.Win32;
 using ProgressBarDB;
 using System;
@@ -31,45 +32,12 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
     #endregion
 
 
-    class ResExmVM : MainVM
+    class ResExmVM : ProgressBarVM
     {
         ExmMaterialsDB db;
         #region ProgressBar
 
-        private int _valueBar;
-        public int valueBar
-        {
-            get => _valueBar;
-            set
-            {
-                _valueBar = value;
-                OnPropertyChanged("valueBar");
-            }
-        }
 
-        private int _maxBar;
-        public int maxBar
-        {
-            get => _maxBar;
-            set
-            {
-                _maxBar = value;
-                OnPropertyChanged("maxBar");
-            }
-        }
-        
-        MyProgressBar bar;
-
-        private string _tested;
-        public string tested
-        {
-            set
-            {
-                _tested = value;
-                OnPropertyChanged("tested");
-            }
-            get => _tested;
-        }
 
         IOrderedQueryable<FoundMaterials> query;
 
@@ -88,7 +56,7 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
                     bar.WorkCompleted += Bar_WorkCompleted;
 
 
-                    tested = $"{bar.valueProgressBar} / {bar.maxProgressBar}";
+                    messageBar = $"{bar.valueProgressBar} / {bar.maxProgressBar}";
                     query = db.FoundMaterials.OrderBy(i => i.Id);
                     materials = new ObservableCollection<FoundMaterials>();
 
@@ -107,7 +75,7 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
         {
             App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
             {
-                tested = $"{bar.valueProgressBar + 1} / {bar.maxProgressBar}";
+                messageBar = $"{bar.valueProgressBar + 1} / {bar.maxProgressBar}";
                 valueBar = bar.valueProgressBar;
                 materials.Add(query.Skip(iteration).Take(1).FirstOrDefault());
             });

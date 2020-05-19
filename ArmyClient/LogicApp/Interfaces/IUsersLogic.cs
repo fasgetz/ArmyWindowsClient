@@ -1,4 +1,5 @@
 ﻿using ArmyClient.Model;
+using ArmyClient.View._Models.SocialNetworks.UsersDataBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,5 +60,14 @@ namespace ArmyClient.LogicApp.Interfaces
         /// <param name="user">Пользователь</param>
         /// <returns>Возвращает true, если успешно</returns>
         Task<bool> SaveUserAsync(Users user);
+
+
+
+        /// <summary>
+        /// Метод получения пользователей в виде запроса
+        /// </summary>
+        /// <param name="user">Параметр, по модели которой делается выборка</param>
+        /// <returns>Возвращает пользователей</returns>
+        Task<IOrderedQueryable<UsersData>> GetUsersQueryAsync(Users user, bool vk = false, bool instagram = false, bool facebook = false, bool odnoklassniki = false);
     }
 }
