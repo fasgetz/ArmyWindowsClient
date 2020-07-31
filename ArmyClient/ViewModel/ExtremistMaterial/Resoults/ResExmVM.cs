@@ -43,27 +43,41 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.Resoults
 
         private async void LoadMaterials()
         {
+            
+            //var a = await logic.ExtremistMaterialLogic.GetFoundedMaterials(new DateTime(), DateTime.Now);
+            //a.FirstOrDefault().FoundMaterials.
 
-            await Task.Run(() =>
-            {                
-                App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+            using (db = new ExmMaterialsDB())
+            {
+                materials = await Task.Run(() =>
                 {
-                    db = new ExmMaterialsDB();
-                    // Устанавливаем максимальное количество элементов
-                    bar = new MyProgressBar(db.FoundMaterials.Count());
-                    maxBar = bar.maxProgressBar;
-                    bar.WorkMethod += Bar_WorkMethod;
-                    bar.WorkCompleted += Bar_WorkCompleted;
-
-
-                    messageBar = $"{bar.valueProgressBar} / {bar.maxProgressBar}";
-                    query = db.FoundMaterials.OrderBy(i => i.Id);
-                    materials = new ObservableCollection<FoundMaterials>();
-
-                    bar.StartMethod();
+                    return new ObservableCollection<FoundMaterials>(db.FoundMaterials.Include("Materials").ToList());
                 });
+            }
+            //materials = 
+            //materials = await new Task<ObservableCollection<FoundMaterials>> logic.ExtremistMaterialLogic.GetFoundedMaterials(new DateTime(), DateTime.Now);
+            //await Task.Run(() =>
+            //{
+                
 
-            });
+            //    App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+            //    {
+            //        db = new ExmMaterialsDB();
+            //        // Устанавливаем максимальное количество элементов
+            //        bar = new MyProgressBar(db.FoundMaterials.Count());
+            //        maxBar = bar.maxProgressBar;
+            //        bar.WorkMethod += Bar_WorkMethod;
+            //        bar.WorkCompleted += Bar_WorkCompleted;
+
+
+            //        messageBar = $"{bar.valueProgressBar} / {bar.maxProgressBar}";
+            //        query = db.FoundMaterials.OrderBy(i => i.Id);
+            //        materials = new ObservableCollection<FoundMaterials>();
+
+            //        bar.StartMethod();
+            //    });
+
+            //});
         }
 
         private void Bar_WorkCompleted()

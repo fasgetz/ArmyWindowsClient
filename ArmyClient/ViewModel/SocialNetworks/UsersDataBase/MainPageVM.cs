@@ -16,6 +16,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Interactivity;
 
 namespace ArmyClient.ViewModel.Main
@@ -74,6 +75,46 @@ namespace ArmyClient.ViewModel.Main
 
     class MainPageVM : ProgressBarVM
     {
+
+
+        #region Фильтрация в ComboBoxes
+
+        // Привязка к CB
+        private string _text;
+        public string text
+        {
+            get => _text;
+            set
+            {
+                _text = value;
+                OnPropertyChanged("text");
+            }
+        }
+
+
+        // Команда фильтрации списка поиска в ComboBoxe's
+        public DelegateCommand SearchedInCombobox
+        {
+            get
+            {
+                return new DelegateCommand(obj =>
+                {
+                    // Если в поле ComboBox что-то ввели, то произведи поиск
+                    if (text != null)
+                    {
+                        CollectionView cv = (CollectionView)CollectionViewSource.GetDefaultView(SoldierUnits);
+                        cv.Filter = s =>
+                        {                            
+                            SoldierUnit u = s as SoldierUnit;
+                            return (u.Name.Contains(text));
+                        };
+                    }
+
+                });
+            }
+        }
+
+        #endregion
 
         #region ProgressBar
 
@@ -878,9 +919,9 @@ namespace ArmyClient.ViewModel.Main
                 foreach (var item in SelectedItems)
                 {
                     // Получаем выделенных юзеров
-                    var user = (Model.Users)item;
+                    var user = (ArmyClient.View._Models.SocialNetworks.UsersDataBase.UsersData)item;
 
-
+                    
                     // получаем юзера c бд
                     var userdata = await logic.userLogic.GetUserAsync(user.Id);
 

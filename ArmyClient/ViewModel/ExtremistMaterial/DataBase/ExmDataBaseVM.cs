@@ -92,8 +92,6 @@ namespace ArmyClient.ViewModel.ExtremistMaterial.DataBase
         public ExmDataBaseVM()
         {
             LoadData();
-
-            //LoadData();
         }
     }
 }

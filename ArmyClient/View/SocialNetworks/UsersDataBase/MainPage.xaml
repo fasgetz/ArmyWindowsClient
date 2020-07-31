@@ -78,7 +78,24 @@
                         <controls:MyComboBox SelectedItem="{Binding SelectedCountryUS}" ItemsSource="{Binding Countries}" DisplayMemberPath="Name" md:HintAssist.Hint="Страна" />
 
                         <controls:MyComboBox SelectedItem="{Binding SelectedCityUS}" ItemsSource="{Binding CitiesUS}"  DisplayMemberPath="Name" md:HintAssist.Hint="Город" />
-                        <controls:MyComboBox ItemsSource="{Binding SoldierUnits}" SelectedItem="{Binding SelectedSoldierUnit}"  DisplayMemberPath="Name" md:HintAssist.Hint="Воинская часть" />
+                        <controls:MyComboBox Text="{Binding Path=text, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="False" ItemsSource="{Binding SoldierUnits}" SelectedItem="{Binding SelectedSoldierUnit}"  DisplayMemberPath="Name" md:HintAssist.Hint="Воинская часть">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="KeyUp">
+                                    <i:InvokeCommandAction Command="{Binding SearchedInCombobox}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <controls:MyComboBox.Triggers>
+                                <EventTrigger RoutedEvent="TextBoxBase.TextChanged">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsDropDownOpen">
+                                                <DiscreteBooleanKeyFrame Value="True" KeyTime="0:0:0" />
+                                            </BooleanAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </controls:MyComboBox.Triggers>
+                        </controls:MyComboBox>
                     </StackPanel>
                 </Expander>
                 <Expander Header="Дополнительно">
