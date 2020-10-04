@@ -103,7 +103,7 @@ namespace ArmyClient.ViewModel.Users
             {
                 _CurrentStatus = value;
                 
-
+                
 
                 OnPropertyChanged("CurrentStatus");
             }

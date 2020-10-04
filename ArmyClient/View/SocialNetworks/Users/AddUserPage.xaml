@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:ArmyClient.View.Users"
       xmlns:controls="clr-namespace:ArmyControls;assembly=ArmyControls"
       mc:Ignorable="d" 
@@ -209,7 +210,25 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label VerticalAlignment="Center" Grid.Row="0" Content="Воинская часть"/>
-                                <controls:MyComboBox Grid.Row="0" Grid.Column="1" Margin="70 0 0 0" ItemsSource="{Binding SoldierUnits}" SelectedItem="{Binding SelectedSoldierUnit}" DisplayMemberPath="Name" />
+                                
+                                <controls:MyComboBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=text, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="False" ItemsSource="{Binding SoldierUnits}" SelectedItem="{Binding SelectedSoldierUnit}"  DisplayMemberPath="GetSU" md:HintAssist.Hint="Воинская часть">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="KeyUp">
+                                            <i:InvokeCommandAction Command="{Binding SearchedInComboboxUS}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <controls:MyComboBox.Triggers>
+                                        <EventTrigger RoutedEvent="TextBoxBase.TextChanged">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsDropDownOpen">
+                                                        <DiscreteBooleanKeyFrame Value="True" KeyTime="0:0:0" />
+                                                    </BooleanAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </controls:MyComboBox.Triggers>
+                                </controls:MyComboBox>
                                 <Button Command="{Binding AddSoldierService}" Grid.Column="2" Content="+" Margin="5" VerticalAlignment="Center"/>
                                 <DockPanel Margin="50 5" Grid.Row="1"  Grid.ColumnSpan="3">
                                     <ListView ItemsSource="{Binding UserSoldierServices}" DisplayMemberPath="GetSU" />

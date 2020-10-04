@@ -17,270 +17,290 @@ namespace ArmyClient.LogicApp.WordLogic
         {
             // Создаём объект документа
             Word.Document doc = null;
-
             // Создаём объект приложения
             Word.Application app = new Word.Application();
 
-            string FileSource = @"C:\\Users\Andrew\Desktop\Шаблоны WORD\";
 
-            // Путь до шаблона документа
-            string source = FileSource + "UserReport.docx";
-
-            // Создать папку по ВЧ, затем по юзерам
-            if (user.GetFirstUS != null)
-                FileSource += $@"{user.UserSoldierService.First().SoldierUnit.Name}\".Replace("В/Ч", "ВЧ");
-
-            // Далее создаем папку по юзерам
-            FileSource += $"{user.Family} {user.Name}";
-
-            DirectoryInfo dirInfo = new DirectoryInfo(FileSource);
-            if (!dirInfo.Exists)
+            try
             {
-                dirInfo.Create();
-            }
 
 
+                string FileSource = @"C:\\Users\Andrew\Desktop\Шаблоны WORD\";
 
+                // Путь до шаблона документа
+                string source = FileSource + "UserReport.docx";
 
+                // Создать папку по ВЧ, затем по юзерам
+                if (user.GetFirstUS != null)
+                    FileSource += $@"{user.UserSoldierService.First().SoldierUnit.Name}\".Replace("В/Ч", "ВЧ");
 
-            // Открываем
-            doc = app.Documents.Open(source);
-            doc.Activate();
+                // Далее создаем папку по юзерам
+                FileSource += $"{user.Family} {user.Name}";
 
-            // Добавляем информацию
-
-            // добавляем картинку
-            {
-                // Сохраняем картинку
-                // Первым делом необходимо сохранить картинку из byte[] в .png
-                if (user.Photo != null)
+                DirectoryInfo dirInfo = new DirectoryInfo(FileSource);
+                if (!dirInfo.Exists)
                 {
-                    using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(user.Photo)))
+                    dirInfo.Create();
+                }
+
+
+
+
+
+                // Открываем
+                doc = app.Documents.Open(source);
+                doc.Activate();
+
+                // Добавляем информацию
+
+                // добавляем картинку
+                {
+                    // Сохраняем картинку
+                    // Первым делом необходимо сохранить картинку из byte[] в .png
+                    if (user.Photo != null)
                     {
-                        image.Save(@"D:\user.png", ImageFormat.Png);  // Or Png
+                        using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(user.Photo)))
+                        {
+                            image.Save(@"D:\user.png", ImageFormat.Png);  // Or Png
+
+                            object f = false;
+                            object t = true;
+                            object range = Type.Missing;
+
+                            doc.Bookmarks["UserPhoto"].Range.InlineShapes.AddPicture(@"D:\user.png", ref f, ref t, ref range);
+                        }
+                    }
+
+
+
+                }
+
+                // Добавляем характеристику
+                string characteristic = $"{user.Family} {user.Name}, {user.DateBirth.Value.Day}.{user.DateBirth.Value.Month}.{user.DateBirth.Value.Year}";
+
+                // Проверяем указан ли город
+                if (user.City1 != null)
+                {
+                    //characteristic += $", г. {user.City1.Name}.";
+                }
+                else
+                    characteristic += ".";
+
+                if (user.GetFirstUS != null)
+                    characteristic += $" Проходит службу в {user.GetFirstUS}.";
+
+
+
+
+
+                // Общий список друзей
+                List<ForeignFriends> foreignFriends = new List<ForeignFriends>();
+                // Список преступлений
+                List<UserCrimes> userCrimes = new List<UserCrimes>();
+
+                // Собираем друзей иностранцев и фотографии добавленные к соцсетям в бд
+                using (ArmyDBContext db = new ArmyDB())
+                {
+                    // Добавляем в каких соц. сетях зарегистрирован
+
+
+
+                    if (user.SocialNetworkUser.Count() != 0)
+                    {
+                        foreach (var item in user.SocialNetworkUser)
+                        {
+                            characteristic += $" Зарегистрирован(а) в социальной сети {item.SocialNetworkType.Name}, адрес {item.WebAddress};";
+
+
+                            var crimes = db.UserCrimes.Where(i => (int)i.IdSocialNetworkUser == item.Id);
+
+                            //  Если есть нарушения у социальной сети, то необходимо записать
+                            if (crimes != null && crimes.Count() != 0)
+                            {
+                                userCrimes.AddRange(crimes);
+                            }
+                        }
+                    }
+
+                    // Теперь, если есть преступления, то необходимо их добавить и описать
+                    if (userCrimes.Count != 0)
+                        characteristic += $" Есть {userCrimes.Count} нарушений (см. Приложение скриншотов нарушений. Подробная информация с описанием в выборке).";
+                    else
+                        characteristic += $" Материалов, попадающих в какие-либо категории (Околофутбольщики, татуированные, экстремисты, скинхеды и т.п. не имеет).";
+
+
+                    foreach (var socialnetwork in user.SocialNetworkUser)
+                    {
+                        // Получаем друзей
+                        var foreignfriends = db.ForeignFriends.Include("Country").Where(i => i.SocialNetworkUserID == socialnetwork.Id).ToList();
+
+                        if (foreignfriends != null)
+                            foreignFriends.AddRange(foreignfriends);
+
+                    }
+
+                    if (foreignFriends.Count != 0)
+                        characteristic += $" Имеет {foreignFriends.Count} друзей иностранцев (см. Приложение иностранных друзей).";
+                    else
+                        characteristic += $" Не имеет друзей иностранцев.";
+
+                }
+
+                characteristic += $" {user.Characteristic}";
+
+                doc.Bookmarks["Characteristic"].Range.Text = characteristic;
+
+                // Создает приложение ПРЕСТУПНЫХ фотографий
+                if (userCrimes.Count != 0)
+                {
+                    // Создаём объект word
+                    Microsoft.Office.Interop.Word._Application OneWord = new Microsoft.Office.Interop.Word.Application();
+
+                    // Создаем документ
+                    var OneDoc = OneWord.Documents.Add();
+
+                    // Теперь формируем приложение
+                    foreach (var item in userCrimes)
+                    {
+                        // Сохраняем картинку
+                        // Первым делом необходимо сохранить картинку из byte[] в .png
+                        if (item.Photo != null)
+                        {
+                            using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(item.Photo)))
+                            {
+                                image.Save(@"D:\user.png", ImageFormat.Png);  // Or Png
+                            }
+                        }
+
 
                         object f = false;
                         object t = true;
                         object range = Type.Missing;
 
-                        doc.Bookmarks["UserPhoto"].Range.InlineShapes.AddPicture(@"D:\user.png", ref f, ref t, ref range);
-                    }
-                }
-           
+                        // Далее пишем инфу о преступлении
 
+                        string info = $"Размещается по адресу: {item.WebAddressPost};";
 
-            }
+                        OneWord.ActiveDocument.Characters.Last.Select();
+                        OneWord.Selection.Collapse();
+                        OneDoc.Content.InsertAfter($"{info}\n");
 
-            // Добавляем характеристику
-            string characteristic = $"{user.Family} {user.Name}, {user.DateBirth.Value.Day}.{user.DateBirth.Value.Month}.{user.DateBirth.Value.Year}";
-
-            // Проверяем указан ли город
-            if (user.City1 != null)
-            {
-                //characteristic += $", г. {user.City1.Name}.";
-            }
-            else
-                characteristic += ".";
-
-            if (user.GetFirstUS != null)
-                characteristic += $" Проходит службу в {user.GetFirstUS}.";
-
-
-
-
-
-            // Общий список друзей
-            List<ForeignFriends> foreignFriends = new List<ForeignFriends>();
-            // Список преступлений
-            List<UserCrimes> userCrimes = new List<UserCrimes>();
-
-            // Собираем друзей иностранцев и фотографии добавленные к соцсетям в бд
-            using (ArmyDBContext db = new ArmyDB())
-            {
-                // Добавляем в каких соц. сетях зарегистрирован
-
-
-
-                if (user.SocialNetworkUser.Count() != 0)
-                {
-                    foreach (var item in user.SocialNetworkUser)
-                    {
-                        characteristic += $" Зарегистрирован(а) в социальной сети {item.SocialNetworkType.Name}, адрес {item.WebAddress};";
-
-
-                        var crimes = db.UserCrimes.Where(i => (int)i.IdSocialNetworkUser == item.Id);
-
-                        //  Если есть нарушения у социальной сети, то необходимо записать
-                        if (crimes != null && crimes.Count() != 0)
+                        if (item.Photo != null)
                         {
-                            userCrimes.AddRange(crimes);
+                            OneWord.ActiveDocument.Characters.Last.Select();
+                            OneWord.Selection.Collapse();
+                            OneDoc.InlineShapes.AddPicture(@"D:\user.png", ref f, ref t, ref range);
                         }
+
+                        OneWord.ActiveDocument.Characters.Last.Select();
+                        OneWord.Selection.Collapse();
+                        OneWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
+
                     }
+
+                    // Выходим и закрываем
+                    OneDoc.SaveAs2($@"{FileSource}\{user.Family} {user.Name} - список нарушений.docx");
+                    OneDoc.Close();
+                    OneDoc = null;
+                    OneWord.Quit();
+                    OneWord = null;
                 }
 
-                // Теперь, если есть преступления, то необходимо их добавить и описать
-                if (userCrimes.Count != 0)
-                    characteristic += $" Есть {userCrimes.Count} нарушений (см. Приложение скриншотов нарушений. Подробная информация с описанием в выборке).";
-                else
-                    characteristic += $" Материалов, попадающих в какие-либо категории (Околофутбольщики, татуированные, экстремисты, скинхеды и т.п. не имеет).";
 
-
-                foreach (var socialnetwork in user.SocialNetworkUser)
-                {
-                    // Получаем друзей
-                    var foreignfriends = db.ForeignFriends.Include("Country").Where(i => i.SocialNetworkUserID == socialnetwork.Id).ToList();
-
-                    if (foreignfriends != null)
-                        foreignFriends.AddRange(foreignfriends);
-
-                }
-
+                // Создает приложение иностранных друзей
                 if (foreignFriends.Count != 0)
-                    characteristic += $" Имеет {foreignFriends.Count} друзей иностранцев (см. Приложение иностранных друзей).";
-                else
-                    characteristic += $" Не имеет друзей иностранцев.";
-
-            }
-
-            characteristic += $" {user.Characteristic}";
-
-            doc.Bookmarks["Characteristic"].Range.Text = characteristic;
-
-            // Создает приложение ПРЕСТУПНЫХ фотографий
-            if (userCrimes.Count != 0)
-            {
-                // Создаём объект word
-                Microsoft.Office.Interop.Word._Application OneWord = new Microsoft.Office.Interop.Word.Application();
-
-                // Создаем документ
-                var OneDoc = OneWord.Documents.Add();
-
-                // Теперь формируем приложение
-                foreach (var item in userCrimes)
                 {
-                    // Сохраняем картинку
-                    // Первым делом необходимо сохранить картинку из byte[] в .png
-                    if (item.Photo != null)
+                    // Создаём объект word
+                    Microsoft.Office.Interop.Word._Application OneWord = new Microsoft.Office.Interop.Word.Application();
+
+                    // Создаем документ
+                    var OneDoc = OneWord.Documents.Add();
+
+                    // Теперь формируем приложение
+                    foreach (var item in foreignFriends)
                     {
-                        using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(item.Photo)))
+                        // Сохраняем картинку
+                        // Первым делом необходимо сохранить картинку из byte[] в .png
+                        if (item.Photo != null)
                         {
-                            image.Save(@"D:\user.png", ImageFormat.Png);  // Or Png
+                            using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(item.Photo)))
+                            {
+                                image.Save(@"D:\user.png", ImageFormat.Png);  // Or Png
+                            }
                         }
-                    }
 
 
-                    object f = false;
-                    object t = true;
-                    object range = Type.Missing;
+                        object f = false;
+                        object t = true;
+                        object range = Type.Missing;
 
-                    // Далее пишем инфу о преступлении
+                        // Далее пишем инфу об иностранном друге
 
-                    string info = $"Размещается по адресу: {item.WebAddressPost};";
+                        string info = $"{item.Name} {item.Family}";
 
-                    OneWord.ActiveDocument.Characters.Last.Select();
-                    OneWord.Selection.Collapse();
-                    OneDoc.Content.InsertAfter($"{info}\n");
+                        // если есть день рожденья, то добавить к тексту
+                        if (item.BirthDay != null)
+                            info += $", {item.BirthDay.Value.Day}.{item.BirthDay.Value.Month}.{item.BirthDay.Value.Year}";
 
-                    if (item.Photo != null)
-                    {
+
+                        // Добавить страну
+                        info += $", {item.Country.Name}. Зарегистрирован(а) в социальной сети";
+                        if (item.WebAddress.Contains("vk"))
+                            info += " Вконтакте";
+                        else if (item.WebAddress.Contains("facebook"))
+                            info += " Фейсбук";
+                        else
+                            info += " Одноклассники";
+
+                        info += $", адрес: {item.WebAddress}.";
+
                         OneWord.ActiveDocument.Characters.Last.Select();
                         OneWord.Selection.Collapse();
-                        OneDoc.InlineShapes.AddPicture(@"D:\user.png", ref f, ref t, ref range);
-                    }
+                        OneDoc.Content.InsertAfter($"{info}\n");
 
-                    OneWord.ActiveDocument.Characters.Last.Select();
-                    OneWord.Selection.Collapse();
-                    OneWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
-
-                }
-
-                // Выходим и закрываем
-                OneDoc.SaveAs2($@"{FileSource}\{user.Family} {user.Name} - список нарушений.docx");
-                OneDoc.Close();
-                OneDoc = null;
-                OneWord.Quit();
-                OneWord = null;
-            }
-
-
-            // Создает приложение иностранных друзей
-            if (foreignFriends.Count != 0)
-            {
-                // Создаём объект word
-                Microsoft.Office.Interop.Word._Application OneWord = new Microsoft.Office.Interop.Word.Application();
-
-                // Создаем документ
-                var OneDoc = OneWord.Documents.Add();
-
-                // Теперь формируем приложение
-                foreach (var item in foreignFriends)
-                {
-                    // Сохраняем картинку
-                    // Первым делом необходимо сохранить картинку из byte[] в .png
-                    if (item.Photo != null)
-                    {
-                        using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(item.Photo)))
+                        if (item.Photo != null)
                         {
-                            image.Save(@"D:\user.png", ImageFormat.Png);  // Or Png
+                            OneWord.ActiveDocument.Characters.Last.Select();
+                            OneWord.Selection.Collapse();
+                            OneDoc.InlineShapes.AddPicture(@"D:\user.png", ref f, ref t, ref range);
                         }
-                    }
 
-
-                    object f = false;
-                    object t = true;
-                    object range = Type.Missing;
-
-                    // Далее пишем инфу об иностранном друге
-
-                    string info = $"{item.Name} {item.Family}";
-
-                    // если есть день рожденья, то добавить к тексту
-                    if (item.BirthDay != null)
-                        info += $", {item.BirthDay.Value.Day}.{item.BirthDay.Value.Month}.{item.BirthDay.Value.Year}";
-
-
-                    // Добавить страну
-                    info += $", {item.Country.Name}. Зарегистрирован(а) в социальной сети";
-                    if (item.WebAddress.Contains("vk"))
-                        info += " Вконтакте";
-                    else if (item.WebAddress.Contains("facebook"))
-                        info += " Фейсбук";
-                    else
-                        info += " Одноклассники";
-
-                    info += $", адрес: {item.WebAddress}.";
-
-                    OneWord.ActiveDocument.Characters.Last.Select();
-                    OneWord.Selection.Collapse();
-                    OneDoc.Content.InsertAfter($"{info}\n");
-
-                    if (item.Photo != null)
-                    {
                         OneWord.ActiveDocument.Characters.Last.Select();
                         OneWord.Selection.Collapse();
-                        OneDoc.InlineShapes.AddPicture(@"D:\user.png", ref f, ref t, ref range);
+                        OneWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
+
                     }
 
-                    OneWord.ActiveDocument.Characters.Last.Select();
-                    OneWord.Selection.Collapse();
-                    OneWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
-
+                    // Выходим и закрываем
+                    OneDoc.SaveAs2($@"{FileSource}\{user.Family} {user.Name} - список иностранных друзей.docx");
+                    OneDoc.Close();
+                    OneDoc = null;
+                    OneWord.Quit();
+                    OneWord = null;
                 }
 
-                // Выходим и закрываем
-                OneDoc.SaveAs2($@"{FileSource}\{user.Family} {user.Name} - список иностранных друзей.docx");
-                OneDoc.Close();
-                OneDoc = null;
-                OneWord.Quit();
-                OneWord = null;
+
+
+                // Сохраняем
+                doc.SaveAs2($@"{FileSource}\{user.Family} {user.Name}.docx");
+                               
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                // Закрываем документ
+                //doc.Close();
+                //app.Quit();
+                //doc = null;
+                //app = null;
+                
             }
 
-
-
-            // Сохраняем
-            doc.SaveAs2($@"{FileSource}\{user.Family} {user.Name}.docx");
-            // Закрываем документ
             doc.Close();
+            app.Quit();
             doc = null;
             app = null;
         }

@@ -93,20 +93,20 @@ namespace ArmyClient.ViewModel.Main
 
 
         // Команда фильтрации списка поиска в ComboBoxe's
-        public DelegateCommand SearchedInCombobox
+        public DelegateCommand SearchedInComboboxUS
         {
             get
             {
                 return new DelegateCommand(obj =>
                 {
                     // Если в поле ComboBox что-то ввели, то произведи поиск
-                    if (text != null)
+                    if (text != null && SoldierUnits != null)
                     {
                         CollectionView cv = (CollectionView)CollectionViewSource.GetDefaultView(SoldierUnits);
                         cv.Filter = s =>
                         {                            
                             SoldierUnit u = s as SoldierUnit;
-                            return (u.Name.Contains(text));
+                            return (u.GetSU.Contains(text));
                         };
                     }
 
@@ -126,30 +126,30 @@ namespace ArmyClient.ViewModel.Main
             query = await logic.userLogic.GetUsersQueryAsync(user, vk, instagram, facebook, odnoklassniki);
 
             await Task.Run(() =>
-            {               
+            {
+                users = new ObservableCollection<UsersData>(query);
+                //App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                //{
+                //    SearchUserButtonEnabled = false;
+                //    // Запрос
+                //    users = new ObservableCollection<UsersData>();
 
-                App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
-                {
-                    SearchUserButtonEnabled = false;
-                    // Запрос
-                    users = new ObservableCollection<UsersData>();
-
-                    // Устанавливаем максимальное количество элементов
-                    bar = new MyProgressBar(query.Count());
-                    maxBar = bar.maxProgressBar - 1;
-                    bar.WorkMethod += Bar_WorkMethod;
-                    bar.WorkCompleted += Bar_WorkCompleted;
-
-
-                    messageBar = $"{bar.valueProgressBar} / {bar.maxProgressBar}";
+                //    // Устанавливаем максимальное количество элементов
+                //    bar = new MyProgressBar(query.Count());
+                //    maxBar = bar.maxProgressBar - 1;
+                //    bar.WorkMethod += Bar_WorkMethod;
+                //    bar.WorkCompleted += Bar_WorkCompleted;
 
 
-                    
+                //    messageBar = $"{bar.valueProgressBar} / {bar.maxProgressBar}";
 
-                    bar.StartMethod();
 
                     
-                });
+
+                //    bar.StartMethod();
+
+                    
+                //});
 
             });
 
@@ -1002,14 +1002,22 @@ namespace ArmyClient.ViewModel.Main
 
         // Загрузка городов страны рождения
         protected async void LoadBirthCities(byte idCountry)
-        {
+        {            
             CitiesBirthCountry = new ObservableCollection<City>(await logic.citiesLogic.GetCities(idCountry));
         }
 
         // Загрузка городов страны проживания
         protected async void LoadResidenceCities(byte idCountry)
         {
-            CitiesResidence = new ObservableCollection<City>(await logic.citiesLogic.GetCities(idCountry));
+            try
+            {
+                CitiesResidence = new ObservableCollection<City>(await logic.citiesLogic.GetCities(idCountry));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         // Загрузка городов В/Ч

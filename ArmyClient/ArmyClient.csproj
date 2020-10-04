@@ -55,7 +55,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ArmyControls">
-      <HintPath>..\..\ArmyControls\ArmyControls\bin\Debug\ArmyControls.dll</HintPath>
+      <HintPath>..\..\WPF-ArmyContolrs\ArmyControls\bin\Release\ArmyControls.dll</HintPath>
     </Reference>
     <Reference Include="ArmyVkAPI">
       <HintPath>..\..\ArmyApiVK\ArmyVkAPI\ArmyVkAPI\bin\Debug\ArmyVkAPI.dll</HintPath>

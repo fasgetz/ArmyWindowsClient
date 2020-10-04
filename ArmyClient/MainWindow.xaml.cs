@@ -30,7 +30,6 @@ namespace ArmyClient
         {
             InitializeComponent();
 
-
             MyNavigation.navigation = myframe.NavigationService;
 
             MyNavigation.navigation.Content = new StartPage();

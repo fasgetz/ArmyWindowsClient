@@ -109,33 +109,33 @@ namespace ArmyClient.LogicApp.Realisation
 
 
 
-                usersQuery = db.Users.Where(i =>
-                (string.IsNullOrEmpty(user.Name) ? true : i.Name.Contains(user.Name)) &&
-                (string.IsNullOrEmpty(user.Family) ? true : i.Family.Contains(user.Family)) &&
-                (string.IsNullOrEmpty(user.Surname) ? true : i.Surname.Contains(user.Surname)) &&
-                // Дата рождения
-                (user.DateBirth.HasValue ? i.DateBirth.Value == user.DateBirth.Value : true) &&
+            usersQuery = db.Users.Where(i =>
+            (string.IsNullOrEmpty(user.Name) ? true : i.Name.Contains(user.Name)) &&
+            (string.IsNullOrEmpty(user.Family) ? true : i.Family.Contains(user.Family)) &&
+            (string.IsNullOrEmpty(user.Surname) ? true : i.Surname.Contains(user.Surname)) &&
+            // Дата рождения
+            (user.DateBirth.HasValue ? i.DateBirth.Value == user.DateBirth.Value : true) &&
 
-                // Воинская часть    
-                (IdSoldUnit != 0 ? i.UserSoldierService.FirstOrDefault(s => s.IdUser == i.Id).IdSoldierUnit == IdSoldUnit : true)
+            // Воинская часть    
+            (IdSoldUnit != 0 ? i.UserSoldierService.FirstOrDefault(s => s.IdUser == i.Id).IdSoldierUnit == IdSoldUnit : true)
 
 
-                ).Select(
-                    i => new UsersData
-                    { 
-                        Name = i.Name, 
-                        Id = i.Id, 
-                        Surname = i.Surname,
-                        Family = i.Family,
-                        UserSoldierService = i.UserSoldierService,
-                        SocialNetworkUser = i.SocialNetworkUser,
-                        City1 = i.City1,
-                        CountryResidence = i.CountryResidence
-                    })
+            ).Select(
+                i => new UsersData
+                {
+                    Name = i.Name,
+                    Id = i.Id,
+                    Surname = i.Surname,
+                    Family = i.Family,
+                    UserSoldierService = i.UserSoldierService,
+                    SocialNetworkUser = i.SocialNetworkUser,
+                    City1 = i.City1,
+                    CountryResidence = i.CountryResidence
+                })
 
                 .OrderBy(i => i.Id);
-
-                return usersQuery;
+                
+                return usersQuery.Where(i => i.UserSoldierService.FirstOrDefault().IdSoldierUnit >= 753).OrderBy(i => i.Id);
             });
 
         }
